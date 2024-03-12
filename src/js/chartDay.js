@@ -202,7 +202,9 @@ if (chartType == "line") {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function () {
     $("#notePopup").dialog("close")
 })
@@ -234,18 +236,55 @@ $("#btnNoteOk").click(function () {
     notes = []
 });
 $("#btnSaveOk").click(function () {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }  
     $("#savePopup").dialog("close");
     let chart = $("#container").ejChart("instance");
+    var graph_year = year;
+    var graph_month = month;
+    var graph_day = day;
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID1 = sessionStorage.getItem("mstID_1");
+    var mstID2 = sessionStorage.getItem("mstID_2");
+    var mstID3 = sessionStorage.getItem("mstID_3");
+    var nameMst1 = nameMst_1;
+    var nameMst2 = nameMst_2;
+    var nameMst3 = nameMst_3;
+    var jsonData = {
+        "year": graph_year,
+        "month": graph_month,
+        "day": graph_day,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID_1": mstID1,
+        "mstID_2": mstID2,
+        "mstID_3": mstID3,
+        "nameMst_1": nameMst1,
+        "nameMst_2": nameMst2,
+        "nameMst_3": nameMst3
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "month",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            typ: "day",
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -253,20 +292,22 @@ $("#btnSaveOk").click(function () {
     });
 });
 $("#diagSpeichern").click(function () {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {

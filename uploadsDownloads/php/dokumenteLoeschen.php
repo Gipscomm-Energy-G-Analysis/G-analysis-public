@@ -1,6 +1,10 @@
 <?php
+error_reporting (-1);
+ini_set ('display_errors', 'On');
 
+require 'DbOperations.php';
 $nameDB = $_POST['nameDB'];
+$conn = connectToDB($nameDB);
 $deleteMode = $_POST['deleteMode'];
 
 if($deleteMode == 0){
@@ -14,7 +18,7 @@ if($deleteMode == 0){
 else{
   $fileID = $_POST['fileID'];
 
-  $serverName = "sql_gc.managee.de";//"51.4.196.243"; //"13.81.253.199"; //serverName\instanceName
+  /*$serverName = "sql_gc.managee.de";//"51.4.196.243"; //"13.81.253.199"; //serverName\instanceName
 
   $connectionInfo = array( "Database"=>$nameDB, "UID"=>"gipscomm", "PWD"=>"Gc$2017!");
 
@@ -23,12 +27,12 @@ else{
   if ( !$link ) {
     die( 'Could not connect: ' . sqlsrv_errors() );
   }
+*/
+  $query = "UPDATE dokumente SET deleted = 'true' ";
+  $query .= "WHERE dok_ID = '$fileID' ";
 
-  $tsql = "UPDATE dokumente SET deleted = 'true' ";
-  $tsql .= "WHERE dok_ID = '$fileID' ";
+  $records = queryDB($conn, $query, "write");
 
-  $result = sqlsrv_query($link, $tsql);
-
-  echo $tsql;
+ echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
 }
 ?>

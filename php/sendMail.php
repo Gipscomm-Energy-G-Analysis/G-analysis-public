@@ -39,7 +39,8 @@ $emailText .= $extMitteilungFooter ;
 $adresses =
     [ "info@energie-gipscomm.de"
     , "chn@energie-gipscomm.de"
-    , "sdm@energie-gipscomm.de"
+    , "nne@energie-gipscomm.de"
+    ,$empfaenger
     ] ;
 
 // Has the E-Mail been send successfully ?    

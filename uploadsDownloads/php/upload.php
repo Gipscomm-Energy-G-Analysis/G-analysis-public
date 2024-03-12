@@ -1,13 +1,14 @@
 
 <?php
+
 error_reporting( -1 ) ;
-ini_set ( 'display_errors', 'On' ) ;
+ini_set ('display_errors', 'On') ;
 
 require 'DbOperations.php';
 
-$nameDB = $_POST[ 'nameDB' ] ;
+$nameDB = $_POST['nameDB'];
 
-$conn = connectToDB( $nameDB ) ;
+$conn = connectToDB($nameDB);
 
 $fileName = $_POST['fileName'];
 $fileType = $_FILES['file']['type'];
@@ -39,8 +40,11 @@ if($verwaltung == "ERng"){
 	$query .= "VALUES('$id','$kategorie','$fileName','$fileType','$fileExtention','$fileSize','$fileContentEnc','false') ";
 }
 
-$records = queryDB( $conn, $query, "write" ) ;
+$records = queryDB($conn,$query,"write");
 
-echo json_encode([$id, $fileName, $fileType, "kategorie"], JSON_INVALID_UTF8_IGNORE);
+$query = "SELECT MAX(dok_ID) as dok_ID FROM dokumente";
+$records = queryDB($conn,$query,"read");
+$dok_ID= $records[0]['dok_ID'];
+echo json_encode([$dok_ID, $fileName, $fileType, "kategorie"], JSON_INVALID_UTF8_IGNORE);
 
 ?>

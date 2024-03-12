@@ -35,7 +35,7 @@ if ( $id == "msmSuchen" || $id == "msmSuchenMstE" || $id == "msmSuchenMstB" ) {
 		  else {
 		    $records1[ $i ][ "anlageMsm" ] = "" ;
 		  }
-		  if ( $records1[ $i ][ "mst_ID" ] != 0 && $records1[ $i ][ "mst_ID" ] != null ) { // Replaced 'or' by 'and' (We don't want neither 0 nor null) 01.03.2020
+		  if ( $records1[ $i ][ "mst_ID" ] != 0 && $records1[ $i ][ "mst_ID" ] != null && $records1[ $i ][ "anl_ID" ] != 0 && $records1[ $i ][ "anl_ID" ] != null) { // Replaced 'or' by 'and' (We don't want neither 0 nor null) 01.03.2020
 
 		    $query2 = "SELECT nameMSt FROM messstellen " ;
 		    $query2 .= "WHERE mst_ID = ".$records1[ $i ][ "mst_ID" ]." " ; // A missing space caused an error in the sql query 01.03.2020

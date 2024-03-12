@@ -56,7 +56,7 @@
                     <a href="javascript:void(0);">ISO</a>
                     <div class="sub_menu_open">
                       <span> Berichte </span>
-                      <i class="ti-angle-down"></i>
+                      <i class="ti-angle-down angle-down"></i>
                       <div class="sub_menu_1_div">
                         <a href="javascript:void(0);" id="spaEfVTab1Menu" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_1</a>
                         <a href="javascript:void(0);" id="spaEfVTab2Menu" class="dashboard_sub_menu_1 dashboard_menu_click">SpaEfV_Tabelle_2</a>
@@ -67,14 +67,23 @@
                     <h3>Diagramme</h3>
                     <div class="sub_menu_open">
                       <span>Neu erstellen</span>
-                      <i class="ti-angle-down"></i>
+                      <i class="ti-angle-down angle-down-diag"></i>
                       <div class="sub_menu_1_div">
                         <a href="javascript:void(0);" id="mstVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Messstellenvergleich</a>
                         <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Zeitvergleich</a>
                         <a href="javascript:void(0);" id="knzDarst" class="dashboard_sub_menu_1 dashboard_menu_click">Kennzahlendarstellung</a>
                       </div>
                     </div>
-                    <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_menu_click">Gespeichertes Laden</a>
+                    <div class="sub_menu_open">
+                      <span>Gespeichertes Laden</span>
+                      <i class="ti-angle-down angle-down-diagramme"></i>
+                      <div class="sub_menu_1_div">
+                        <a href="javascript:void(0);" id="mstVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click messstellen_graph">Messstellen Graph</a>
+                        <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click zeitvergleich_graph">Zeitvergleich Graph</a>
+                        <a href="javascript:void(0);" id="knzDarst" class="dashboard_sub_menu_1 dashboard_menu_click kennzahlen_graph">Kennzahlen Graph</a>
+                      </div>
+                    </div>
+                    <!-- <a href="javascript:void(0);" id="zeitVerglMenu" class="dashboard_menu_click">Gespeichertes Laden</a> -->
                   </div>
                   <div class="column">
                     <h3 id="verbExportMenu" class="dashboard_menu_click cursor_pointer">Verbrauchsdatenexport</h3>
@@ -103,11 +112,12 @@
                 <div class="row">
                   <div class="column">
                     <h3>Rechteverwaltung</h3>
-                    <a href="javascript:void(0);" id="betrGrpMenu" class="dashboard_menu_click">Betreuergruppen</a>
+                    <!-- <a href="javascript:void(0);" id="betrGrpMenu" class="dashboard_menu_click">Betreuergruppen</a>
                     <a href="javascript:void(0);" id="manGrpMenu" class="dashboard_menu_click">Mandantengruppen</a>
                     <a href="javascript:void(0);" id="betrGrpMenu" class="dashboard_menu_click">Superadmins</a>
                     <a href="javascript:void(0);" id="admMenu" class="dashboard_menu_click">Admins</a>
-                    <a href="javascript:void(0);" id="benMenu" class="dashboard_menu_click">Benutzer</a>
+                    <a href="javascript:void(0);" id="benMenu" class="dashboard_menu_click">Benutzer</a> -->
+                    <a href="http://20.113.70.139/admin" id="adminPortalMenu" data-menus="3-1-6" class="dashboard_menu_click_admin admin_panel" target="_blank">Admin Portal</a>
                   </div>
             
                   <div class="column">
@@ -198,7 +208,7 @@
                     
                     <div class="sub_menu_open">
                       <span>Erweiterungen</span>
-                      <i class="ti-angle-down"></i>
+                      <i class="ti-angle-down angle-down"></i>
                       <div class="sub_menu_1_div">
                         <a href="javascript:void(0);" id="erwAnlMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Erweiterung Anlagen</a>
                         <a href="javascript:void(0);" id="erwPrdMenu" class="dashboard_sub_menu_1 dashboard_menu_click">Erweiterung Produkte</a>

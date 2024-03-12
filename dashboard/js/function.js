@@ -978,7 +978,9 @@ function getTableFormatDashboard(){
           }
           // --end-->
 
-
+          if(value['tile_data_type'] == "Graph"){
+            value['tile_html']=value['tile_html'].replace("grid-margin", "graph savegraphid_"+value['saved_graph_id']+" grid-margin");
+          }
           // <---21-10-2021--
           if(value['expand_view'] == 1 && value['tile_data_type'] == "chart"){
             // $('.'+id+'.tiles-click')
@@ -1205,7 +1207,15 @@ function getTableFormatDashboard(){
           // --end-->
           //table
           if(value['tile_data_type'] == "table" && (value['input_height'] == 1 && value['input_width'] == 1) || (value['outside_tile_input_height'] == 1 && value['outside_tile_input_width'] == 1) || (value['expand_view'] == 0 && value['outside_tile_checkbox'] == 0)){
-              value['tile_html']=  value['tile_html'].replace('tableimage', 'showtableimage');
+              if(value['type']=="Product"){
+                value['tile_html']=  value['tile_html'].replace('showtableimage', 'tableimage');
+                value['tile_html']=  value['tile_html'].replace('tiles-custom-table', 'show-tiles-custom-table');
+                value['tile_html']=  value['tile_html'].replace('one-by-one-tile', 'dashboard-small-table-tile');
+              }else{
+                value['tile_html']=  value['tile_html'].replace('tableimage', 'showtableimage');
+                value['tile_html']=  value['tile_html'].replace('show-tiles-custom-table', 'tiles-custom-table');
+                value['tile_html']=  value['tile_html'].replace('one-by-one-tile', 'dashboard-small-table-tile');
+              }
             }
           //chart  
           if(value['tile_data_type'] == "chart" && (value['input_height'] == 1 && value['input_width'] == 1) || (value['outside_tile_input_height'] == 1 && value['outside_tile_input_width'] == 1) || (value['expand_view'] == 0 &&  value['outside_tile_checkbox'] == 0)){
@@ -1232,6 +1242,11 @@ function getTableFormatDashboard(){
         //$( ".table_tile_outside_structure" ).prop( "disabled", true );
         $('#dashboard_count_div_tile').html(arHtml);
         $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
+
+        $('#dashboard_count_div_tile .graph').removeClass('hide_table_main');
+        $('#dashboard_count_div_tile .graph').removeClass('tiles-click');
+        $('#dashboard_count_div_tile .graph').removeClass('stretch-card');
+        
           //setTimeout( function(){
         $(".small-table table").css('display','none')
     //},1000);
@@ -1383,7 +1398,351 @@ function getTableFormatDashboard(){
 
 }
 // --end--->
+// <---2024--
+function getSavedGraph(id){
+  var measurement_title = localStorage.getItem('measurement_title_modal_tile');
+  $.ajax({
+    type: "POST",
+    url: "php/getSaveGraph.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getSavedGraph",
+        nameDB: $("#nameDashboardDB").val(),
+        saveGraphId : id,
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var name =a[0]['name'];
+      var type =a[0]['typ'];
+      var chartPageUrl = "https://g-analysis.com/";
+      var commanQuery ="SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID ";
+      var data =JSON.parse(a[0]['jsonDiag']);
+      if(type=='year' || type=='month' || type=='month15min' || type=='day' || type=='day15min' || type=='week' || type=='custom'){
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType);
+        sessionStorage.setItem("nameMst_1", data.nameMst_1);
+        sessionStorage.setItem("nameMst_2", data.nameMst_2);
+        sessionStorage.setItem("nameMst_3", data.nameMst_3);
+        sessionStorage.setItem("mstID_1", data.mstID_1);
+        sessionStorage.setItem("mstID_2", data.mstID_2);
+        sessionStorage.setItem("mstID_3", data.mstID_3);
+         if(type=='year'){
+            sessionStorage.setItem("year", data.year);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartYear.html", "_blank");
+         }
+         if(type=='month'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth.html", "_blank");
+         }
+         if(type=='month15min'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth15min.html", "_blank");
+         }
+         if(type=='day'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            sessionStorage.setItem("day", data.day);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay.html", "_blank");
+         }
+         if(type=='day15min'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            sessionStorage.setItem("day", data.day);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay15min.html", "_blank");
+         }
+         if(type=='week'){
+          var startWeekData = data.startWeekDate.split("-");
+          var endWeekData = data.endWeekDate.split("-");
+          var startYear =startWeekData[0];
+          var startWeeknumber =startWeekData[1].substring(1);
+          var endYear =endWeekData[0];
+          var endWeeknumber =endWeekData[1].substring(1);
+          var startWeekDate= dateConvert(weekdate(startYear,startWeeknumber, 0));
+          var endWeekDate= dateConvert(weekdate(endYear, endWeeknumber, 6));
+          sessionStorage.setItem("startdate", data.startWeekDate);
+          sessionStorage.setItem("enddate", data.endWeekDate);
+          sessionStorage.setItem("startWeekYear", startYear);
+          sessionStorage.setItem("endWeekYear", endYear);
+          sessionStorage.setItem("startWeek", startWeeknumber);
+          sessionStorage.setItem("endWeek", endWeeknumber);
+          if(data.mstID_1 !=''){
+            sessionStorage.setItem("queryString_1", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          if(data.mstID_2 !=''){
+            sessionStorage.setItem("queryString_2", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          if(data.mstID_3 !=''){
+            sessionStorage.setItem("queryString_3", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          window.open(chartPageUrl+"chartWeek.html", "_blank");
+         }
+         if(type=='custom'){
+            sessionStorage.setItem("from", data.from_date);
+            sessionStorage.setItem("to", data.to_date);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartBenDef15min.html", "_blank");
+          }
+      }
+      ////
+      if(type=='year2' || type=='month2' || type=='month15min2' || type=='day2' || type=='day15min2' || type=='week2' || type=='custom2'){
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType);
+        sessionStorage.setItem("nameMst", data.nameMst);
+        sessionStorage.setItem("mstID_1", data.mstID);
+         if(type=='year2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartYear2.html", "_blank");
+         }
+         if(type=='month2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth2.html", "_blank");
+         }
+         if(type=='month15min2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth15min2.html", "_blank");
+         }
+         if(type=='day2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            sessionStorage.setItem("day_1", data.day_1);
+            sessionStorage.setItem("day_2", data.day_2);
+            sessionStorage.setItem("day_3", data.day_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay2.html", "_blank");
+         }
+         if(type=='day15min2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            sessionStorage.setItem("day_1", data.day_1);
+            sessionStorage.setItem("day_2", data.day_2);
+            sessionStorage.setItem("day_3", data.day_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay15min2.html", "_blank");
+         }
+         if(type=='week2'){
+          var startWeekData1 = data.startWeekDate1.split("-");
+          var endWeekData1 = data.endWeekDate1.split("-");
+          var startYear1 =startWeekData1[0];
+          var startWeeknumber1 =startWeekData1[1].substring(1);
+          var endYear1 =endWeekData1[0];
+          var endWeeknumber1 =endWeekData1[1].substring(1);
+          var startWeekDate1= dateConvert(weekdate(startYear1,startWeeknumber1, 0));
+          var endWeekDate1= dateConvert(weekdate(endYear1, endWeeknumber1, 6));
 
+          var startWeekData2 = data.startWeekDate2.split("-");
+          var endWeekData2 = data.endWeekDate2.split("-");
+          var startYear2 =startWeekData2[0];
+          var startWeeknumber2 =startWeekData2[1].substring(1);
+          var endYear2 =endWeekData2[0];
+          var endWeeknumber2 =endWeekData2[1].substring(1);
+          var startWeekDate2= dateConvert(weekdate(startYear2,startWeeknumber2, 0));
+          var endWeekDate2= dateConvert(weekdate(endYear2, endWeeknumber2, 6));
+
+          var startWeekData3 = data.startWeekDate3.split("-");
+          var endWeekData3 = data.endWeekDate3.split("-");
+          var startYear3 =startWeekData3[0];
+          var startWeeknumber3 =startWeekData3[1].substring(1);
+          var endYear3 =endWeekData3[0];
+          var endWeeknumber3 =endWeekData3[1].substring(1);
+          var startWeekDate3= dateConvert(weekdate(startYear3,startWeeknumber3, 0));
+          var endWeekDate3= dateConvert(weekdate(endYear3, endWeeknumber3, 6));
+          sessionStorage.setItem("mstID_1", data.mstID_1);
+          sessionStorage.setItem("startdate1", data.startWeekDate1);
+          sessionStorage.setItem("enddate1", data.endWeekDate1);
+          sessionStorage.setItem("startWeekYear1", startYear1);
+          sessionStorage.setItem("endWeekYear1", endYear1);
+          sessionStorage.setItem("startWeek1", startWeeknumber1);
+          sessionStorage.setItem("endWeek1", endWeeknumber1);
+
+          sessionStorage.setItem("startdate2", data.startWeekDate2);
+          sessionStorage.setItem("enddate2", data.endWeekDate2);
+          sessionStorage.setItem("startWeekYear2", startYear2);
+          sessionStorage.setItem("endWeekYear2", endYear2);
+          sessionStorage.setItem("startWeek2", startWeeknumber2);
+          sessionStorage.setItem("endWeek2", endWeeknumber2);
+
+          sessionStorage.setItem("startdate3", data.startWeekDate3);
+          sessionStorage.setItem("enddate3", data.endWeekDate3);
+          sessionStorage.setItem("startWeekYear3", startYear3);
+          sessionStorage.setItem("endWeekYear3", endYear3);
+          sessionStorage.setItem("startWeek3", startWeeknumber3);
+          sessionStorage.setItem("endWeek3", endWeeknumber3);
+          if(startWeekDate1 !='' && endWeekDate1 !=''){
+            sessionStorage.setItem("queryString_1", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate1+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate1+"' ORDER by time_de");
+          }
+          if(startWeekDate2 !='' && endWeekDate2 !=''){
+            sessionStorage.setItem("queryString_2", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate2+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate2+"' ORDER by time_de");
+          }
+          if(startWeekDate3 !='' && endWeekDate3 !=''){
+            sessionStorage.setItem("queryString_3", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate3+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate3+"' ORDER by time_de");
+          }
+            window.open(chartPageUrl+"chartWeek2.html", "_blank");
+          }
+          if(type=='custom2'){
+            sessionStorage.setItem("from1", data.from1);
+            sessionStorage.setItem("to1", data.to1);
+            sessionStorage.setItem("from2", data.from2);
+            sessionStorage.setItem("to2", data.to2);
+            sessionStorage.setItem("from3", data.from3);
+            sessionStorage.setItem("to3", data.to3);
+            if(data.from1 !='' && data.to1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from1+"' AND '"+data.to1+"' ORDER by time_de ");
+            }
+            if(data.from2 !='' && data.to2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from2+"' AND '"+data.to2+"' ORDER by time_de ");
+            }
+            if(data.from3 !='' && data.to3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from3+"' AND '"+data.to3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartBenDef15min2.html", "_blank");
+          }
+          ////
+      }
+      if(type=='knz'){
+        sessionStorage.clear();
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType); 
+        sessionStorage.setItem("timeSpan", data.timeSpan);
+        sessionStorage.setItem("knzID_1", data.knzID_1);
+        sessionStorage.setItem("knzID_2", data.knzID_2);
+        sessionStorage.setItem("knzID_3", data.knzID_3);
+        sessionStorage.setItem("knzName_1", data.knzName_1);
+        sessionStorage.setItem("knzName_2", data.knzName_2);
+        sessionStorage.setItem("knzName_3", data.knzName_3);
+        sessionStorage.setItem("knz_1_kennz", data.knz_1_kennz);
+        sessionStorage.setItem("knz_1_obergr", data.knz_1_obergr);
+        sessionStorage.setItem("knz_1_untergr", data.knz_1_untergr);
+        sessionStorage.setItem("knz_1_zielwert", data.knz_1_zielwert);
+        sessionStorage.setItem("knz_1_zielVon", data.knz_1_zielVon);
+        sessionStorage.setItem("knz_1_zielBis", data.knz_1_zielBis);
+        sessionStorage.setItem("headerKnz", data.headerKnz);
+
+        window.open(chartPageUrl+"chartKennzahlenMst.html", "_blank"); 
+      }
+    }
+  });
+}
 // <---23-8-21--
 function generateHtmlMeasurementTiles(type){
   var measurement_title = localStorage.getItem('measurement_title_modal_tile');
@@ -2780,6 +3139,98 @@ function getNumberRecordsProductAutomatic(page_val = 1){
   });
 }
 
+//22-11-2023 show column in tiles
+function getTilesColumnsNumberRecordsProductAutomatic(page_val = 1){
+  $('#product_field_div').hide();
+  $('.automatic_product_div').show();
+  // var number_records = $('#product_number_record').val();
+
+  // <---22-12-2021---
+  var all_tables_product = $('#all_tables_product').val();
+  var tiles_columns_product = $('#tiles_columns_product').val();
+  var total_number_records = $('#product_total_number_record').val();
+  if(total_number_records == '')
+  {
+    var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Total No. Record</td></tr>";
+    $('#tiles_product_select_table_entries').html(tr);
+    return false;
+  }
+  else if(all_tables_product == '' || tiles_columns_product.length == 0)
+  {
+    var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Column</td></tr>";
+    $('#tiles_product_select_table_entries').html(tr);
+    return false;
+  }
+  var columnDataType = [];
+  $('#tiles_columns_product option:selected').each(function(){
+    var value =$(this).attr('data-type');
+    columnDataType.push(value)
+  });
+  if(columnDataType.length > 2){
+    event.preventDefault();
+    $('#'+event.target.id).closest("li").removeClass();
+     alert('You Can Select Only Two Columns');
+     return false;
+  }
+  // ---end--->
+
+  var product_type = $('#product_type').val();
+  
+  $.ajax({
+      type: "POST",
+      url: "php/retreive.php",
+      async: false,
+      dataType: 'json',
+      data: {
+          action: "getNumberRecordsProductAutomatic",
+          nameDB: $("#nameDashboardDB").val(),
+          // number_records : number_records,
+          page_val : page_val,
+          product_type : product_type,
+          all_tables_product : all_tables_product,
+          total_number_records : total_number_records,
+          all_columns_product : JSON.stringify(tiles_columns_product),
+          columnDataType : JSON.stringify(columnDataType),
+      },
+      fail: function() {
+          alert("failed!!")
+      },
+      success: function(a) {
+        $('#tiles_product_select_table_entries').html(a['product_html']);
+        $('#tiles_product_select_table_entries_table_div table thead').html(a['product_table_header']);
+        $('#tiles_product_select_table_entries_table_div table tbody').html(a['product_html']);
+
+        $('#tiles_product_select_table_entries_table thead tr th').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+        $('#tiles_product_select_table_entries_table tbody tr td').attr('style','padding:  10px 6px 10px 6px !important;font-size: small !important;');
+
+        $('#product_records_order_by_div').hide();
+        localStorage.setItem('query_data',JSON.stringify(a['query_data']));
+
+        var edit_value = $('#save_and_proceed_btn_dashboard').attr('data-edit');
+        if(edit_value == 'true'){
+            $('#product_modal_open_button').val('Update & Preview');
+            $('#product_modal_open_button').attr('tile-edit','true');
+        }
+        else{
+          $('#product_modal_open_button').val('Save & Preview');
+          $('#product_modal_open_button').attr('tile-edit','false');
+        }
+       
+        var type_data = localStorage.getItem('dashboard_tile_data');
+        type_data = JSON.parse(type_data);
+        if(type_data['type_data_tile'] == 'overall_count')
+        {
+          $('#product_modal_open_button').hide();
+        }
+        else{
+          $('#product_modal_open_button').show();
+        }
+        // ---end--->
+         
+      }
+  });
+}
+
 function getAllProductTables(){
   $('#product_field_div').hide();
   $('.automatic_product_div').show();
@@ -2859,11 +3310,13 @@ function getAllColumnProductTables(edit_tile_all_columns = false){
         {
           // var all_table = "<option value=''>Please Select Column</option>";
           $('#all_columns_product_div').html('');
+          $('#tiles_columns_product_div').html('');
           var all_table = '';
           a['all_columns'].forEach((val)=>{
             all_table +="<option value='"+val['column_name']+"' data-type='"+val['data_type']+"'>"+val['column_name']+"</option>";
           });
           $('#all_columns_product').html(all_table);
+          $('#tiles_columns_product').html(all_table);
 
           // <----23-12-2021---
           var selectHTML = "<label for='product_type'>Columns</label>";
@@ -2878,6 +3331,20 @@ function getAllColumnProductTables(edit_tile_all_columns = false){
             search: true,
           });
           $('#all_columns_product').multiselect('refresh');
+
+          // <----22-11-2023---
+          var selectTilesHTML = "<label for='product_type'>Tiles Columns</label>";
+          selectTilesHTML += "<select class='form-control form-control-sm text-dark' multiple id='tiles_columns_product'>";
+          selectTilesHTML+= all_table;
+          selectTilesHTML += "</select>";
+          $('#tiles_columns_product_div').html(selectTilesHTML);
+          // --end-->
+          $('#tiles_columns_product').multiselect({
+            columns: 1,
+            placeholder: 'Please Select Column',
+            search: true,
+          });
+          $('#tiles_columns_product').multiselect('refresh');
 
           // <----31-12-2021-- Autoplopluate Code
           if(edit_tile_all_columns != false)
@@ -2937,6 +3404,12 @@ function getAllColumnProductTables(edit_tile_all_columns = false){
           selectHTML+= "<option value=''>Please Select Column</option>";
           selectHTML += "</select>";
           $('#all_columns_product_div').html(selectHTML);
+
+          var selectTilesHTML = "<label for='product_type'>Tiles Columns</label>";
+          selectTilesHTML += "<select class='form-control form-control-sm text-dark'id='tiles_columns_product'>";
+          selectTilesHTML+= "<option value=''>Please Select Column</option>";
+          selectTilesHTML += "</select>";
+          $('#tiles_columns_product_div').html(selectTilesHTML);
 
           var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>No Data</td></tr>";
           $('#product_select_table_entries').html(tr);
@@ -3281,7 +3754,7 @@ setTimeout(function () {
     $('.'+id+'.product_automatic_tile').parent('div').removeClass('col-md-3');
     setTimeout( ()=>{
       localStorage.removeItem('tile_dashboard_prd_type_automatic');
-    },1500)
+    },200)
   }
   else{
     $('.'+id+'.tiles-click').removeClass('hide_table_main');
@@ -3316,7 +3789,7 @@ setTimeout(function () {
     $('.'+id+'.tiles-click').parent('div').removeClass('col-md-3');
   }
     // ---end-->
-},1000);
+},100);
 
 })
 function getDimentions(id,classPrdAutomatic) {
@@ -4272,6 +4745,11 @@ function getEditDataDashboard(id,i_value,product_automatic_tile = false){
         localStorage.setItem('edit-measurement-tile',id);
         localStorage.setItem('edit-i-value',i_value);
         $('#save_and_proceed_btn_dashboard').val('Update & Proceed');
+        //change dashboard text to edit tile and remove recordType and dataType fields in edit case
+        $('.modal-header h5').text('Kachel bearbeiten');
+        $("#record_type_of_tile").parents('.form-group.col-md-3').hide();
+        $("#type_data_tile").parents('.form-group.col-md-3').hide();
+
         if(val['tile_data_type'] == "chart"){
           $('#save_and_proceed_btn_dashboard').attr('data-edit-chart','true');
         }
@@ -4350,7 +4828,33 @@ function getChartTileDashboard(){
   });
 }
 // --end-->
-
+// <--2-9-2021---
+function getGraphChartTileDashboard(){
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var record_type_of_tile = ar['record_type_of_tile'];
+  $('#dashboard_loader_div').show();
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        measurement_title : ar['title_modal_tile'],
+        action: "getGraphChartDataDashboard",
+        record_type_of_tile : record_type_of_tile,
+        nameDB: $("#nameDashboardDB").val()
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.dashboard_chart_tiles').html(a['tile_html']);
+      
+    }
+  });
+}
+// --end-->
 // <--7-10-02021----
 function getEditChartTileDashboard(){
   var ar = localStorage.getItem('dashboard_tile_data');
@@ -4462,6 +4966,46 @@ function getEditChartTileDashboard(){
       }
       // --end-->
       
+    }
+  });
+}
+// --end-->
+
+// <--21-02-2024----
+function getEditGraphChartTileDashboard(){
+  var ar = localStorage.getItem('dashboard_tile_data');
+  var id = localStorage.getItem('edit-measurement-tile');
+  var i_value = localStorage.getItem('edit-i-value');
+  ar = JSON.parse(ar);
+  $('#dashboard_loader_div').show();
+  $.ajax({
+    type : "POST",
+    url : 'php/retreive.php',
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getEditGraphChartDashboard",
+        nameDB: $("#nameDashboardDB").val(),
+        graph_title : ar['title_modal_tile'],
+        id : id,
+        i_value : i_value
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('.dashboard_chart_tiles').html(a['tile_html']);
+      setTimeout(()=>{
+          $("#save_graph_chart option[value='"+a.data['saved_graph_id']+"']").prop('selected','selected');
+          $('#measurement-height-chart').val(a.data['input_height']).focus();
+          $('#measurement-height-chart-hidden').val(a.data['height']);
+          $('#measurement-width-chart').val(a.data['input_width']).focus();
+          $('#measurement-width-chart-hidden').val(a.data['width']);
+          $('.msgGraph').hide();
+          $('.default').show();
+          $('#save_graph_chart').trigger('change');      
+          $('.dashboard_chart_tile_html_'+id+' #measurement_count_tile_modal_chart_'+id+' .card-border').addClass('tile_border');
+      },200);      
     }
   });
 }
@@ -4936,11 +5480,26 @@ function getEditChartTileDashboardProduct(){
 function saveDashboardTileChart(){
   var chart_records = $('#chart_records').val();
   var chart_record_filter = $('#chart_record_filter').val();
+  var save_graph_chart = $('#save_graph_chart').val();
   //console.log('chart_recorda Value ',chart_records);
   //console.log('chart_recorda Filter ',chart_record_filter);
-  if(chart_records == '' || chart_record_filter == ''){
-    alert('Please Select Required Fields');
-    return false;
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+  //chart type
+  if((record_type_of_tile !='graph') || (type_data_tile=='chart')){
+    if(chart_records == '' || chart_record_filter == ''){
+      alert('Please Select Required Fields');
+      return false;
+    }
+  }
+  //graph type
+  if((record_type_of_tile ='graph') || (type_data_tile=='Graph')){
+    if(save_graph_chart == ''){
+      alert('Please Select Required Fields');
+      return false;
+    }
   }
   $('.small-table').attr('style','display:block');
   var chart_type = $('#chart_type').val();
@@ -5017,8 +5576,12 @@ function saveDashboardTileChart(){
   {
     type_tile = "Energy";
   }
+  else if(record_type_of_tile == 'graph')
+  {
+    type_tile = "Graph";
+  }
   // --end-->
-
+  var save_graph_chart = $('.save_graph_chart').val();
 // --end-->
   $.ajax({
     type: "POST",
@@ -5046,7 +5609,8 @@ function saveDashboardTileChart(){
         outside_chart_input_width : outside_chart_input_width,
         outside_chart_display : outside_chart_display,
         chart_outer_table_limit_column : chart_outer_table_limit_column,
-        type : type_tile
+        type : type_tile,
+        saved_graph_id : save_graph_chart,
     },
     fail: function() {
         alert("failed!!")
@@ -10850,6 +11414,99 @@ function updateDashboardChart(){
 }
 // --end-->
 
+// <---2024---
+function updateDashboardGraphChart(){
+  var save_graph_chart = $('#save_graph_chart').val();
+  //console.log('chart_recorda Value ',chart_records);
+  //console.log('chart_recorda Filter ',chart_record_filter);
+  if(save_graph_chart == ''){
+      alert('Please Select Required Fields');
+      return false;
+  }
+  var measuremnt_table_height = $('#measurement-height-chart-hidden').val();
+  var measurement_table_width = $('#measurement-width-chart-hidden').val();
+  var input_height = $('#measurement-height-chart').val(); 
+  var input_width = $('#measurement-width-chart').val();
+  var save_graph_chart = $('#save_graph_chart').val();
+  
+  //<--23-8-2021---
+  var last_index_tile = $('#total_records_chart').val();
+  // var table_length = $('.measurement_html_modal_'+last_index_tile+' table tbody tr').length;
+  // $('.measurement_html_modal_'+last_index_tile+' .count_result_tile').text(table_length+' Records');
+  
+  //-- 2-11-2021--
+  $('.dashboard_chart_tile_html_'+last_index_tile+' .card-border').removeClass('tile_border');
+  // -end-->
+
+  var tile_html = $('.dashboard_chart_tile_html_'+last_index_tile).html();
+  $('#total_records_chart').remove();
+  tile_html = tile_html.replace('total_records','');
+  tile_html = tile_html.replace('hide_table_main','');
+
+  // <---21-10-2021--
+  var expand_view = $('#expand_view_chart').val();
+  // --emd-->
+
+  // <----01-9-2021---
+  var ar = localStorage.getItem('dashboard_tile_data');
+  ar = JSON.parse(ar);
+  var tile_title =ar['title_modal_tile'];
+  var record_type_of_tile =ar['record_type_of_tile'];
+  var type_data_tile =ar['type_data_tile'];
+
+  var id = localStorage.getItem('edit-measurement-tile');
+
+  var type_tile = '';
+  if(record_type_of_tile == 'graph')
+  {
+    type_tile = 'Graph';  
+  }
+// --end-->
+  $.ajax({
+    type: "POST",
+    url: "php/operations.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "updateDashboardGraphChart",
+        nameDB: $("#nameDashboardDB").val(),
+        title : tile_title,
+        tile_html : tile_html,
+        height: measuremnt_table_height,
+        width : measurement_table_width,
+        input_height : input_height,
+        input_width : input_width,
+        record_type_of_tile :record_type_of_tile,
+        type_data_tile : type_data_tile,
+        id : id,
+        expand_view : expand_view,
+        saved_graph_id : save_graph_chart,
+        type : type_tile
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      $('#measurement_modal_loader_div_chart').show();
+      $('#dashboard_tile_modal_chart .modal-content').css('opacity','0.8');
+
+      $('#expand_view_chart').prop('checked',false);
+      $('#expand_view_chart').val('0');
+
+      $('#save_tile_id').val(id);
+      
+      setTimeout(() => {
+        $('#dashboard_sidebar').click();
+        $('#measurement_modal_loader_div_chart').hide();
+        $('#dashboard_tile_modal_chart .modal-content').css('opacity','1');
+        $('#dashboard_tile_modal_chart').modal('hide');
+        // window.location.reload();
+      }, 500);
+    }
+  });
+  
+}
+// --end-->
 
 // <----23-2-2022--
 function updateDashboardChartEnergyLayer(){
@@ -11664,7 +12321,44 @@ function dashboardTileCount(){
     }
   });
 }
+//get saved graph list
+function savedGraphList(){
+  $.ajax({
+    type: "POST",
+    url: "php/getGespGraphDiagramme.php",
+    async: !0,
+    data: {
+      nameDB: $("#nameDashboardDB").val(),
+    },
+    success: function(a) {
+      a = JSON.parse(a);
+      $(".save_graph_chart").empty();
+      $(".save_graph_chart").append("<option value='' selected>Select Graph</option>");
+      if(a.length > 0 ){
+        for (i = 0; i < a.length; i++) {
+          jsonData = JSON.parse(a[i].jsonDiag);     
+          $(".save_graph_chart").append("<option value='"+a[i].gDia_ID+"'>"+jsonData.name+"</option>"); 
+        }
+      }
+    }
+  });
+}
 // --end-->
+
+var weekdate= function(year, week, dayNumber)
+{
+    var j1 = new Date( year,0,10,12,0,0),
+        j2 = new Date( year,0,4,12,0,0),
+        mon1 = j2.getTime() - j1.getDay() * 86400000;
+    return new Date(mon1 + ((week- 1)  * 7  + dayNumber) * 86400000);
+};
+function dateConvert(str) {
+  var date = new Date(str),
+    mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+    day = ("0" + date.getDate()).slice(-2);
+  return [date.getFullYear(), mnth, day].join("-");
+}
+
 function storeDBValueSession(){
   $.ajax({
     type: "POST",

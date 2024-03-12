@@ -33,6 +33,7 @@ const scpChart =
             this.updateChart = newDataSeries => nameSeries => {
 
                 let chart = this.getChart("#container")
+                let chartType =sessionStorage.getItem("chartType")
                 const nSeries = chart.model.series.length
                 chart.model.series.push({
                       type: chartType
@@ -138,22 +139,37 @@ const scpChart =
                     //  console.log('lineIndex',lineIndex);
                     // console.log('noteYear',noteYear);
                     // console.log('note_[1]',note_);
+                    // console.log(parseInt(point_.YValues[0]));
+                    //console.log(note_[0].split("-")[3]);
                     // return;
                     const splittedDate = head(note_).split("/")
                     //console.log(splittedDate[decr(splittedDate.length)] + " ")
-
-                    if(point_.x.length >= 12){
-                        return equal(note_[0].split("-")[2])(year) /*&& equal(note_[1])(point_.name)*/
-                       && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)  
+                    
+                    if((note_[0].length > 18) || (note_[0].split("-")[3]) ){//week
+                       return equal(note_[0].split("-")[2])(year.split("-")[2].replace(/\s/g, '').substring(0, 4)) && equal(parseInt(note_[0].split("-")[3]))(parseInt(point_.YValues[0]))
+                       && equal((splittedDate[decr(splittedDate.length)] + " ").split("-")[1]+' ')(point_.x) 
+                       && equal(note_[0].split("-")[1]+' ')(point_.x)
                     }
-                    if(year.length==10){
+                    if(note_[0].length >= 17 && note_[0].length < 18){
+                        return equal(note_[0].split("/")[0])(year) && equal(note_[1])(point_.name)
+                        && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)
+                    }
+                    else if(note_[0].length==10){//month
                         let yearValue=year.split(".")
-                        year = yearValue[2]
+                        year = yearValue[1];
+                        let month = yearValue[0];
+                        return equal(note_[0].split("/")[0])(year) && equal(note_[0].split("/")[1])(month) /*&& equal(note_[1])(point_.name)*/
+                        && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)    
                     }
-                    if(year.length==7){
+                    else if(note_[0].length == 16){//day
                         let yearValue=year.split(".")
-                        year = yearValue[1]
+                        year = yearValue[2];
+                        let month = yearValue[1];
+                        let day = yearValue[0];
+                        return equal(note_[0].split("/")[0])(year) && equal(note_[0].split("/")[1])(month) && equal(note_[0].split("/")[2])(day) /*&& equal(note_[1])(point_.name)*/
+                        && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)
                     }
+                    //year
                     return equal(note_[0].split("/")[0])(year) /*&& equal(note_[1])(point_.name)*/
                     && equal(splittedDate[decr(splittedDate.length)] + " ")(point_.x)
                 }

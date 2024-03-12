@@ -198,7 +198,9 @@ if (chartType == "line") {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function () {
     $("#notePopup").dialog("close")
 })
@@ -230,18 +232,51 @@ $("#btnNoteOk").click(function () {
     notes = []
 });
 $("#btnSaveOk").click(function () {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }    
     $("#savePopup").dialog("close");
     let chart = $("#container").ejChart("instance");
+    var graph_year = year;
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID1 = sessionStorage.getItem("mstID_1");
+    var mstID2 = sessionStorage.getItem("mstID_2");
+    var mstID3 = sessionStorage.getItem("mstID_3");
+    var nameMst1 = nameMst_1;
+    var nameMst2 = nameMst_2;
+    var nameMst3 = nameMst_3;
+    var jsonData = {
+        "year": graph_year,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID_1": mstID1,
+        "mstID_2": mstID2,
+        "mstID_3": mstID3,
+        "nameMst_1": nameMst1,
+        "nameMst_2": nameMst2,
+        "nameMst_3": nameMst3
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
             typ: "year",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -249,20 +284,22 @@ $("#btnSaveOk").click(function () {
     });
 });
 $("#diagSpeichern").click(function () {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -381,9 +418,11 @@ function firstQuery() {
                         element.x='0'+i;        
                     }else{
                         element.x=i;    
-                    }       
+                    } 
+                    element.name=nameMst_1;      
                 }else{
-                    element.x=element.x;   
+                    element.x=element.x;
+                    element.name=nameMst_1;   
                 }
                 i++;
             })
@@ -407,7 +446,8 @@ function firstQuery() {
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name = nameMst_1; 
                     chartDataArray.push(element)
                 //}
             })
@@ -450,9 +490,11 @@ function secondQuery() {
                         element.x='0'+i;        
                     }else{
                         element.x=i;    
-                    }       
+                    } 
+                    element.name=nameMst_2;      
                 }else{
-                    element.x=element.x;   
+                    element.x=element.x;
+                    element.name=nameMst_2;   
                 }
                 i++;
             })
@@ -476,7 +518,8 @@ function secondQuery() {
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name = nameMst_2;  
                     chartDataArray.push(element)
                 //}
             })
@@ -519,9 +562,11 @@ function thirdQuery() {
                         element.x='0'+i;        
                     }else{
                         element.x=i;    
-                    }       
+                    }  
+                    element.name=nameMst_3;     
                 }else{
-                    element.x=element.x;   
+                    element.x=element.x;
+                    element.name=nameMst_3;   
                 }
                 i++;
             })
@@ -545,7 +590,8 @@ function thirdQuery() {
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name = nameMst_3;  
                     chartDataArray.push(element)
                 //}
             })

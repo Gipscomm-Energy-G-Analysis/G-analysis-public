@@ -1988,7 +1988,8 @@ try {
                     verdichtung: e,
                     jahr: $("#year").val(),  //c
                     liegID: $("#liegID").val(),
-                    orgID: $("#orgID").val()
+                    orgID: $("#orgID").val(),
+                    activeEngine: $('input.activeEngine:checked').val()
                 },
                 success: function (a) {
                     a = JSON.parse(a);
@@ -4314,7 +4315,7 @@ try {
                     a = JSON.parse(a);
                     tblAnlagen.colReorder.reset();
                     tblAnlagen.clear().draw();
-                    for (var b = 0; b < a.length; b++) tblAnlagen.row.add([b, a[b].lieg_ID, a[b].nameLieg, a[b].nummerAnl, a[b].bezeichnungAnl, a[b].typAnl, a[b].standortAnl, a[b].datumAnschaffungAnl, a[b].baujahrAnl, a[b].jahresbetriebsstundenAnl, a[b].produktAnl, a[b].produktnummerAnl, a[b].energietraeger1Anl, a[b].energieform1Anl,
+                    for (var b = 0; b < a.length; b++) tblAnlagen.row.add([a[b].anl_ID, a[b].lieg_ID, a[b].nameLieg, a[b].nummerAnl, a[b].bezeichnungAnl, a[b].typAnl, a[b].standortAnl, a[b].datumAnschaffungAnl, a[b].baujahrAnl, a[b].jahresbetriebsstundenAnl, a[b].produktAnl, a[b].produktnummerAnl, a[b].energietraeger1Anl, a[b].energieform1Anl,
                         a[b].einheitEnergie1Anl, a[b].anschlussleistung1Anl, a[b].mittlereAuslastungKw1Anl
                     ]).draw();
                     tblAnlagen.column(0).visible(!1);
@@ -5428,110 +5429,217 @@ try {
                     });
                     break;
                 case "anl":
-                    $.ajax({
-                        type: "POST",
-                        async: !0,
-                        url: "php/readAnlagen.php",
-                        data: {
-                            id: "anl",
-                            nameDB: $("#nameDB").val(),
-                            liegID: $("#liegID").val()
-                        },
-                        fail: function () {
-                            alert("failed!!")
-                        },
-                        success: function (a) {
-                            var c = JSON.parse(a);
-                            $("#anlCount").val(c.length);
-                            0 < c.length ?
-                                ($(".anlageAnl").text(c[b].bezeichnungAnl),
-                                    $("#aktivAllgemeinAnl").prop("checked", c[b].aktivAnl),
-                                    $("#mehrProdukteAllgemeinAnl").prop("checked", c[b].mehrProdukteAnl),
+                    if((a=="anlFirst") && (b!=0)){
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readAnlagen.php",
+                            data: {
+                                type: "anlFirst",
+                                anl_ID: b,
+                                nameDB: $("#nameDB").val(),
+                                liegID: $("#liegID").val()
+                            },
+                            fail: function () {
+                                alert("failed!!")
+                            },
+                            success: function (a) {
+                                var c = JSON.parse(a);
+                                0 < c.length ?
+                                    ($(".anlageAnl").text(c[0].bezeichnungAnl), 
+                                        (c[0].aktivAnl != 1) ? $("#aktivAllgemeinAnl").prop("checked", false) : $("#aktivAllgemeinAnl").prop("checked", true),
+                                        (c[0].mehrProdukteAnl != 1) ? $("#mehrProdukteAllgemeinAnl").prop("checked", false) : $("#mehrProdukteAllgemeinAnl").prop("checked", true),
 
-                                    [1, 2, 3, 4]
-                                    .forEach(
-                                        a1 => {
-                                            ["anschlussleistung", "mittlereAuslastungProzent", "mittlereAuslastungKw", "abwaerme", "betriebstemperatur"].forEach(a2 => $(`#${a2}${a1}Anl`).val(formatNumber("form", c[b][`${a2}${a1}Anl`])))
-                                        }
-                                    ),
+                                        [1, 2, 3, 4]
+                                        .forEach(
+                                            a1 => {
+                                                ["anschlussleistung", "mittlereAuslastungProzent", "mittlereAuslastungKw", "abwaerme", "betriebstemperatur"].forEach(a2 => $(`#${a2}${a1}Anl`).val(formatNumber("form", c[0][`${a2}${a1}Anl`])))
+                                            }
+                                        ),
 
-                                    [
-                                        ["#anlID", "anl_ID"],
-                                        ["#idAllgemeinAnl", "anl_ID"],
-                                        ["#bereichAllgemeinAnl", "nameBer"],
-                                        ["#anlagennummerAllgemeinAnl", "nummerAnl"],
-                                        ["#bezeichnungAllgemeinAnl", "bezeichnungAnl"],
-                                        ["#typAllgemeinAnl", "typAnl"],
-                                        ["#serienNrAllgemeinAnl", "serienNrAnl"],
-                                        ["#standortAllgemeinAnl", "standortAnl"],
-                                        ["#baujahrAnl", "baujahrAnl"],
-                                        ["#datumAnschaffungAllgemeinAnl", "datumAnschaffungAnl"],
-                                        ["#betriebsstundenAllgemeinAnl", "jahresbetriebsstundenAnl"],
-                                        ["#notizAllgemeinAnl", "notizAnl"],
-                                        ["#produktAllgemeinAnl", "produktAnl"],
-                                        ["#produktionsmenge1AllgemeinAnl", "produktionsmengeAnl"],
-                                        ["#einheitProduktionsmenge1AllgemeinAnl", "produktionsmengeEinheitAnl"],
-                                        ["#produktnummer1AllgemeinAnl", "produktnummerAnl"],
-                                        ["#zugeordneterVerbraucher1AllgemeinAnl", "zugeordneterVerbraucher1"],
-                                        ["#zugeordneterVerbraucher2AllgemeinAnl", "zugeordneterVerbraucher2"],
-                                        ["#zugeordneterVerbraucher3AllgemeinAnl", "zugeordneterVerbraucher3"],
-                                        ["#zugeordneterVerbraucher4AllgemeinAnl", "zugeordneterVerbraucher4"],
-                                        ["#zugeordneterVerbraucher5AllgemeinAnl", "zugeordneterVerbraucher5"],
-                                        ["#zugeordneterVerbraucher6AllgemeinAnl", "zugeordneterVerbraucher6"],
-                                        ["#zugeordneterVerbraucherID1AllgemeinAnl", "zugeordneterVerbraucherID1"],
-                                        ["#zugeordneterVerbraucherID2AllgemeinAnl", "zugeordneterVerbraucherID2"],
-                                        ["#zugeordneterVerbraucherID3AllgemeinAnl", "zugeordneterVerbraucherID3"],
-                                        ["#zugeordneterVerbraucherID4AllgemeinAnl", "zugeordneterVerbraucherID4"],
-                                        ["#zugeordneterVerbraucherID5AllgemeinAnl", "zugeordneterVerbraucherID5"],
-                                        ["#zugeordneterVerbraucherID6AllgemeinAnl", "zugeordneterVerbraucherID6"],
-                                        ["#energietraeger1AllgemeinAnl", "energietraeger1Anl"],
-                                        ["#energieform1AllgemeinAnl", "energieform1Anl"],
-                                        ["#einheit1Anl", "einheitEnergie1Anl"],
-                                        ["#mst1Anl", "messstelle1Anl"],
-                                        ["#mst1IDAnl", "messstelle1IDAnl"],
-                                        ["#ber1Anl", "versBereich1Anl"],
-                                        ["#nutzbarkeitAbwaerme1Anl", "abwaermeNutzbarkeit1Anl"],
-                                        ["#bewertungNutzbarkeitAbwaerme1Anl", "bewertungNutzbarkeitAbwaerme1Anl"],
-                                        ["#energietraeger2AllgemeinAnl", "energietraeger2Anl"],
-                                        ["#energieform2AllgemeinAnl", "energieform2Anl"],
-                                        ["#einheit2Anl", "einheitEnergie2Anl"],
-                                        ["#mst2Anl", "messstelle2Anl"],
-                                        ["#mst2IDAnl", "messstelle2IDAnl"],
-                                        ["#ber2Anl", "versBereich2Anl"],
-                                        ["#nutzbarkeitAbwaerme2Anl", "abwaermeNutzbarkeit2Anl"],
-                                        ["#bewertungNutzbarkeitAbwaerme2Anl", "bewertungNutzbarkeitAbwaerme2Anl"],
-                                        ["#energietraeger3AllgemeinAnl", "energietraeger3Anl"],
-                                        ["#energieform3AllgemeinAnl", "energieform3Anl"],
-                                        ["#einheit3Anl", "einheitEnergie3Anl"],
-                                        ["#mst3Anl", "messstelle3Anl"],
-                                        ["#mst3IDAnl", "messstelle3IDAnl"],
-                                        ["#ber3Anl", "versBereich3Anl"],
-                                        ["#nutzbarkeitAbwaerme3Anl", "abwaermeNutzbarkeit3Anl"],
-                                        ["#bewertungNutzbarkeitAbwaerme3Anl", "bewertungNutzbarkeitAbwaerme3Anl"],
-                                        ["#energietraeger4AllgemeinAnl", "energietraeger4Anl"],
-                                        ["#energieform4AllgemeinAnl", "energieform4Anl"],
-                                        ["#einheit4Anl", "einheitEnergie4Anl"],
-                                        ["#mst4Anl", "messstelle4Anl"],
-                                        ["#mst4IDAnl", "messstelle4IDAnl"],
-                                        ["#ber4Anl", "versBereich4Anl"],
-                                        ["#nutzbarkeitAbwaerme4Anl", "abwaermeNutzbarkeit4Anl"],
-                                        ["#bewertungNutzbarkeitAbwaerme4Anl", "bewertungNutzbarkeitAbwaerme4Anl"],
-                                        ["#custom1Anl", "custom1Anl"],
-                                        ["#custom2Anl", "custom2Anl"],
-                                        ["#custom3Anl", "custom3Anl"],
-                                        ["#custom4Anl", "custom4Anl"],
-                                        ["#custom5Anl", "custom5Anl"],
-                                        ["#custom6Anl", "custom6Anl"]
-                                    ].forEach(function (a) {
-                                        $(a[0]).val(c[b][a[1]])
-                                    })) :
-                                clearFields("anlHinz")
+                                        [
+                                            ["#anlID", "anl_ID"],
+                                            ["#idAllgemeinAnl", "anl_ID"],
+                                            ["#bereichAllgemeinAnl", "nameBer"],
+                                            ["#anlagennummerAllgemeinAnl", "nummerAnl"],
+                                            ["#bezeichnungAllgemeinAnl", "bezeichnungAnl"],
+                                            ["#typAllgemeinAnl", "typAnl"],
+                                            ["#serienNrAllgemeinAnl", "serienNrAnl"],
+                                            ["#standortAllgemeinAnl", "standortAnl"],
+                                            ["#baujahrAnl", "baujahrAnl"],
+                                            ["#datumAnschaffungAllgemeinAnl", "datumAnschaffungAnl"],
+                                            ["#betriebsstundenAllgemeinAnl", "jahresbetriebsstundenAnl"],
+                                            ["#notizAllgemeinAnl", "notizAnl"],
+                                            ["#produktAllgemeinAnl", "produktAnl"],
+                                            ["#produktionsmenge1AllgemeinAnl", "produktionsmengeAnl"],
+                                            ["#einheitProduktionsmenge1AllgemeinAnl", "produktionsmengeEinheitAnl"],
+                                            ["#produktnummer1AllgemeinAnl", "produktnummerAnl"],
+                                            ["#zugeordneterVerbraucher1AllgemeinAnl", "zugeordneterVerbraucher1"],
+                                            ["#zugeordneterVerbraucher2AllgemeinAnl", "zugeordneterVerbraucher2"],
+                                            ["#zugeordneterVerbraucher3AllgemeinAnl", "zugeordneterVerbraucher3"],
+                                            ["#zugeordneterVerbraucher4AllgemeinAnl", "zugeordneterVerbraucher4"],
+                                            ["#zugeordneterVerbraucher5AllgemeinAnl", "zugeordneterVerbraucher5"],
+                                            ["#zugeordneterVerbraucher6AllgemeinAnl", "zugeordneterVerbraucher6"],
+                                            ["#zugeordneterVerbraucherID1AllgemeinAnl", "zugeordneterVerbraucherID1"],
+                                            ["#zugeordneterVerbraucherID2AllgemeinAnl", "zugeordneterVerbraucherID2"],
+                                            ["#zugeordneterVerbraucherID3AllgemeinAnl", "zugeordneterVerbraucherID3"],
+                                            ["#zugeordneterVerbraucherID4AllgemeinAnl", "zugeordneterVerbraucherID4"],
+                                            ["#zugeordneterVerbraucherID5AllgemeinAnl", "zugeordneterVerbraucherID5"],
+                                            ["#zugeordneterVerbraucherID6AllgemeinAnl", "zugeordneterVerbraucherID6"],
+                                            ["#energietraeger1AllgemeinAnl", "energietraeger1Anl"],
+                                            ["#energieform1AllgemeinAnl", "energieform1Anl"],
+                                            ["#einheit1Anl", "einheitEnergie1Anl"],
+                                            ["#mst1Anl", "messstelle1Anl"],
+                                            ["#mst1IDAnl", "messstelle1IDAnl"],
+                                            ["#ber1Anl", "versBereich1Anl"],
+                                            ["#nutzbarkeitAbwaerme1Anl", "abwaermeNutzbarkeit1Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme1Anl", "bewertungNutzbarkeitAbwaerme1Anl"],
+                                            ["#energietraeger2AllgemeinAnl", "energietraeger2Anl"],
+                                            ["#energieform2AllgemeinAnl", "energieform2Anl"],
+                                            ["#einheit2Anl", "einheitEnergie2Anl"],
+                                            ["#mst2Anl", "messstelle2Anl"],
+                                            ["#mst2IDAnl", "messstelle2IDAnl"],
+                                            ["#ber2Anl", "versBereich2Anl"],
+                                            ["#nutzbarkeitAbwaerme2Anl", "abwaermeNutzbarkeit2Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme2Anl", "bewertungNutzbarkeitAbwaerme2Anl"],
+                                            ["#energietraeger3AllgemeinAnl", "energietraeger3Anl"],
+                                            ["#energieform3AllgemeinAnl", "energieform3Anl"],
+                                            ["#einheit3Anl", "einheitEnergie3Anl"],
+                                            ["#mst3Anl", "messstelle3Anl"],
+                                            ["#mst3IDAnl", "messstelle3IDAnl"],
+                                            ["#ber3Anl", "versBereich3Anl"],
+                                            ["#nutzbarkeitAbwaerme3Anl", "abwaermeNutzbarkeit3Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme3Anl", "bewertungNutzbarkeitAbwaerme3Anl"],
+                                            ["#energietraeger4AllgemeinAnl", "energietraeger4Anl"],
+                                            ["#energieform4AllgemeinAnl", "energieform4Anl"],
+                                            ["#einheit4Anl", "einheitEnergie4Anl"],
+                                            ["#mst4Anl", "messstelle4Anl"],
+                                            ["#mst4IDAnl", "messstelle4IDAnl"],
+                                            ["#ber4Anl", "versBereich4Anl"],
+                                            ["#nutzbarkeitAbwaerme4Anl", "abwaermeNutzbarkeit4Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme4Anl", "bewertungNutzbarkeitAbwaerme4Anl"],
+                                            ["#custom1Anl", "custom1Anl"],
+                                            ["#custom2Anl", "custom2Anl"],
+                                            ["#custom3Anl", "custom3Anl"],
+                                            ["#custom4Anl", "custom4Anl"],
+                                            ["#custom5Anl", "custom5Anl"],
+                                            ["#custom6Anl", "custom6Anl"]
+                                        ].forEach(function (a) {
+                                            $(a[0]).val(c[0][a[1]])
+                                        })) :
+                                    clearFields("anlHinz")
 
-                            createDocumentList("Anl") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
-                        }
-                    });
-                    changeTracker.setRecordsNavID(anlNavID);
-                    anlagenHistorieInTabelleEinlesen();
+                                createDocumentList("Anl") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                            }
+                        });
+                        //changeTracker.setRecordsNavID(anlNavID);
+                        //anlagenHistorieInTabelleEinlesen();
+                    }else{
+                        $.ajax({
+                            type: "POST",
+                            async: !0,
+                            url: "php/readAnlagen.php",
+                            data: {
+                                id: "anl",
+                                nameDB: $("#nameDB").val(),
+                                liegID: $("#liegID").val()
+                            },
+                            fail: function () {
+                                alert("failed!!")
+                            },
+                            success: function (a) {
+                                var c = JSON.parse(a);
+                                $("#anlCount").val(c.length);
+                                0 < c.length ?
+                                    ($(".anlageAnl").text(c[b].bezeichnungAnl), 
+                                        (c[b].aktivAnl != 1) ? $("#aktivAllgemeinAnl").prop("checked", false) : $("#aktivAllgemeinAnl").prop("checked", true),
+                                        (c[b].mehrProdukteAnl != 1) ? $("#mehrProdukteAllgemeinAnl").prop("checked", false) : $("#mehrProdukteAllgemeinAnl").prop("checked", true),
+
+                                        [1, 2, 3, 4]
+                                        .forEach(
+                                            a1 => {
+                                                ["anschlussleistung", "mittlereAuslastungProzent", "mittlereAuslastungKw", "abwaerme", "betriebstemperatur"].forEach(a2 => $(`#${a2}${a1}Anl`).val(formatNumber("form", c[b][`${a2}${a1}Anl`])))
+                                            }
+                                        ),
+
+                                        [
+                                            ["#anlID", "anl_ID"],
+                                            ["#idAllgemeinAnl", "anl_ID"],
+                                            ["#bereichAllgemeinAnl", "nameBer"],
+                                            ["#anlagennummerAllgemeinAnl", "nummerAnl"],
+                                            ["#bezeichnungAllgemeinAnl", "bezeichnungAnl"],
+                                            ["#typAllgemeinAnl", "typAnl"],
+                                            ["#serienNrAllgemeinAnl", "serienNrAnl"],
+                                            ["#standortAllgemeinAnl", "standortAnl"],
+                                            ["#baujahrAnl", "baujahrAnl"],
+                                            ["#datumAnschaffungAllgemeinAnl", "datumAnschaffungAnl"],
+                                            ["#betriebsstundenAllgemeinAnl", "jahresbetriebsstundenAnl"],
+                                            ["#notizAllgemeinAnl", "notizAnl"],
+                                            ["#produktAllgemeinAnl", "produktAnl"],
+                                            ["#produktionsmenge1AllgemeinAnl", "produktionsmengeAnl"],
+                                            ["#einheitProduktionsmenge1AllgemeinAnl", "produktionsmengeEinheitAnl"],
+                                            ["#produktnummer1AllgemeinAnl", "produktnummerAnl"],
+                                            ["#zugeordneterVerbraucher1AllgemeinAnl", "zugeordneterVerbraucher1"],
+                                            ["#zugeordneterVerbraucher2AllgemeinAnl", "zugeordneterVerbraucher2"],
+                                            ["#zugeordneterVerbraucher3AllgemeinAnl", "zugeordneterVerbraucher3"],
+                                            ["#zugeordneterVerbraucher4AllgemeinAnl", "zugeordneterVerbraucher4"],
+                                            ["#zugeordneterVerbraucher5AllgemeinAnl", "zugeordneterVerbraucher5"],
+                                            ["#zugeordneterVerbraucher6AllgemeinAnl", "zugeordneterVerbraucher6"],
+                                            ["#zugeordneterVerbraucherID1AllgemeinAnl", "zugeordneterVerbraucherID1"],
+                                            ["#zugeordneterVerbraucherID2AllgemeinAnl", "zugeordneterVerbraucherID2"],
+                                            ["#zugeordneterVerbraucherID3AllgemeinAnl", "zugeordneterVerbraucherID3"],
+                                            ["#zugeordneterVerbraucherID4AllgemeinAnl", "zugeordneterVerbraucherID4"],
+                                            ["#zugeordneterVerbraucherID5AllgemeinAnl", "zugeordneterVerbraucherID5"],
+                                            ["#zugeordneterVerbraucherID6AllgemeinAnl", "zugeordneterVerbraucherID6"],
+                                            ["#energietraeger1AllgemeinAnl", "energietraeger1Anl"],
+                                            ["#energieform1AllgemeinAnl", "energieform1Anl"],
+                                            ["#einheit1Anl", "einheitEnergie1Anl"],
+                                            ["#mst1Anl", "messstelle1Anl"],
+                                            ["#mst1IDAnl", "messstelle1IDAnl"],
+                                            ["#ber1Anl", "versBereich1Anl"],
+                                            ["#nutzbarkeitAbwaerme1Anl", "abwaermeNutzbarkeit1Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme1Anl", "bewertungNutzbarkeitAbwaerme1Anl"],
+                                            ["#energietraeger2AllgemeinAnl", "energietraeger2Anl"],
+                                            ["#energieform2AllgemeinAnl", "energieform2Anl"],
+                                            ["#einheit2Anl", "einheitEnergie2Anl"],
+                                            ["#mst2Anl", "messstelle2Anl"],
+                                            ["#mst2IDAnl", "messstelle2IDAnl"],
+                                            ["#ber2Anl", "versBereich2Anl"],
+                                            ["#nutzbarkeitAbwaerme2Anl", "abwaermeNutzbarkeit2Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme2Anl", "bewertungNutzbarkeitAbwaerme2Anl"],
+                                            ["#energietraeger3AllgemeinAnl", "energietraeger3Anl"],
+                                            ["#energieform3AllgemeinAnl", "energieform3Anl"],
+                                            ["#einheit3Anl", "einheitEnergie3Anl"],
+                                            ["#mst3Anl", "messstelle3Anl"],
+                                            ["#mst3IDAnl", "messstelle3IDAnl"],
+                                            ["#ber3Anl", "versBereich3Anl"],
+                                            ["#nutzbarkeitAbwaerme3Anl", "abwaermeNutzbarkeit3Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme3Anl", "bewertungNutzbarkeitAbwaerme3Anl"],
+                                            ["#energietraeger4AllgemeinAnl", "energietraeger4Anl"],
+                                            ["#energieform4AllgemeinAnl", "energieform4Anl"],
+                                            ["#einheit4Anl", "einheitEnergie4Anl"],
+                                            ["#mst4Anl", "messstelle4Anl"],
+                                            ["#mst4IDAnl", "messstelle4IDAnl"],
+                                            ["#ber4Anl", "versBereich4Anl"],
+                                            ["#nutzbarkeitAbwaerme4Anl", "abwaermeNutzbarkeit4Anl"],
+                                            ["#bewertungNutzbarkeitAbwaerme4Anl", "bewertungNutzbarkeitAbwaerme4Anl"],
+                                            ["#custom1Anl", "custom1Anl"],
+                                            ["#custom2Anl", "custom2Anl"],
+                                            ["#custom3Anl", "custom3Anl"],
+                                            ["#custom4Anl", "custom4Anl"],
+                                            ["#custom5Anl", "custom5Anl"],
+                                            ["#custom6Anl", "custom6Anl"]
+                                        ].forEach(function (a) {
+                                            $(a[0]).val(c[b][a[1]])
+                                        })) :
+                                    clearFields("anlHinz")
+
+                                createDocumentList("Anl") // CHANGE : dokument list at the end of success fn erstellen 03.06.2016
+                            }
+                        });
+                        changeTracker.setRecordsNavID(anlNavID);
+                        anlagenHistorieInTabelleEinlesen();
+                    }
                     break;
                 case "msm":
                     $.ajax({
@@ -6483,7 +6591,7 @@ try {
                 }
 
                 ajaxPost("php/instanzIntoDb.php")(data)
-                    .then(result => alert(datensatzGespeichert(result)))
+                    .then(result => alert("Datensatz erfolgreich gespeichert!"))
             } else if ("mstBSpeichern" == a) {
                 data = {
                     id: "mstB",
@@ -6509,7 +6617,7 @@ try {
                 }
 
                 ajaxPost("php/instanzIntoDb.php")(data)
-                    .then(result => alert(datensatzGespeichert(result)))
+                    .then(result => alert("Datensatz erfolgreich gespeichert!"))
             } else if ("stdSpeichern" == a) $.ajax({
                 type: "POST",
                 async: !0,
@@ -7899,7 +8007,7 @@ try {
 
                 ajaxPost("php/instanzIntoDb.php")(data)
                     .then(result => {
-                        alert(datensatzGespeichert(result))
+                        alert("Datensatz erfolgreich gespeichert!")
                         readInstanzen("mstELast", $("#mstECount").val())
                     })
 
@@ -7930,7 +8038,7 @@ try {
 
                 ajaxPost("php/instanzIntoDb.php")(data)
                     .then(result => {
-                        alert(datensatzGespeichert(result))
+                        alert("Datensatz erfolgreich gespeichert!")
                         readInstanzen("mstBLast", $("#mstBCount").val())
                     })
 
@@ -8669,7 +8777,7 @@ try {
                     else if ("tabBen" == a) b = ["", ""];
                     else if ("tabAnl" == a) getAnlagenAuswahlTblHeader(), energiefrmInDBoxLieg();
                     else if ("tabMsm" == a) getAnlagenAuswahlTblHeader();
-                    else if ("tabMstE" == a | "tabMstB" == a) bereicheVorhanden();
+                    else if ("tabMstE" == a | "tabMstB" == a) /*bereicheVorhanden()*/;
                     else if ("tabKnz" == a) $("#asideRight2").css("display", "block"), knzEinheitenEinlesen();
                     else if ("tabExtRechnungen" == a) $("#asideRight").css("display", "block"), versorgerUndEinheitBefuellen(), energietrInDBoxERngVergleich(), energietrInDBoxLieg();
                     else if ("tabAusw_eRng_iMw" == a) energietrInDBoxERngVergleich(), energietrInDBoxLieg(), externeRechnungenListeErstellen("vergleich");
@@ -15871,6 +15979,407 @@ function dateConvert(str) {
   return [date.getFullYear(), mnth, day].join("-");
 }
 
+////get saved graph by id
+// <---2024--
+function getSavedGraph(id){
+  var measurement_title = localStorage.getItem('measurement_title_modal_tile');
+  $.ajax({
+    type: "POST",
+    url: "dashboard/php/getSaveGraph.php",
+    async: false,
+    dataType: 'json',
+    data: {
+        action: "getSavedGraph",
+        nameDB: $("#nameDB").val(),
+        saveGraphId : id,
+    },
+    fail: function() {
+        alert("failed!!")
+    },
+    success: function(a) {
+      var name =a[0]['name'];
+      var type =a[0]['typ'];
+      var chartPageUrl = "https://g-analysis.com/";
+      var commanQuery ="SELECT nameMSt AS Name, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID ";
+      var data =JSON.parse(a[0]['jsonDiag']);
+      if(type=='year' || type=='month' || type=='month15min' || type=='day' || type=='day15min' || type=='week' || type=='custom'){
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType);
+        sessionStorage.setItem("nameMst_1", data.nameMst_1);
+        sessionStorage.setItem("nameMst_2", data.nameMst_2);
+        sessionStorage.setItem("nameMst_3", data.nameMst_3);
+        sessionStorage.setItem("mstID_1", data.mstID_1);
+        sessionStorage.setItem("mstID_2", data.mstID_2);
+        sessionStorage.setItem("mstID_3", data.mstID_3);
+         if(type=='year'){
+            sessionStorage.setItem("year", data.year);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartYear.html", "_blank");
+         }
+         if(type=='month'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth.html", "_blank");
+         }
+         if(type=='month15min'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth15min.html", "_blank");
+         }
+         if(type=='day'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            sessionStorage.setItem("day", data.day);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay.html", "_blank");
+         }
+         if(type=='day15min'){
+            sessionStorage.setItem("year", data.year);
+            sessionStorage.setItem("month", data.month);
+            sessionStorage.setItem("day", data.day);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay15min.html", "_blank");
+         }
+         if(type=='week'){
+          var startWeekData = data.startWeekDate.split("-");
+          var endWeekData = data.endWeekDate.split("-");
+          var startYear =startWeekData[0];
+          var startWeeknumber =startWeekData[1].substring(1);
+          var endYear =endWeekData[0];
+          var endWeeknumber =endWeekData[1].substring(1);
+          var startWeekDate= dateConvert(weekdate(startYear,startWeeknumber, 0));
+          var endWeekDate= dateConvert(weekdate(endYear, endWeeknumber, 6));
+          sessionStorage.setItem("startdate", data.startWeekDate);
+          sessionStorage.setItem("enddate", data.endWeekDate);
+          sessionStorage.setItem("startWeekYear", startYear);
+          sessionStorage.setItem("endWeekYear", endYear);
+          sessionStorage.setItem("startWeek", startWeeknumber);
+          sessionStorage.setItem("endWeek", endWeeknumber);
+          if(data.mstID_1 !=''){
+            sessionStorage.setItem("queryString_1", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          if(data.mstID_2 !=''){
+            sessionStorage.setItem("queryString_2", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          if(data.mstID_3 !=''){
+            sessionStorage.setItem("queryString_3", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power as Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate+"' ORDER by Time ");
+          }
+          window.open(chartPageUrl+"chartWeek.html", "_blank");
+         }
+         if(type=='custom'){
+            sessionStorage.setItem("from", data.from_date);
+            sessionStorage.setItem("to", data.to_date);
+            if(data.mstID_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            if(data.mstID_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_2+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            if(data.mstID_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_3+"' AND time_de BETWEEN '"+data.from_date+"' AND '"+data.to_date+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartBenDef15min.html", "_blank");
+          }
+      }
+      ////
+      if(type=='year2' || type=='month2' || type=='month15min2' || type=='day2' || type=='day15min2' || type=='week2' || type=='custom2'){
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType);
+        sessionStorage.setItem("nameMst", data.nameMst);
+        sessionStorage.setItem("mstID_1", data.mstID);
+         if(type=='year2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartYear2.html", "_blank");
+         }
+         if(type=='month2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth2.html", "_blank");
+         }
+         if(type=='month15min2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartMonth15min2.html", "_blank");
+         }
+         if(type=='day2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            sessionStorage.setItem("day_1", data.day_1);
+            sessionStorage.setItem("day_2", data.day_2);
+            sessionStorage.setItem("day_3", data.day_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay2.html", "_blank");
+         }
+         if(type=='day15min2'){
+            sessionStorage.setItem("year_1", data.year_1);
+            sessionStorage.setItem("year_2", data.year_2);
+            sessionStorage.setItem("year_3", data.year_3);
+            sessionStorage.setItem("month_1", data.month_1);
+            sessionStorage.setItem("month_2", data.month_2);
+            sessionStorage.setItem("month_3", data.month_3);
+            sessionStorage.setItem("day_1", data.day_1);
+            sessionStorage.setItem("day_2", data.day_2);
+            sessionStorage.setItem("day_3", data.day_3);
+            if(data.year_1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_1+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_1+"' ORDER by time_de ");
+            }
+            if(data.year_2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_2+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_2+"' ORDER by time_de ");
+            }
+            if(data.year_3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID+"' AND LEFT(CONVERT(varchar(20), time_de, 120), 4) = '"+data.year_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 7), 2) = '"+data.month_3+"' AND RIGHT(LEFT(CONVERT(varchar(20), time_de, 120), 10), 2) = '"+data.day_3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartDay15min2.html", "_blank");
+         }
+         if(type=='week2'){
+          var startWeekData1 = data.startWeekDate1.split("-");
+          var endWeekData1 = data.endWeekDate1.split("-");
+          var startYear1 =startWeekData1[0];
+          var startWeeknumber1 =startWeekData1[1].substring(1);
+          var endYear1 =endWeekData1[0];
+          var endWeeknumber1 =endWeekData1[1].substring(1);
+          var startWeekDate1= dateConvert(weekdate(startYear1,startWeeknumber1, 0));
+          var endWeekDate1= dateConvert(weekdate(endYear1, endWeeknumber1, 6));
+
+          var startWeekData2 = data.startWeekDate2.split("-");
+          var endWeekData2 = data.endWeekDate2.split("-");
+          var startYear2 =startWeekData2[0];
+          var startWeeknumber2 =startWeekData2[1].substring(1);
+          var endYear2 =endWeekData2[0];
+          var endWeeknumber2 =endWeekData2[1].substring(1);
+          var startWeekDate2= dateConvert(weekdate(startYear2,startWeeknumber2, 0));
+          var endWeekDate2= dateConvert(weekdate(endYear2, endWeeknumber2, 6));
+
+          var startWeekData3 = data.startWeekDate3.split("-");
+          var endWeekData3 = data.endWeekDate3.split("-");
+          var startYear3 =startWeekData3[0];
+          var startWeeknumber3 =startWeekData3[1].substring(1);
+          var endYear3 =endWeekData3[0];
+          var endWeeknumber3 =endWeekData3[1].substring(1);
+          var startWeekDate3= dateConvert(weekdate(startYear3,startWeeknumber3, 0));
+          var endWeekDate3= dateConvert(weekdate(endYear3, endWeeknumber3, 6));
+          sessionStorage.setItem("mstID_1", data.mstID_1);
+          sessionStorage.setItem("startdate1", data.startWeekDate1);
+          sessionStorage.setItem("enddate1", data.endWeekDate1);
+          sessionStorage.setItem("startWeekYear1", startYear1);
+          sessionStorage.setItem("endWeekYear1", endYear1);
+          sessionStorage.setItem("startWeek1", startWeeknumber1);
+          sessionStorage.setItem("endWeek1", endWeeknumber1);
+
+          sessionStorage.setItem("startdate2", data.startWeekDate2);
+          sessionStorage.setItem("enddate2", data.endWeekDate2);
+          sessionStorage.setItem("startWeekYear2", startYear2);
+          sessionStorage.setItem("endWeekYear2", endYear2);
+          sessionStorage.setItem("startWeek2", startWeeknumber2);
+          sessionStorage.setItem("endWeek2", endWeeknumber2);
+
+          sessionStorage.setItem("startdate3", data.startWeekDate3);
+          sessionStorage.setItem("enddate3", data.endWeekDate3);
+          sessionStorage.setItem("startWeekYear3", startYear3);
+          sessionStorage.setItem("endWeekYear3", endYear3);
+          sessionStorage.setItem("startWeek3", startWeeknumber3);
+          sessionStorage.setItem("endWeek3", endWeeknumber3);
+          if(startWeekDate1 !='' && endWeekDate1 !=''){
+            sessionStorage.setItem("queryString_1", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate1+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate1+"' ORDER by time_de");
+          }
+          if(startWeekDate2 !='' && endWeekDate2 !=''){
+            sessionStorage.setItem("queryString_2", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate2+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate2+"' ORDER by time_de");
+          }
+          if(startWeekDate3 !='' && endWeekDate3 !=''){
+            sessionStorage.setItem("queryString_3", "SELECT nameMSt AS Name, convert(varchar(20), time_de, 23) AS Convdate, CONVERT(varchar(20), time_de, 104) + ' ' + CONVERT(varchar(20), time_de, 108) AS Time, phase AS Phase, power AS Value, wandlungsfaktorMsm AS ConvFactor FROM data_value_15m INNER JOIN channel ON data_value_15m.channel_id = channel.channel_id INNER JOIN messmittel ON data_value_15m.channel_id = messmittel.kanal1Msm OR data_value_15m.channel_id = messmittel.kanal2Msm OR data_value_15m.channel_id = messmittel.kanal3Msm INNER JOIN messstellen ON messmittel.mst_ID = messstellen.mst_ID WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND convert(varchar(20), time_de, 23) >= '"+startWeekDate3+"' AND convert(varchar(20), time_de, 23) <= '"+endWeekDate3+"' ORDER by time_de");
+          }
+            window.open(chartPageUrl+"chartWeek2.html", "_blank");
+          }
+          if(type=='custom2'){
+            sessionStorage.setItem("from1", data.from1);
+            sessionStorage.setItem("to1", data.to1);
+            sessionStorage.setItem("from2", data.from2);
+            sessionStorage.setItem("to2", data.to2);
+            sessionStorage.setItem("from3", data.from3);
+            sessionStorage.setItem("to3", data.to3);
+            if(data.from1 !='' && data.to1 !=''){
+              sessionStorage.setItem("queryString_1", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from1+"' AND '"+data.to1+"' ORDER by time_de ");
+            }
+            if(data.from2 !='' && data.to2 !=''){
+              sessionStorage.setItem("queryString_2", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from2+"' AND '"+data.to2+"' ORDER by time_de ");
+            }
+            if(data.from3 !='' && data.to3 !=''){
+              sessionStorage.setItem("queryString_3", commanQuery+" WHERE messstellen.mst_ID = '"+data.mstID_1+"' AND time_de BETWEEN '"+data.from3+"' AND '"+data.to3+"' ORDER by time_de ");
+            }
+            window.open(chartPageUrl+"chartBenDef15min2.html", "_blank");
+          }
+          ////
+      }
+      if(type=='knz'){
+        sessionStorage.setItem("nameDB", data.nameDB);
+        sessionStorage.setItem("chartType", data.chartType); 
+        sessionStorage.setItem("timeSpan", data.timeSpan);
+        sessionStorage.setItem("knzID_1", data.knzID_1);
+        sessionStorage.setItem("knzID_2", data.knzID_2);
+        sessionStorage.setItem("knzID_3", data.knzID_3);
+        sessionStorage.setItem("knzName_1", data.knzName_1);
+        sessionStorage.setItem("knzName_2", data.knzName_2);
+        sessionStorage.setItem("knzName_3", data.knzName_3);
+        sessionStorage.setItem("knz_1_kennz", data.knz_1_kennz);
+        sessionStorage.setItem("knz_1_obergr", data.knz_1_obergr);
+        sessionStorage.setItem("knz_1_untergr", data.knz_1_untergr);
+        sessionStorage.setItem("knz_1_zielwert", data.knz_1_zielwert);
+        sessionStorage.setItem("knz_1_zielVon", data.knz_1_zielVon);
+        sessionStorage.setItem("knz_1_zielBis", data.knz_1_zielBis);
+        sessionStorage.setItem("headerKnz", data.headerKnz);
+        
+        window.open(chartPageUrl+"chartKennzahlenMst.html", "_blank"); 
+      }
+    }
+  });
+}
+////end saved graph by id
+
+////save graph listing 2024
+function savedGraphListing(type) {
+    $.ajax({
+        type: "POST",
+        async: !0,
+        url: "php/getGespGraphDiagramme.php",
+        data: {
+            nameDB: $("#nameDB").val(),
+            typ: type
+        },
+        success: function (a) {
+            tblGespDiagrammeListe.clear();
+            JSON.parse(a).map(function (a) {
+                var moduleType='';
+                if(type=='messstellenvergleich'){
+                    moduleType =a.typ;
+                }else if(type=='Kennzahlendarstellung'){
+                    moduleType =a.typ;
+                }
+                else{
+                    moduleType =a.typ.replaceAll('2', '');
+                }
+                return [a.gDia_ID, a.name, a.beschreibung, moduleType]
+            }).forEach(tblGespDiagrammeListe.row.add);
+            tblGespDiagrammeListe.draw();
+            $("#diagrammeAuswahlContainer").dialog({
+                height: 400,
+                width: 900,
+                resize: "auto",
+                show: {
+                    effect: "fade",
+                    duration: 500
+                },
+                hide: {
+                    effect: "fade",
+                    duration: 500
+                },
+                open: function () {
+                    $("#tblGespDiagrammeListe tbody tr").css("cursor", "pointer");
+                    $("#tblGespDiagrammeListe tbody").off("dblclick",
+                        "tr");
+                    $("#tblGespDiagrammeListe tbody").on("dblclick", "tr", function () {
+                        var a = tblGespDiagrammeListe.row(this).data();
+                        sessionStorage.setItem("loadDiag", !0);
+                        sessionStorage.setItem("loadDiagID", a[0]);
+                        getSavedGraph(a[0]);
+                        $("#diagrammeAuswahlContainer").dialog("close");
+                    })
+                }
+            })
+        }
+    })
+}
+//////end saved graph listing 
 window.onload = function () {
     var select = document.getElementById("year");
     var date = new Date();

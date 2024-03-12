@@ -9,7 +9,7 @@ $nameDB = $_POST['nameDB'];
 $conn = connectToDB($nameDB);
 $modus = $_POST['modus'];
 $version = $_POST['version'];
-$verdichtung = $_POST['verdichtung'];
+//$verdichtung = $_POST['verdichtung'];
 $jahr = $_POST['jahr'];
 
 if($teil == "verbrauch"){
@@ -31,9 +31,17 @@ if($teil == "verbrauch"){
 }
 elseif ($teil == "anlagen") {
   if($modus == "gesamt"){
-    $query = "SELECT * FROM SpaEfvTbl2Anlagen ";
-    $query .= "WHERE deleted <> 'true' ";
-    $query .= "AND archiviertAnl <> 'true' ";
+    $activeEngine = $_POST['activeEngine'];
+    if($activeEngine !='all'){
+      $query = "SELECT * FROM SpaEfvTbl2Anlagen ";
+      $query .= "WHERE deleted <> 'true' ";
+      $query .= "AND Zustand = '$activeEngine' ";
+      $query .= "AND archiviertAnl <> 'true' ";
+    }else{
+      $query = "SELECT * FROM SpaEfvTbl2Anlagen ";
+      $query .= "WHERE deleted <> 'true' ";
+      $query .= "AND archiviertAnl <> 'true' "; 
+    }
   }
   elseif ($modus == "organisation") {
     $orgID = $_POST['orgID'];

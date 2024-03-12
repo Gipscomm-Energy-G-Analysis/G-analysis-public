@@ -126,7 +126,7 @@ let dataMachine = new DataMachine(),
             }
         ]
     }),
-    year = sessionStorage.getItem("year"),
+    year = sessionStorage.getItem("startWeekYear"),
     monthArr = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
     month = sessionStorage.getItem("month"),
     nameDB = sessionStorage.getItem("nameDB"),
@@ -205,7 +205,9 @@ if (chartType == "line") {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function () {
     $("#notePopup").dialog("close")
 })
@@ -239,18 +241,53 @@ $("#btnNoteOk").click(function () {
     notes = []
 });
 $("#btnSaveOk").click(function () {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }  
     $("#savePopup").dialog("close");
     let chart = $("#container").ejChart("instance");
+    var startdate = sessionStorage.getItem("startdate");
+    var enddate = sessionStorage.getItem("enddate");
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID1 = sessionStorage.getItem("mstID_1");
+    var mstID2 = sessionStorage.getItem("mstID_2");
+    var mstID3 = sessionStorage.getItem("mstID_3");
+    var nameMst1 = nameMst_1;
+    var nameMst2 = nameMst_2;
+    var nameMst3 = nameMst_3;
+    var jsonData = {
+        "startWeekDate": startdate,
+        "endWeekDate": enddate,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID_1": mstID1,
+        "mstID_2": mstID2,
+        "mstID_3": mstID3,
+        "nameMst_1": nameMst1,
+        "nameMst_2": nameMst2,
+        "nameMst_3": nameMst3
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
-            name: headerDiagramm,
+            name: 'Energieverbrauch '+startdate+' to '+enddate,
             typ: "week",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -258,20 +295,22 @@ $("#btnSaveOk").click(function () {
     });
 });
 $("#diagSpeichern").click(function () {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -362,14 +401,20 @@ $("#container").ejChart({
 $("h3").text(headerDiagramm);
 
 if (queryString_1 != "" && queryString_2 != "" && queryString_3 != "") {
-    firstQuery();
-    secondQuery();
-    thirdQuery();
+    (async () => {
+        await firstQuery();
+        await secondQuery();
+        await thirdQuery();
+    })();
 } else if (queryString_1 != "" && queryString_2 != "") {
-    firstQuery();
-    secondQuery();
+    (async () => {
+        await firstQuery();
+        await secondQuery();
+     })();
 } else if (queryString_1 != "") {
-    firstQuery();
+    (async () => {
+        await firstQuery();
+    })();
 } else {
     console.log("There're no query data!!");
 }
@@ -400,7 +445,7 @@ function firstQuery() {
             })
             if(chartDataElement.length != 0){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst, series] = scpChart.updateChart(chartData)(nameMst_1)
+                const [colorMst, series] = scpChart.updateChart(chartDataElement)(nameMst_1)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_1").text(scpChart.sumSeries(chartData) + " kWh")
@@ -462,7 +507,7 @@ function secondQuery() {
             })
             if(chartDataElement.length != 0){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst2, series2] = scpChart.updateChart(chartData)(nameMst_2)
+                const [colorMst2, series2] = scpChart.updateChart(chartDataElement)(nameMst_2)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_2").text(scpChart.sumSeries(chartData) + " kWh")
@@ -524,7 +569,7 @@ function thirdQuery() {
             })
             if(chartDataElement.length != 0){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst3, series3] = scpChart.updateChart(chartData)(nameMst_3)
+                const [colorMst3, series3] = scpChart.updateChart(chartDataElement)(nameMst_3)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_3").text(scpChart.sumSeries(chartData) + " kWh")

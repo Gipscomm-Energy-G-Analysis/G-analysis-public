@@ -497,6 +497,30 @@ $(document).ready(function() {
         if (endWochenNumber) {
             $("#startWochen").attr("max", endWochenNumber);
         }
+    });
+    $("#startWochen1, #endeWochen1").on('change',function () {
+        startWochenNumber = $("#startWochen1").val();
+        endWochenNumber = $("#endeWochen1").val();
+        $("#endeWochen1").attr("min", startWochenNumber);
+        if (endWochenNumber) {
+            $("#startWochen1").attr("max", endWochenNumber);
+        }
+    });
+    $("#startWochen2, #endeWochen2").on('change',function () {
+        startWochenNumber = $("#startWochen2").val();
+        endWochenNumber = $("#endeWochen2").val();
+        $("#endeWochen2").attr("min", startWochenNumber);
+        if (endWochenNumber) {
+            $("#startWochen2").attr("max", endWochenNumber);
+        }
+    });
+    $("#startWochen3, #endeWochen3").on('change',function () {
+        startWochenNumber = $("#startWochen3").val();
+        endWochenNumber = $("#endeWochen3").val();
+        $("#endeWochen3").attr("min", startWochenNumber);
+        if (endWochenNumber) {
+            $("#startWochen3").attr("max", endWochenNumber);
+        }
     });   
     $("#btnZeitrmDiag").click(function() {
         "Benutzerdefinierter Zeitraum" == $("#btnZeitrmDiag").text() ? ($(".allgZeitrDiag").css("display",
@@ -535,11 +559,24 @@ $(document).ready(function() {
                 $(".tagZeitvergl").val("-");
                 break
 
+            case "Monat 15min" :
+
+                $(".monatZeitvergl, .year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
+                $(".tagZeitvergl, .weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
+                $(".tagZeitvergl").val("-");
+                break    
+
             case "Tag" :
 
                 $(".monatZeitvergl, .tagZeitvergl, .year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
                 $(".weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
                 break
+
+            case "Tag 15min" :
+
+                $(".monatZeitvergl, .tagZeitvergl, .year1Diag, .year2Diag, .year3Diag").css("display", "inline-block")
+                $(".weekfilterZeitr, .customDatefilterZeitr").css("display", "none")
+                break    
 
             case "Wochen" :
 
@@ -712,7 +749,14 @@ $(document).ready(function() {
         vorlagenformelAuswahllisteErstellen()
     });
     $("#btnGespDiag").click(function() {
-        gespeicherteDiagrammeAuswahllisteErstellen()
+        //gespeicherteDiagrammeAuswahllisteErstellen()
+        savedGraphListing('messstellenvergleich')
+    });
+    $("#btnGespDiag2").click(function() {
+        savedGraphListing('zeitvergleich')
+    });
+    $("#btnGespDiagKnz").click(function() {
+        savedGraphListing('Kennzahlendarstellung')
     });
     $(".btnNeueFormelKnz").click(function() {
         mainMenuNav("menuBerechnungsformeln")
@@ -842,7 +886,7 @@ $(document).ready(function() {
                 d = getJahresstringBenutzerdefSpaEfV1(b, darJahre);
             "basis" == b && (c = "verdichtet");
             SpaEfVTbl1Erstellen(a, b, c, d)
-        } else "btnSpaEfVTbl2Erstellen" == this.id && (d = new Date, "basis" == b && (c = "verdichtet1", jahr = d.getFullYear() - 1), SpaEfVTbl2Erstellen(a, b, c, jahr))
+        } else "btnSpaEfVTbl2Erstellen" == this.id && (d = new Date, "basis" == b && (c = "verdichtet1", jahr = d.getFullYear() - 1), SpaEfVTbl2Erstellen(a, b, c, $("#year").val()/*jahr*/))
     });
     $("#benutzerdefiniertSpaEfVTbl1, benutzerdefiniertSpaEfVTbl2").click(function() {
         var a = getModusSpaEfV(this.value),
@@ -8177,4 +8221,31 @@ $('#dashboard').on('click', function(){
     else{
         window.open('/dashboard','_self');
     }
+});
+$(document).on('click', 'input[name="activeEngine"]', function() { 
+    $('input[type="checkbox"]').prop('checked', false);    
+    $(this).prop('checked', true);      
+});
+$(".messstellen_graph").click(function(){
+    $("#btnGespDiag").trigger("click"); 
+});
+$(".zeitvergleich_graph").click(function(){
+    $("#btnGespDiag2").trigger("click"); 
+});
+$(".kennzahlen_graph").click(function(){
+    $("#btnGespDiagKnz").trigger("click"); 
+});
+$(window).on('load', function(){
+    setTimeout(function(){
+        if(sessionStorage.getItem("menuClick")=="messstellen_graph"){
+            $("#btnGespDiag").trigger("click");
+        }
+        if(sessionStorage.getItem("menuClick")=="zeitvergleich_graph"){
+            $("#btnGespDiag2").trigger("click");
+        }
+        if(sessionStorage.getItem("menuClick")=="kennzahlen_graph"){
+            $("#btnGespDiagKnz").trigger("click");
+        }
+        sessionStorage.removeItem("menuClick");
+    }, 2000);
 });

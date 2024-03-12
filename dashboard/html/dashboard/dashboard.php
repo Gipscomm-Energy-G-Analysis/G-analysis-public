@@ -1,6 +1,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<!-- 2024 start graph popup files -->
+<script type="text/javascript" src="https://g-analysis.com/dist/js/bluebird.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script type="text/javascript" src="https://g-analysis.com/dist/js/ej.web.all.min.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/src/js/fpCore.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/src/js/fpChart2.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/dist/js/DataMachine.min.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/src/js/DataTranslator.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/dist/js/fpGeometry.min.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/src/js/formula.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/dist/js/math.min.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/dashboard/js/graph-chart-popup.js" defer></script>
+<!-- end graph popup files -->
 <script type="text/javascript">
   // Default Configuration
     $(document).ready(function() {
@@ -41,8 +54,8 @@
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
-">Armaturenbrett</h4>
+                  <!-- <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
+">Armaturenbrett</h4> -->
                 </div>
                 <!-- <div>
                     <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
@@ -109,12 +122,13 @@
                           <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
                           <option value="product" description="Product Entries Count">Produktion</option>
                           <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
+                          <option value="graph" description="Save Graph">Graph</option>
                           <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
                           <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                       </select>
                     </div>
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-3 tile-type">
                       <label for="type_data_tile">Art der Daten</label>
                       <select class="form-control form-control-sm text-dark" id="type_data_tile">
                           <option value="table">Tabelle</option>
@@ -242,6 +256,13 @@
                     </div>
 
                     <!-- --end-- -->
+                    <div class="form-group col-md-2" id="save_graph_div" style="display:none;">
+                      <label for="save_graph_chart" class="text-mute">Saved Graph</label>
+                      <span class="mandatory_sign">*</span>
+                      <select class="form-control form-control-sm text-dark save_graph_chart" id="save_graph_chart">
+                        <option value="" disabled selected>Select Graph</option>
+                      </select>
+                    </div>
 
                     <div class="form-group col-md-2" id="time_interval_div">
                       <label for="time_interval_chart" class="text-mute">Zeitintervall</label>
@@ -299,7 +320,7 @@
                     </div>
 
                     <!--20-10-2021-- -->
-                    <diV class="form-group col-md-2">
+                    <diV class="form-group col-md-2 expandViewChart">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
                         Ansicht erweitern
@@ -310,7 +331,7 @@
                     <!-- end -->
 
                     <!-- <--28-10-2021 -->
-                    <diV class="form-group col-md-2">
+                    <diV class="form-group col-md-2 outsideView">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
                           Äußere Kachelstruktur

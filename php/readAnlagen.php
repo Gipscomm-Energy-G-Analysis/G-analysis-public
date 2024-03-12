@@ -6,16 +6,27 @@ ini_set('display_errors', 'On');
 require 'DbOperations.php';
 
 $conn = connectToDB($_POST['nameDB']);
-
-$query = "SELECT (SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle1IDAnl]) AS messstelle1Anl ";
-$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle2IDAnl]) AS messstelle2Anl ";
-$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle3IDAnl]) AS messstelle3Anl ";
-$query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle4IDAnl]) AS messstelle4Anl ";
-$query .= ",* ";
-$query .= "FROM [dbo].[anlagen] ";
-$query .= "WHERE lieg_ID = " . $_POST['liegID'] . " ";
-$query .= "AND deleted <> 'true' ";
-$query .= "AND archiviertAnl <> 'true' ";
+if(isset($_POST['type']) && ($_POST['type']="anlFirst")){
+    $query = "SELECT (SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle1IDAnl]) AS messstelle1Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle2IDAnl]) AS messstelle2Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle3IDAnl]) AS messstelle3Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle4IDAnl]) AS messstelle4Anl ";
+    $query .= ",* ";
+    $query .= "FROM [dbo].[anlagen] ";
+    $query .= "WHERE lieg_ID = " . $_POST['liegID'] . " AND anl_ID =" . $_POST['anl_ID'] . " ";
+    $query .= "AND deleted <> 'true' ";
+    $query .= "AND archiviertAnl <> 'true' ";
+}else{
+    $query = "SELECT (SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle1IDAnl]) AS messstelle1Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle2IDAnl]) AS messstelle2Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle3IDAnl]) AS messstelle3Anl ";
+    $query .= ",(SELECT nameMSt FROM messstellen WHERE mst_ID = [anlagen].[messstelle4IDAnl]) AS messstelle4Anl ";
+    $query .= ",* ";
+    $query .= "FROM [dbo].[anlagen] ";
+    $query .= "WHERE lieg_ID = " . $_POST['liegID'] . " ";
+    $query .= "AND deleted <> 'true' ";
+    $query .= "AND archiviertAnl <> 'true' ";
+}
 
 $records = (array)queryDB($conn, $query, "read");
 

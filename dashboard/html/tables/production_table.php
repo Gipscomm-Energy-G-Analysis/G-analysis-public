@@ -33,6 +33,15 @@
                     </div>
                     <!-- -end -->
 
+                    <!-- 22-11-2023-- -->
+                    <div class="form-group col-md-3 automatic_product_div" id="tiles_columns_product_div">
+                      <label for="product_type">Tiles columns</label>
+                      <select class="form-control form-control-sm text-dark" id="tiles_columns_product">
+                        <option value="">Please Select Column</option>
+                      </select>
+                    </div>
+                    <!-- -end -->
+
                     <div class="form-group col-md-3" id="product_field_div">
                       <img src="images/search.png" id="all_product_image">
                       <input type='text' id="all_product_input_text_field" class='form-control form-control-sm text-dark' placeholder='Alle Produkte' readonly >
@@ -126,6 +135,30 @@
                   <!-- <p class="card-description">
                     Add class <code>.table-striped</code>
                   </p> -->
+                  <!--22-11-2023--->
+                  <div class="product-small-table-tiles" id="tiles_product_select_table_entries_table_div" style="display: none;">
+                    <label for="tiles_columns">Small Tiles Columns</label>
+                    <table class="table table-striped table-bordered" id="tiles_product_select_table_entries_table">
+                      <thead id="tiles_product_select_table_entries_table_header">
+                        <tr>
+                          <th>
+                            Artikelname
+                          </th>
+                          <th>
+                            Erstellungsdatum
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody id="tiles_product_select_table_entries">
+                        <tr>
+                          <td style="padding: 6px !important" class='text-center' colspan='5'>Please Select Column</td>
+                        </tr>
+                      
+                      </tbody>
+                    </table>
+                  </div>
+                  <!----->
+
                   <div class="table-responsive" id="product_select_table_entries_table_div">
                     <table class="table table-striped table-bordered" id="product_select_table_entries_table">
                       <thead id="product_select_table_entries_table_header">

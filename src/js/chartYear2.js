@@ -195,7 +195,9 @@ else {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function() {
     $("#notePopup").dialog("close")
 })
@@ -229,18 +231,47 @@ $("#btnNoteOk").click(function() {
     notes = []
 });
 $("#btnSaveOk").click(function() {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }    
     $("#savePopup").dialog("close");
     let chart = $("#container").ejChart("instance");
+    var year1 = year_1;
+    var year2 = year_2;
+    var year3 = year_3;
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID = sessionStorage.getItem("mstID_1");
+    var nameMst = sessionStorage.getItem("nameMst");
+    var jsonData = {
+        "year_1": year1,
+        "year_2": year2,
+        "year_3": year3,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID": mstID,
+        "nameMst": nameMst
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "year",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            typ: "year2",
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -248,20 +279,22 @@ $("#btnSaveOk").click(function() {
     });
 });
 $("#diagSpeichern").click(function() {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -405,9 +438,11 @@ async  function firstQuery(){
                     element.x='0'+i;        
                 }else{
                     element.x=i;    
-                }       
+                }
+                element.name=nameMst;       
             }else{
-                element.x=element.x;   
+                element.x=element.x;
+                element.name=nameMst;   
             }
             i++;
         })
@@ -430,7 +465,8 @@ async  function firstQuery(){
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name=nameMst; 
                     chartDataArray.push(element)
             //}
         })
@@ -476,9 +512,11 @@ async  function secondQuery(){
                     element.x='0'+i;        
                 }else{
                     element.x=i;    
-                }        
+                }
+                element.name=nameMst;        
             }else{
-                element.x=element.x;   
+                element.x=element.x;
+                element.name=nameMst;   
             }
             i++;
         })
@@ -502,7 +540,8 @@ async  function secondQuery(){
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name=nameMst; 
                     chartDataArray.push(element)
             //}
         })
@@ -549,8 +588,10 @@ async  function thirdQuery(){
                 }else{
                     element.x=i;    
                 }
+                element.name=nameMst;
             }else{
-            element.x=element.x;   
+            element.x=element.x; 
+            element.name=nameMst;  
             }
             i++;
         })
@@ -574,7 +615,8 @@ async  function thirdQuery(){
                     let lastValue =elementYtoString.split('.')[1];
                      lastValue = lastValue?','+lastValue:'';
                     let elementYValue= formatComma(fristValue);
-                    element.y = elementYValue+lastValue; 
+                    element.y = elementYValue+lastValue;
+                    element.name=nameMst; 
                     chartDataArray.push(element)
             //}
         })

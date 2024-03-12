@@ -59,10 +59,10 @@ h1 {
 #badgeBund {
 	position: absolute;
 	left: auto;
-	right: 0;
-	top: 60px;
-	width: 150px;
-	margin: 5px;
+	right: 40px;
+	top: 140px;
+	width: 170px;
+	margin: 0px;
 }
 
 #divImages {

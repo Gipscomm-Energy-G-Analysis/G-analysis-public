@@ -202,7 +202,9 @@ else {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function() {
     $("#notePopup").dialog("close")
 })
@@ -240,18 +242,60 @@ $("#btnNoteOk").click(function() {
     notes = []
 });
 $("#btnSaveOk").click(function() {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }  
     $("#savePopup").dialog("close");
     let chart = $("#container") .ejChart("instance");
+    var year1 = year_1;
+    var year2 = year_2;
+    var year3 = year_3;
+    var month1 = month_1;
+    var month2 = month_2;
+    var month3 = month_3;
+    var day1 = day_1;
+    var day2 = day_2;
+    var day3 = day_3;
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID = sessionStorage.getItem("mstID_1");
+    var nameMst = sessionStorage.getItem("nameMst");
+    var headerDiagramm = "Energieverbrauch " + nameMst;
+    var jsonData = {
+        "year_1": year1,
+        "year_2": year2,
+        "year_3": year3,
+        "month_1": month1,
+        "month_2": month2,
+        "month_3": month3,
+        "day_1": day1,
+        "day_2": day2,
+        "day_3": day3,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID": mstID,
+        "nameMst": nameMst
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "month",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            typ: "day2",
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -259,20 +303,22 @@ $("#btnSaveOk").click(function() {
     });
 });
 $("#diagSpeichern").click(function() {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -418,6 +464,21 @@ async  function firstQuery(){
         // Translates the data to a format the charts understand
         chartData = dataTranslator.translate(1)
 
+        //day series
+        let i=0;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i+':00';        
+                }else{
+                    element.x=i+':00';    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
+
         // Updates the chart and gets the color of the current series as a return value
         const [ colorDay, series ] = scpChart.updateChart(chartData)(day_1 + "." + month_1 + "." + year_1)
 
@@ -453,7 +514,7 @@ async  function firstQuery(){
 
         getNotesDay(
             sessionStorage.getItem("mstID_1")
-        )(year_1)(0)(
+        )(year_1+'/'+month_1+'/'+day_1)(0)(
             nameMst
         )(
             colorDay
@@ -480,6 +541,21 @@ async  function secondQuery() {
 
         console.log("chartData2")
         console.log(chartData)
+
+        //day series
+        let i=0;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i+':00';        
+                }else{
+                    element.x=i+':00';    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
 
         // Updates the chart and gets the color of the current series as a return value
         const [ colorDay2, series2 ] = scpChart.updateChart(chartData)(day_2 + "." + month_2 + "." + year_2)
@@ -513,7 +589,7 @@ async  function secondQuery() {
 
         getNotesDay(
             sessionStorage.getItem("mstID_1")
-        )(year_2)(1)(
+        )(year_2+'/'+month_2+'/'+day_2)(1)(
             sessionStorage.getItem("nameMst")
         )(
             colorDay2
@@ -540,6 +616,21 @@ async  function thirdQuery(){
 
         console.log("chartData3")
         console.log(chartData)
+
+        //day series
+        let i=0;
+        chartData.forEach(element => {
+            if(element.x==""){
+            if(i < 10){
+                    element.x='0'+i+':00';        
+                }else{
+                    element.x=i+':00';    
+                }       
+            }else{
+                element.x=element.x;   
+            }
+            i++;
+        })
 
         // Updates the chart and gets the color of the current series as a return value
         const [ colorDay3, series3 ] = scpChart.updateChart(chartData)(day_3 + "." + month_3 + "." + year_3)
@@ -573,7 +664,7 @@ async  function thirdQuery(){
 
         getNotesDay(
             sessionStorage.getItem("mstID_1")
-        )(year_3)(2)(
+        )(year_3+'/'+month_3+'/'+day_3)(2)(
             sessionStorage.getItem("nameMst")
         )(
             colorDay3

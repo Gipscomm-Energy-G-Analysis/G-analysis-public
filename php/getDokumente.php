@@ -9,7 +9,7 @@ $conn = connectToDB($_POST['nameDB']) ;
 
 $verwaltung = $_POST['verwaltung'] ;
 $id = $_POST['id'] ;
-$selectFrom = "SELECT dok_ID, kategorieDok, nameDok, erweiterungDok FROM dokumente " ;
+$selectFrom = "SELECT dok_ID, kategorieDok, nameDok, inhalt, erweiterungDok FROM dokumente " ;
 $notDeleted = "AND deleted = 0 " ;
 
 

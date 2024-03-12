@@ -201,7 +201,9 @@ else {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function() {
     $("#notePopup").dialog("close")
 })
@@ -235,18 +237,53 @@ $("#btnNoteOk").click(function() {
     notes = []
 });
 $("#btnSaveOk").click(function() {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }  
     $("#savePopup").dialog("close");
     let chart = $("#container") .ejChart("instance");
+    var year1 = year_1;
+    var year2 = year_2;
+    var year3 = year_3;
+    var month1 = month_1;
+    var month2 = month_2;
+    var month3 = month_3;
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID = sessionStorage.getItem("mstID_1");
+    var nameMst = sessionStorage.getItem("nameMst");
+    var jsonData = {
+        "year_1": year1,
+        "year_2": year2,
+        "year_3": year3,
+        "month_1": month1,
+        "month_2": month2,
+        "month_3": month3,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID": mstID,
+        "nameMst": nameMst
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
             name: headerDiagramm,
-            typ: "month",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            typ: "month2",
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -254,20 +291,22 @@ $("#btnSaveOk").click(function() {
     });
 });
 $("#diagSpeichern").click(function() {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -459,7 +498,7 @@ async  function firstQuery(){
 
         getNotesMonth(
             sessionStorage.getItem("mstID_1")
-        )(year_1)(0)(
+        )(year_1+'/'+month_1)(0)(
             nameMst
         )(
             colorMst
@@ -532,7 +571,7 @@ async  function secondQuery(){
 
         getNotesMonth(
             sessionStorage.getItem("mstID_1")
-        )(year_2)(1)(
+        )(year_2+'/'+month_2)(1)(
             sessionStorage.getItem("nameMst")
         )(
             colorMst2
@@ -605,7 +644,7 @@ async  function thirdQuery(){
 
         getNotesMonth(
             sessionStorage.getItem("mstID_1")
-        )(year_3)(2)(
+        )(year_3+'/'+month_3)(2)(
             sessionStorage.getItem("nameMst")
         )(
             colorMst3

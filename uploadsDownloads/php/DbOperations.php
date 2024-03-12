@@ -6,7 +6,7 @@ $GLOBALS['QueryStatsIntoFile'] = false;
 
 function connectToDB( $nameDB ) {
   $serverName = "sql_gc.managee.de" ;
-  $connectionInfo = array( "Database"=>$nameDB, "UID"=>"gipscomm", "PWD"=>"Gc$2017!" );
+  $connectionInfo = array( "Database"=>$nameDB, "UID"=>"gipscomm", "PWD"=>"yXFdFioIzNoGFwaQeGHo" );
 
   $executionStartTime = microtime(true);
   if($GLOBALS['QueryStatsIntoFile'] == true) {

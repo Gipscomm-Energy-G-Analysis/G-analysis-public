@@ -1196,6 +1196,7 @@ class dashboardController
                                                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                     </table>
                                                 </div>
+                                                <div class='small-tiles'><table class='table table-striped table-bordered table-hover tiles-custom-table'></table></div>
                                                 <div class='save_table_div_show_table'>
                                                     <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
@@ -1224,6 +1225,7 @@ class dashboardController
                                             </div>
                                             
                                             <div class='overflow-hide ml-3 table-width'>
+                                            <div class='small-tiles'><table class='table table-striped table-bordered table-hover tiles-custom-table'></table></div>
                                                 <div class='save_table_div_show_table'>
                                                     <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_outer_modal_table'>
@@ -1264,6 +1266,7 @@ class dashboardController
                                                 <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_table_tile_text_$last_id'></td><td id='td_table_tile_two_text_$last_id'></td></tr></tbody>
                                                 </table>
                                             </div>
+                                            <div class='small-tiles'><table class='table table-striped table-bordered table-hover tiles-custom-table'></table></div>
                                             <div class='save_table_div_show_table'>
                                                 <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                 <table class='table table-striped table-bordered table-hover' id='product_modal_table'>
@@ -1292,6 +1295,7 @@ class dashboardController
                                             </div>
                                             
                                             <div class='overflow-hide ml-3 table-width'>
+                                            <div class='small-tiles'><table class='table table-striped table-bordered table-hover tiles-custom-table'></table></div>
                                                 <div class='save_table_div_show_table'>
                                                     <div class='custom-table'><img src='images/table-image.svg' class='tableimage'></div> 
                                                     <table class='table table-striped table-bordered table-hover' id='product_outer_modal_table'>
@@ -1652,6 +1656,76 @@ class dashboardController
         }
     }
     // ---end--->
+    
+   public function getGraphChartDataDashboard()
+    {
+        try {
+            global $conn;
+            $username = $_SESSION['username'];
+            $measurement_title  = $_POST['measurement_title'];
+            // $measurement_title  = "Test Chart";
+
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='Graph' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $last_id_query = "SELECT max(id) as max_id from tableFormat ";
+            $last_id = queryDB($conn, $last_id_query, "read");
+            $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id'] + 1 : 0;
+            // if($total_result>0){
+            //     $last_id=$dataResult[$total_result-1]['id']+1;
+
+            // }
+
+            // <---24-11-2021---
+            $record_type_of_tile  = $_POST['record_type_of_tile'];
+            if ($record_type_of_tile == 'energy') {
+                $this->getChartDataDashboardEnergy();
+                die;
+            } else if ($record_type_of_tile == 'product') {
+                $this->getChartDataDashboardProduct();
+                die;
+            }
+            // --end--->
+
+            if ($dataResult != null && count($dataResult) > 0) {
+                for ($i = 0; $i <= $total_result; $i++) {
+                    //                    $measurement_title = $total_result[$i]['tile_title'];
+                    $style = '';
+                    if ($i == $total_result) {
+
+                        $measurement_title = $_POST['measurement_title'];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$last_id'>";
+                        $tileHtml .= "<div class='msgGraph' style='color: #E94649; padding: 20px; border: 1px solid #dee2e6; margin-left: 15px; box-shadow: 1px 1px #dee2e6;'>Please Select Any Graph From Saved Graph List.</div>";
+                        $tileHtml .= "<div class='dashboard_chart_tile_html_$last_id default' style='display: none;'><div style='height: 290px; width: 500px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal' style='margin:0px;'>$measurement_title</p> 
+                                                <div id='container' style='width: 430px; height: 260px;'></div>                                           
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div></div>";
+                    }
+                }
+            }
+            $records['tile_html'] = $tileHtml;
+            $records['data'] = $dataResult;
+            $records['total_record'] = count($dataResult) + 1;
+            $records['last_id'] = $last_id;
+            echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+            die;
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
 
     public function getChartDataDashboard()
     {
@@ -3096,7 +3170,52 @@ class dashboardController
         }
     }
     // --end--->
-
+    // <----2024--
+    public function getEditGraphChartDashboard()
+    {
+        try {
+            global $conn;
+            $username = $_SESSION['username'];
+            $i_value = $_POST['i_value'];
+            $id = $_POST['id'];
+            $tile_title = $_POST['graph_title'];
+            $getResult =  "SELECT * from tableFormat where tile_data_type ='Graph' AND username = '$username' ";
+            $dataResult = queryDB($conn, $getResult, "read");
+            $tileHtml = '';
+            $total_result = count($dataResult);
+            $queryGraph = "SELECT * from tableFormat where tile_data_type ='Graph' AND id = '$id' AND username = '$username'  ";
+            $resultGraph = queryDB($conn, $queryGraph, "read");
+            if ($resultGraph != null && count($resultGraph) > 0) {
+                //for ($i = 0; $i < $total_result; $i++) {
+                    if ($id == $resultGraph[0]['id']) {
+                        $records['data'] = $resultGraph[0];
+                        $tileHtml .= "<input type='hidden' id='total_records_chart' value='$id'>";
+                        $tileHtml .= "<div class='msgGraph' style='color: #E94649; padding: 20px; border: 1px solid #dee2e6; margin-left: 15px; box-shadow: 1px 1px #dee2e6; display: none;'>Please Select Any Graph From Saved Graph List.</div>";
+                        $tileHtml .= "<div class='dashboard_chart_tile_html_$id default'><div style='height: 290px; width: 500px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$id' data-i='$id' data-type-tile='Measurement'>
+                                    <div class='card card-border tile_border'>
+                                        <div class='card-body'>
+                                            <div id='' class=''>
+                                                <div class='action-modal-button-div'>
+                                                    <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$id' style='height: 17px; width: 17px; margin-right: 5px;'>
+                                                    <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
+                                                </div>
+                                                <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal' style='margin:0px;'>$tile_title</p> 
+                                                <div id='container' style='width: 430px; height: 260px;'></div>                                           
+                                            </div>
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                </div></div>";
+                    }
+                $records['tile_html'] = $tileHtml;
+                echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
+            }
+            die;
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }
     // <----01-9-2021---
     public function getEditDataDashboard()
     {

@@ -1,5 +1,78 @@
+.graph .customgraph {
+    padding-left: 25px;
+    padding-top: 15px;
+}
+.movetile .msgGraph {
+    display: none;
+}
+.graph .card-body {
+    padding-bottom: 0px;
+}
+.default .card-body {
+    padding: 10px;
+}
+.dashboard_count_div {
+    margin-left: 0px;
+}
+.one-by-one-tile{
+    display: block !important;
+    padding: 13px !important;
+}
+.one-by-one-tile .overflow-hide{
+    margin-left: 0px !important;
+}
+.one-by-one-tile .overflow-hide .small-tiles{
+    padding: 0px !important;
+    height: 95px !important;
+}
+.one-by-one-tile .card-title {
+    margin-bottom: 7px !important;
+}
+.one-by-one-tile .tiles-custom-table{
+    width: 100% !important;
+}
+.dashboard_count_div .table_tile.hide_table_main .dashboard-small-table-tile .overflow-hide{
+    padding: 0px !important;
+    margin-left: 0px!important;
+}
+.dashboard-small-table-tile .ml-3 {
+    width: 100% !important;
+}
+.dashboard-small-table-tile .overflow-hide .small-tiles {
+    padding: 0 10px !important;
+    height: 85px !important;
+    margin-top: 5px !important;
+}
+.dashboard-small-table-tile .overflow-hide .small-tiles .show-tiles-custom-table{
+    margin-top: 0px !important;
+}
 .act_background{
     background-color: #b5b8c1 !important;
+}
+#tiles_product_select_table_entries_table thead tr th {
+    padding: 10px 6px 10px 6px !important;
+    font-size: small;
+}
+.tiles-custom-table {
+    width: 20%;
+    margin-bottom: 20px;
+    /*display: none;*/
+}
+.small-tiles {
+    overflow: auto;
+    padding: 0 10px;
+}
+.product-small-table-tiles #tiles_product_select_table_entries_table {
+    margin-bottom: 20px;
+    display: block;
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 20%;
+}
+.show-tiles-custom-table{
+    display: inline-table;
 }
 .tableimage{
     max-width: 83%;
@@ -36,6 +109,12 @@
 .hide_table_main .showtableimage {
     display: block !important;
 }
+.stretch-card .show-tiles-custom-table {
+    display: none;
+}
+.hide_table_main .show-tiles-custom-table {
+    display: inline-table !important;
+}
 .chart_tile .card-body.pr-0.set-tile .showgraphimage {
     display: block;
     margin: -2px 0 0 10px;
@@ -49,9 +128,20 @@
 .chart_tile .card-body.pr-0.row.set-tile .showgraphimage {
     margin: -2px 0 0 23px;
 }
-.logo-g-analysis{
+/*.logo-g-analysis{
     height: 41.67px !important;
     width: 125px  !important;
+}*/
+.dashboard_count_div .graph {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.navbar .navbar-brand-wrapper .navbar-brand img {
+    width: 100% !important;
+    max-width: 70% !important;
+    height: auto;
+    margin: auto;
+    vertical-align: middle;
 }
 .table-not-consumed{
     height: 500px;
@@ -82,7 +172,7 @@
 }
 
 .heading-margin-top{
-    margin-top: 28px
+    margin-top: 0px
 }
 .energy_unit{
     /* margin-top: 21px; */
@@ -104,9 +194,9 @@
     text-align: center;
     /* margin-left: 357px; */
     /* margin-left: 465px; */
-    margin-left: 44%;
+    margin-left: 58%;
     margin-top: 0.3%;
-    position: fixed;
+    position: absolute;
 }
 .pagination_html{
     margin-top: 8px;
@@ -660,13 +750,37 @@
     text-decoration: none;
     display: block;
     text-align: left;
+    font-size: 16px;
 }
-
+select#dashboard_database_list {
+    font-size: 14px;
+    width: 194px;
+}
 .column a:hover {
     /* background-color: #4a4a4a; */
     color: #4a4a4a;
+    font-size: 16px;
 }
-
+i.angle-down {
+    left: 20%;
+    position: relative;
+    top: 5px;
+}
+i.angle-down-diag {
+    left: 35%;
+    position: relative;
+    top: 5px;
+}
+i.angle-down-diagramme {
+    left: 6%;
+    position: relative;
+    top: 10px;
+}
+i.angle-down-diagramme-main {
+    left: 5%;
+    position: relative;
+    top: 5px;
+}
 /* Clear floats after the columns */
 .row:after {
     content: "";
@@ -701,10 +815,13 @@
 .column .sub_menu_open:hover .sub_menu_1_div{
     display: block; 
     color: red;
+    float: left;
 }
   
 .sub_menu_open span{
-    color: black
+    color: black;
+    float: left;
+    font-size: 16px;
 }
  
 
@@ -730,7 +847,12 @@
 .dashboard_count_div .stretch-card .card .ml-3{
     width: 96%;
 }
-
+.dashboard_count_div .graph .overflow-hide {
+    margin-top: -105px !important;
+}
+.graph .showgraphimage {
+    margin: -120px 0 0 0;
+}
 #dashboard_count_div_tile canvas{
     margin-top: 16px;
     /* width: 377px !important; */
@@ -984,7 +1106,7 @@
     text-transform: capitalize;
 }
 
-#all_columns_product_div div button{
+#all_columns_product_div div button, #tiles_columns_product_div div button{
     padding-bottom: 11px;
 }
 

@@ -215,7 +215,9 @@ if (chartType == "line") {
         }
     }
 }
-
+$("#btnSaveAbbr").click(function () {
+    $("#savePopup").dialog("close")
+})
 $("#btnNoteAbbr").click(function () {
     $("#notePopup").dialog("close")
 })
@@ -249,18 +251,53 @@ $("#btnNoteOk").click(function () {
     notes = []
 });
 $("#btnSaveOk").click(function () {
+    $(".error").remove();
+    if ($('#name').val() == ""){
+        $('#name').after('<span class="error" style="color:#E94649;">Name field is required</span>');
+        return false;
+        }
+    if ($('#beschreibungSave').val() == ""){
+        $('#beschreibungSave').after('<span class="error" style="color:#E94649;">Beschreibung field is required</span>');
+        return false;
+    }  
     $("#savePopup").dialog("close");
     let chart = $("#container").ejChart("instance");
+    var startdate1 = sessionStorage.getItem("startdate1");
+    var enddate1 = sessionStorage.getItem("enddate1");
+    var startdate2 = sessionStorage.getItem("startdate2");
+    var enddate2 = sessionStorage.getItem("enddate2");
+    var startdate3 = sessionStorage.getItem("startdate3");
+    var enddate3 = sessionStorage.getItem("enddate3");
+    var chartType = sessionStorage.getItem("chartType");
+    var name = $("#name").val();
+    var beschreibung = $("#beschreibungSave").val();
+    var mstID_1 = sessionStorage.getItem("mstID_1");
+    var nameMst1 = nameMst;
+    var jsonData = {
+        "startWeekDate1": startdate1,
+        "endWeekDate1": enddate1,
+        "startWeekDate2": startdate2,
+        "endWeekDate2": enddate2,
+        "startWeekDate3": startdate3,
+        "endWeekDate3": enddate3,
+        "nameDB": nameDB,
+        "chartType": chartType,
+        "name": name,
+        "mstID_1": mstID_1,
+        "nameMst": nameMst1
+    }
     $.ajax({
         type: 'POST',
         async: true,
-        url: 'php/saveDiag.php',
+        url: 'php/saveGraphDiag.php',
         data: {
             ins: "saveDiag",
             nameDB,
-            name: headerDiagramm+headerDiagramm1+" and "+headerDiagramm2+" and "+headerDiagramm3,
-            typ: "week",
-            jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
+            name: "Energieverbrauch",
+            typ: "week2",
+            beschreibung: beschreibung,
+            jsonDiag: JSON.stringify(jsonData)
+            //jsonDiag: JSON.stringify(chart.model.series.map(a => a.dataSource))
         },
         success: function (records) {
             alert("Daten gespeichert!");
@@ -268,20 +305,22 @@ $("#btnSaveOk").click(function () {
     });
 });
 $("#diagSpeichern").click(function () {
-    alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
-    // $("#savePopup").dialog({
-    //     resize: "auto",
-    //     show: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     hide: {
-    //         effect: "fade",
-    //         duration: 500
-    //     },
-    //     width: 425,
-    //     height: 250
-    // });
+    //alert("Die Möglichkeit Diagramme zu speichern wird in Zukunft verfügbar sein.")
+    $("#name").val('');
+    $("#beschreibungSave").val('');
+    $("#savePopup").dialog({
+        resize: "auto",
+        show: {
+            effect: "fade",
+            duration: 500
+        },
+        hide: {
+            effect: "fade",
+            duration: 500
+        },
+        width: 425,
+        height: 250
+    });
 });
 $("#container").ejChart({
     pointRegionClick: function (args) {
@@ -301,15 +340,21 @@ $("#container").ejChart({
         });
 
         if(args.data.region.SeriesIndex==2){
-            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            let weeknumber = $("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '');
+            let monthName = getMonthName(weeknumber, $("#container_svg_LegendItemText2").text().split("-")[2].replace(/\s/g, '').substring(0, 4));
+            $("#identNote").val(monthName+'-'+$("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '')+'-'+$("#container_svg_LegendItemText2").text().split("-")[2].replace(/\s/g, '').substring(0, 4)+'-'+$("#container_svg_TrackToolTip").text().split(":")[1].replace(/\s/g, ''))
             $("#lineIndex").val('2')
         }
         if(args.data.region.SeriesIndex==1){
-            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            let weeknumber = $("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '');
+            let monthName = getMonthName(weeknumber, $("#container_svg_LegendItemText1").text().split("-")[2].replace(/\s/g, '').substring(0, 4));
+            $("#identNote").val(monthName+'-'+$("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '')+'-'+$("#container_svg_LegendItemText1").text().split("-")[2].replace(/\s/g, '').substring(0, 4)+'-'+$("#container_svg_TrackToolTip").text().split(":")[1].replace(/\s/g, ''))
             $("#lineIndex").val('1')
         }
         if(args.data.region.SeriesIndex==0){
-            $("#identNote").val($("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, ''))
+            let weeknumber = $("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '');
+            let monthName = getMonthName(weeknumber, $("#container_svg_LegendItemText0").text().split("-")[2].replace(/\s/g, '').substring(0, 4));
+            $("#identNote").val(monthName+'-'+$("#container_svg_TrackToolTip").text().split(":")[0].replace(/\s/g, '')+'-'+$("#container_svg_LegendItemText0").text().split("-")[2].replace(/\s/g, '').substring(0, 4)+'-'+$("#container_svg_TrackToolTip").text().split(":")[1].replace(/\s/g, ''))
             $("#lineIndex").val('0')
         }
         $("#mstIDNote").val(
@@ -357,7 +402,8 @@ $("#container").ejChart({
         title: {
             text: "Woche"
         },
-            labelIntersectAction : "rotate45"
+        range: { interval: 1 },
+        //labelIntersectAction : "rotate45"
     },
     //Initializing Primary Y Axis
     primaryYAxis: {
@@ -365,14 +411,65 @@ $("#container").ejChart({
             text: "Verbrauch[kWh]"
         }
     },
+    //Initializing Axes
+    /*axes: [
+        {
+            majorGridLines: { width: 0 },
+            rowIndex: 0, 
+            opposedPosition: true,
+            //lineStyle: { width: 0 },
+            //minimum: 24, maximum: 36, interval: 2,
+            name: 'yAxis',
+            labelFormat: '{value}',
+            majorTickLines: { width: 0 },
+            title: {text: "Verbrauch[kWh]"}
+        }
+    ],*/
     commonSeriesOptions: csOptions,
-    series: []
+    //Initializing Chart Series
+    series: [
+       /* {
+            type: 'Line',
+            dataSource: [
+                { x: 'Sun', y: 35 }, { x: 'Mon', y: 40 },
+                { x: 'Tue', y: 80 }, { x: 'Wed', y: 70 }, 
+                { x: 'Thu', y: 65 }, { x: 'Fri', y: 55 },
+                { x: 'Sat', y: 50 }
+            ],
+            width: 2,
+            xName: 'x', 
+            yName: 'y',
+            name: 'Germany', 
+            marker: { visible: true}
+        },
+        {
+            type: 'Line',
+            dataSource: [
+                { x: 'Sun', y: 30 }, { x: 'Mon', y: 28 },
+                { x: 'Tue', y: 29 }, { x: 'Wed', y: 30 }, 
+                { x: 'Thu', y: 33 }, { x: 'Fri', y: 32 },
+                { x: 'Sat', y: 34 }
+            ],
+            xName: 'x', 
+            yName: 'y',
+            width: 2, 
+            yAxisName: 'yAxis',
+            name: 'Japan',
+            marker: { visible: true}
+        }*/
+    ]
 });
 
 $(".headerDiagramm").text(headerDiagramm);
+/*if(startWeekDate1 && endWeekDate1){
 $(".headerDiagramm1").text(headerDiagramm1);
+}
+if(startWeekDate2 && endWeekDate2){
 $(".headerDiagramm2").text(headerDiagramm2);
+}
+if(startWeekDate3 && endWeekDate3){
 $(".headerDiagramm3").text(headerDiagramm3);
+}*/
 
 if (queryString_1 != "" && queryString_2 != "" && queryString_3 != "") {
     (async () => {
@@ -396,6 +493,27 @@ if (queryString_1 != "" && queryString_2 != "" && queryString_3 != "") {
 const recordMask =
     a => [a.name, a.x , a.y]
 
+let nubmerList = [];
+let diffWeekArray = [];
+if (startWeekDate1 && endWeekDate1) {
+    let diffWeekDate1 = (endWeekDate1-startWeekDate1)+1;
+    diffWeekArray.push(Number(diffWeekDate1));    
+}
+if (startWeekDate2 && endWeekDate2) {
+    let diffWeekDate2 = (endWeekDate2-startWeekDate2)+1;
+    diffWeekArray.push(Number(diffWeekDate2)); 
+}
+if (startWeekDate3 && endWeekDate3) {
+    let diffWeekDate3 = (endWeekDate3-startWeekDate3)+1; 
+    diffWeekArray.push(Number(diffWeekDate3));    
+}
+let largestDiffWeekValue = diffWeekArray.sort((a,b)=>a-b).reverse()[0];
+    for (let i = 1; i <= largestDiffWeekValue; i++) {
+      nubmerList.push(Number(i));
+    }
+const weekArray=nubmerList;
+//const weekArray=(nubmerList.sort(function(a, b){return a - b})).filter((item, i, ar) => ar.indexOf(item) === i);
+//const weekArray=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52];
 async  function firstQuery() {
     dataMachine.runQuery("read", nameDB, queryString_1)
         .then(JSON.parse)
@@ -412,14 +530,24 @@ async  function firstQuery() {
             chartData = dataTranslator.translate(4)
 
             let chartDataElement = [];
-            chartData.forEach(element => {
-                if (element.x != "") {
-                    chartDataElement.push(element)
+            weekArray.forEach(weekElement => {
+                let elementArrry={};
+                let searchData = chartData.find(element => (chartData.indexOf(element) == weekArray.indexOf(weekElement)));
+                if(searchData) {
+                    elementArrry['name']=searchData.name;
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=searchData.y;
+                } else {
+                    elementArrry['name']="";
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=0; 
                 }
+                chartDataElement.push(elementArrry)
             })
-            if(chartDataElement.length != 0){
+             
+            if(chartDataElement.length != 0 && startWeekYear1){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst, series] = scpChart.updateChart(chartDataElement)(startWeekYear1)
+                const [colorMst, series] = scpChart.updateChart(chartDataElement)(startWeekDate1 + "-" + getMonthName(startWeekDate1, startWeekYear1) + "-" + startWeekYear1 + " to " + (parseInt(endWeekDate1)) + "-" + getMonthName((parseInt(endWeekDate1)), endWeekYear1) + "-" + endWeekYear1)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_1").text(scpChart.sumSeries(chartData) + " kWh")
@@ -450,7 +578,7 @@ async  function firstQuery() {
 
                 getNotesWeek(
                     sessionStorage.getItem("mstID_1")
-                )(startWeekDate1+'-'+startWeekYear1+','+endWeekDate1+'-'+endWeekYear1)(0)(
+                )(startWeekDate1+'-'+startWeekYear1+','+endWeekDate1+'-'+endWeekYear1)(series)(
                     nameMst
                 )(
                     colorMst
@@ -474,14 +602,24 @@ async  function secondQuery() {
             chartData = dataTranslator.translate(4);
 
             let chartDataElement = [];
-            chartData.forEach(element => {
-                if (element.x != "") {
-                    chartDataElement.push(element)
+            weekArray.forEach(weekElement => {
+                let elementArrry={};
+                let searchData = chartData.find(element => (chartData.indexOf(element) == weekArray.indexOf(weekElement)));
+                if(searchData) {
+                    elementArrry['name']=searchData.name;
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=searchData.y;
+                } else {
+                    elementArrry['name']="";
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=0; 
                 }
+                chartDataElement.push(elementArrry)
             })
-            if(chartDataElement.length != 0){
+             
+            if(chartDataElement.length != 0 && startWeekYear2){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst2, series2] = scpChart.updateChart(chartDataElement)(startWeekYear2)
+                const [colorMst2, series2] = scpChart.updateChart(chartDataElement)(startWeekDate2 + "-" + getMonthName(startWeekDate2, startWeekYear2) + "-" + startWeekYear2 + " to " + (parseInt(endWeekDate2)) + "-" + getMonthName((parseInt(endWeekDate2)), endWeekYear2) + "-" + endWeekYear2)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_2").text(scpChart.sumSeries(chartData) + " kWh")
@@ -512,7 +650,7 @@ async  function secondQuery() {
 
                 getNotesWeek(
                     sessionStorage.getItem("mstID_1")
-                )(startWeekDate2+'-'+startWeekYear2+','+endWeekDate2+'-'+endWeekYear2)(1)(
+                )(startWeekDate2+'-'+startWeekYear2+','+endWeekDate2+'-'+endWeekYear2)(series2)(
                     sessionStorage.getItem("nameMst")
                 )(
                     colorMst2
@@ -536,14 +674,24 @@ async  function thirdQuery() {
             chartData = dataTranslator.translate(4);
 
             let chartDataElement = [];
-            chartData.forEach(element => {
-                if (element.x != "") {
-                    chartDataElement.push(element)
+            weekArray.forEach(weekElement => {
+                let elementArrry={};
+                let searchData = chartData.find(element => (chartData.indexOf(element) == weekArray.indexOf(weekElement)));
+                if(searchData) {
+                    elementArrry['name']=searchData.name;
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=searchData.y;
+                } else {
+                    elementArrry['name']="";
+                    elementArrry['x']=weekElement;
+                    elementArrry['y']=0; 
                 }
+                chartDataElement.push(elementArrry)
             })
-            if(chartDataElement.length != 0){
+
+            if(chartDataElement.length != 0 && startWeekYear3){
                 // Updates the chart and gets the color of the current series as a return value
-                const [colorMst3, series3] = scpChart.updateChart(chartDataElement)(startWeekYear3)
+                const [colorMst3, series3] = scpChart.updateChart(chartDataElement)(startWeekDate3 + "-" + getMonthName(startWeekDate3, startWeekYear3) + "-" + startWeekYear3 + " to " + (parseInt(endWeekDate3)) + "-" + getMonthName((parseInt(endWeekDate3)), endWeekYear3) + "-" + endWeekYear3)
 
                 // Sums up all the values of the month for the given Messstelle
                 $("#consumption-month_3").text(scpChart.sumSeries(chartData) + " kWh")
@@ -574,7 +722,7 @@ async  function thirdQuery() {
 
                 getNotesWeek(
                     sessionStorage.getItem("mstID_1")
-                )(startWeekDate3+'-'+startWeekYear3+','+endWeekDate3+'-'+endWeekYear3)(2)(
+                )(startWeekDate3+'-'+startWeekYear3+','+endWeekDate3+'-'+endWeekYear3)(series3)(
                     sessionStorage.getItem("nameMst")
                 )(
                     colorMst3
@@ -585,9 +733,9 @@ async  function thirdQuery() {
         });
 }
 function getMonthName(week, year) {
-    let d = new Date(year, 0, 1 + (week) * 7);
+    let d = new Date(year, 0, (week) * 7);
     d.getUTCDay() < 5 ? d.setUTCDate(d.getUTCDate() - d.getUTCDay() + 1) : d.setUTCDate(d.getUTCDate() + 8 - d.getUTCDay());
-    return ("" + d).split(" ")[1];
+    return moment().month(("" + d).split(" ")[1]).format("MMMM");
 }   
 
 const formatComma = num => 
