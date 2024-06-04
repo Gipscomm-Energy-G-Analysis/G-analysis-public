@@ -254,6 +254,7 @@ $("#btnSaveOk").click(function () {
     var mstID1 = sessionStorage.getItem("mstID_1");
     var mstID2 = sessionStorage.getItem("mstID_2");
     var mstID3 = sessionStorage.getItem("mstID_3");
+    var liveGraph = sessionStorage.getItem("livegraph");
     var nameMst1 = nameMst_1;
     var nameMst2 = nameMst_2;
     var nameMst3 = nameMst_3;
@@ -262,6 +263,7 @@ $("#btnSaveOk").click(function () {
         "month": graph_month,
         "nameDB": nameDB,
         "chartType": chartType,
+        "liveGraph": liveGraph,
         "name": name,
         "mstID_1": mstID1,
         "mstID_2": mstID2,

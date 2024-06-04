@@ -489,6 +489,29 @@ $(document).ready(function() {
             ($("#diagMonatDiv, #diagTagDiv").css("display", "none"), $("#diagMonat, #diagTag").prop("selectedIndex", 0)) : "Monat" === this.value || "Monat 15min" === this.value ? ($("#diagMonatDiv").css("display", "inline-block"), $("#diagTagDiv").css("display", "none"), $("#diagTag").prop("selectedIndex", 0)) : "Tag" !== this.value && "Tag 15min" !== this.value || $("#diagMonatDiv, #diagTagDiv").css("display", "inline-block")
             "Wochen" === this.value ? 
         ($("#startWochenDiag, #endeWochenDiag").css("display", "inline-block"), $(".allgZeitrDiag").css("display", "none")) : $("#startWochenDiag, #endeWochenDiag").css("display", "none")
+
+        //2024
+        var currentDate = moment().format("YYYY-MM-DD");
+        var currentYear =currentDate.split("-")[0];
+        var currentMonth =currentDate.split("-")[1];
+        var currentDay =currentDate.split("-")[2];
+        if($("#liveGraph").is(":checked")){
+            $('#diagJahr').val(currentYear).prop('selected', true);    
+            $('#diagMonat').val(currentMonth).prop('selected', true);    
+            $('#diagTag').val(currentDay).prop('selected', true);
+            sessionStorage.setItem("livegraph", 1);
+            $('#endeWochen').val(moment().weekYear() + "-W" + moment().week());
+            $('#bisDiag').datepicker('setDate', 'today');
+            $('#diagJahr, #diagMonat, #diagTag').prop('disabled', true);   
+        }else{
+            $('#diagJahr').val(currentYear).prop('selected', true);    
+            $('#diagMonat').prop('selectedIndex',0);    
+            $('#diagTag').prop('selectedIndex',0);
+            sessionStorage.setItem("livegraph", 0);
+            $('#endeWochen').val('');
+            $('#bisDiag').datepicker('setDate', null);
+            $('#diagJahr, #diagMonat, #diagTag').prop('disabled', false);
+        }
     });
     $("#startWochen, #endeWochen").on('change',function () {
         startWochenNumber = $("#startWochen").val();
@@ -8221,6 +8244,52 @@ $('#dashboard').on('click', function(){
     else{
         window.open('/dashboard','_self');
     }
+});
+$("#liveGraph").on("click", function() {
+        var currentDate = moment().format("YYYY-MM-DD");
+        var currentYear =currentDate.split("-")[0];
+        var currentMonth =currentDate.split("-")[1];
+        var currentDay =currentDate.split("-")[2];
+        if($(this).is(":checked")){
+            $('#diagJahr').val(currentYear).prop('selected', true);    
+            $('#diagMonat').val(currentMonth).prop('selected', true);    
+            $('#diagTag').val(currentDay).prop('selected', true);
+            sessionStorage.setItem("livegraph", 1);
+            $('#endeWochen').val(moment().weekYear() + "-W" + moment().week());
+            $('#bisDiag').datepicker('setDate', 'today');
+            $('#diagJahr, #diagMonat, #diagTag').prop('disabled', true);   
+        }else{
+            $('#diagJahr').val(currentYear).prop('selected', true);    
+            $('#diagMonat').prop('selectedIndex',0);    
+            $('#diagTag').prop('selectedIndex',0);
+            sessionStorage.setItem("livegraph", 0);
+            $('#endeWochen').val('');
+            $('#bisDiag').datepicker('setDate', null);
+            $('#diagJahr, #diagMonat, #diagTag').prop('disabled', false);
+        }
+});
+$("#liveGraph2").on("click", function() {
+        var currentDate = moment().format("YYYY-MM-DD");
+        var currentYear =currentDate.split("-")[0];
+        var currentMonth =currentDate.split("-")[1];
+        var currentDay =currentDate.split("-")[2];
+        if($(this).is(":checked")){
+            $('#year1Diag').val(currentYear).prop('selected', true);        
+            $('#month1Diag').val(currentMonth).prop('selected', true);    
+            $('#day1Diag').val(currentDay).prop('selected', true);
+            sessionStorage.setItem("livegraph", 1);
+            $('#endeWochen1').val(moment().weekYear() + "-W" + moment().week());
+            $('#bisDiag1').datepicker('setDate', 'today');
+            $('#year1Diag, #month1Diag, #day1Diag').prop('disabled', true);    
+        }else{
+            $('#year1Diag').val(currentYear).prop('selected', true);    
+            $('#month1Diag').prop('selectedIndex',0);    
+            $('#day1Diag').prop('selectedIndex',0);
+            sessionStorage.setItem("livegraph", 0);
+            $('#endeWochen1').val('');
+            $('#bisDiag1').datepicker('setDate', null);
+            $('#year1Diag, #month1Diag, #day1Diag').prop('disabled', false);
+        }
 });
 $(document).on('click', 'input[name="activeEngine"]', function() { 
     $('input[type="checkbox"]').prop('checked', false);    

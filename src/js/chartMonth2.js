@@ -255,6 +255,7 @@ $("#btnSaveOk").click(function() {
     var month2 = month_2;
     var month3 = month_3;
     var chartType = sessionStorage.getItem("chartType");
+    var liveGraph = sessionStorage.getItem("livegraph");
     var name = $("#name").val();
     var beschreibung = $("#beschreibungSave").val();
     var mstID = sessionStorage.getItem("mstID_1");
@@ -268,6 +269,7 @@ $("#btnSaveOk").click(function() {
         "month_3": month3,
         "nameDB": nameDB,
         "chartType": chartType,
+        "liveGraph": liveGraph,
         "name": name,
         "mstID": mstID,
         "nameMst": nameMst

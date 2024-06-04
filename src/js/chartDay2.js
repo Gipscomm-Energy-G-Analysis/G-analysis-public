@@ -263,6 +263,7 @@ $("#btnSaveOk").click(function() {
     var day2 = day_2;
     var day3 = day_3;
     var chartType = sessionStorage.getItem("chartType");
+    var liveGraph = sessionStorage.getItem("livegraph");
     var name = $("#name").val();
     var beschreibung = $("#beschreibungSave").val();
     var mstID = sessionStorage.getItem("mstID_1");
@@ -280,6 +281,7 @@ $("#btnSaveOk").click(function() {
         "day_3": day3,
         "nameDB": nameDB,
         "chartType": chartType,
+        "liveGraph": liveGraph,
         "name": name,
         "mstID": mstID,
         "nameMst": nameMst

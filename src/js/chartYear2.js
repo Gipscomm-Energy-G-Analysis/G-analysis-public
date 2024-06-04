@@ -246,6 +246,7 @@ $("#btnSaveOk").click(function() {
     var year2 = year_2;
     var year3 = year_3;
     var chartType = sessionStorage.getItem("chartType");
+    var liveGraph = sessionStorage.getItem("livegraph");
     var name = $("#name").val();
     var beschreibung = $("#beschreibungSave").val();
     var mstID = sessionStorage.getItem("mstID_1");
@@ -256,6 +257,7 @@ $("#btnSaveOk").click(function() {
         "year_3": year3,
         "nameDB": nameDB,
         "chartType": chartType,
+        "liveGraph": liveGraph,
         "name": name,
         "mstID": mstID,
         "nameMst": nameMst

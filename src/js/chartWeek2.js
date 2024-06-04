@@ -269,6 +269,7 @@ $("#btnSaveOk").click(function () {
     var startdate3 = sessionStorage.getItem("startdate3");
     var enddate3 = sessionStorage.getItem("enddate3");
     var chartType = sessionStorage.getItem("chartType");
+    var liveGraph = sessionStorage.getItem("livegraph");
     var name = $("#name").val();
     var beschreibung = $("#beschreibungSave").val();
     var mstID_1 = sessionStorage.getItem("mstID_1");
@@ -282,6 +283,7 @@ $("#btnSaveOk").click(function () {
         "endWeekDate3": enddate3,
         "nameDB": nameDB,
         "chartType": chartType,
+        "liveGraph": liveGraph,
         "name": name,
         "mstID_1": mstID_1,
         "nameMst": nameMst1

@@ -1,10 +1,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet" href="https://g-analysis.com/dist/css/jquery.dataTables.min.css"/>
+<link type="text/css" rel="stylesheet" href="https://g-analysis.com/dist/css/buttons.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- 2024 start graph popup files -->
 <script type="text/javascript" src="https://g-analysis.com/dist/js/bluebird.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/ej.web.all.min.js" defer></script>
+<script type="text/javascript" src="https://g-analysis.com/dist/js/jquery.dataTables.min.js" defer></script>
+<!-- <script type="text/javascript" src="https://g-analysis.com/dist/js/dataTables.buttons.min.js" defer></script> -->
 <script type="text/javascript" src="https://g-analysis.com/src/js/fpCore.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/src/js/fpChart2.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/DataMachine.min.js" defer></script>
@@ -262,6 +266,52 @@
                       <select class="form-control form-control-sm text-dark save_graph_chart" id="save_graph_chart">
                         <option value="" disabled selected>Select Graph</option>
                       </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="graph_table_div" style="display:none;">
+                      <label for="graph_table_chart" class="text-mute">Graph Type</label>
+                      <select class="form-control form-control-sm text-dark graph_table_chart" id="graph_table_chart">
+                        <option value="graph" >Graph</option>
+                        <option value="table" >Table</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="measurement_point_div" style="display:none;">
+                      <label for="measurement_point_chart" class="text-mute">Measurement Point</label>
+                      <select class="form-control form-control-sm text-dark measurement_table_option measurement_point_chart" id="measurement_point_chart">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="measurement_point_year_div" style="display:none;">
+                      <label for="measurement_point_year" class="text-mute">Year</label>
+                      <select class="form-control form-control-sm text-dark measurement_table_option knz_option measurement_point_year" id="measurement_point_year">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="auto_refresh_div" style="display:none;">
+                      <label for="auto_refresh_hourly" class="text-mute">Auto Refresh</label>
+                      <select class="form-control form-control-sm text-dark auto_refresh_hourly" id="auto_refresh_hourly">
+                        <option value="1" >1 Hour</option>
+                        <option value="2" >2 Hour</option>
+                        <option value="3" >3 Hour</option>
+                        <option value="4" >4 Hour</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2 isLiveGraph" id="isLiveGraph" style="display:none; top: 30px;">
+                      <div class="form-check form-check-primary">
+                        <label class="form-check-label">
+                        Live Graph
+                          <input type="checkbox" class="text-mute form-check-input" id="is_live_graph" name="islive" value="0">  
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group col-md-2" id="newGraph" style="display:none; top: 22px;">
+                      <div class="form-check form-check-primary">
+                        <a href="javascript:void(0);" id="mstVerglMenu" class="dashboard_sub_menu_1 dashboard_menu_click">
+                        <input type="button" id="creategraph" class="btn btn-sm btn-success" value="Create New Graph"></a> 
+                      </div>
                     </div>
 
                     <div class="form-group col-md-2" id="time_interval_div">

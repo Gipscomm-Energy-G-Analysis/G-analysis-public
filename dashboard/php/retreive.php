@@ -617,7 +617,8 @@ class dashboardController
             global $conn;
             $username = $_SESSION['username'];
             $_SESSION['nameDB'] = isset($_POST['nameDB']) ? $_POST['nameDB'] : null;
-            $selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
+            //$selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
+            $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' order by tableFormat.priority asc ";
             $dataResult = queryDB($conn, $selectQuery, "read");
             $records['data'] = $dataResult;
             echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -1701,14 +1702,19 @@ class dashboardController
                                     <div class='card card-border tile_border'>
                                         <div class='card-body'>
                                             <div id='' class=''>
+                                                <div id='tile_loader_div' style='display: none'>
+                                                    <img src='images/loader_dashboard.gif' id='tile_loader_image'>
+                                                </div>
                                                 <div class='action-modal-button-div'>
                                                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
                                                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal' style='margin:0px;'>$measurement_title</p> 
-                                                <div id='container' style='width: 430px; height: 260px;'></div>                                           
+                                                <div id='container' style='width: 430px; height: 260px;'></div>
+                                                <div class='tableGroup'>
+                                                                                               
                                             </div>
-                                            
+                                            </div>
                                             
                                         </div>
                                     </div>
@@ -3183,7 +3189,8 @@ class dashboardController
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
-            $queryGraph = "SELECT * from tableFormat where tile_data_type ='Graph' AND id = '$id' AND username = '$username'  ";
+            //$queryGraph = "SELECT * from tableFormat where tile_data_type ='Graph' AND id = '$id' AND username = '$username'  ";
+            $queryGraph = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.tile_data_type ='Graph' AND tableFormat.id = '$id' AND tableFormat.username = '$username' ";
             $resultGraph = queryDB($conn, $queryGraph, "read");
             if ($resultGraph != null && count($resultGraph) > 0) {
                 //for ($i = 0; $i < $total_result; $i++) {
@@ -3195,12 +3202,62 @@ class dashboardController
                                     <div class='card card-border tile_border'>
                                         <div class='card-body'>
                                             <div id='' class=''>
+                                                <div id='tile_loader_div' style='display: none'>
+                                                    <img src='images/loader_dashboard.gif' id='tile_loader_image'>
+                                                </div>
                                                 <div class='action-modal-button-div'>
                                                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='Measurement' data-i-value ='$id' style='height: 17px; width: 17px; margin-right: 5px;'>
                                                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='Measurement' style='height: 17px; width: 17px;'>
                                                 </div>
                                                 <p class='card-title text-md-center text-xl-left' id='measurement_tile_heading_modal' style='margin:0px;'>$tile_title</p> 
-                                                <div id='container' style='width: 430px; height: 260px;'></div>                                           
+                                                <div id='container' style='width: 430px; height: 260px;'></div>
+                                                                                            <div class='tableGroup'>
+                                                <div id='table-chart-data-container_1'>
+                                                    <label style='font-size: 14px;'>Summe-Monat: </label>
+                                                    <label id='consumption-year_1' style='font-size: 14px;'></label>
+                                                    <table id='tblChartData_1' style='font-size: 9px;' class='stripe hover row-border compact dt-left custom'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Messstelle</th>
+                                                                <th>Datum</th>
+                                                                <th>Wert[kWh]</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>    
+                                                    </table>
+                                                </div>
+                                                <div id='table-chart-data-container_2'>
+                                                    <label style='font-size: 14px;'>Summe-Monat: </label>
+                                                    <label id='consumption-year_2' style='font-size: 14px;'></label>
+                                                    <table id='tblChartData_2' style='font-size: 9px;' class='stripe hover row-border compact dt-left custom'>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Messstelle</th>
+                                                                <th>Datum</th>
+                                                                <th>Wert[kWh]</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div id='table-chart-data-container_3'>
+                                                    <label style='font-size: 14px;'>Summe-Monat: </label>
+                                                    <label id='consumption-year_3' style='font-size: 14px;'></label>
+                                                    <table id='tblChartData_3' style='font-size: 9px;' class='stripe hover row-border compact dt-left custom'>
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Messstelle</th>
+                                                                    <th>Datum</th>
+                                                                    <th>Wert[kWh]</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                    </table>
+                                                </div>                                           
+                                            </div>                                           
                                             </div>
                                             
                                             
@@ -10690,6 +10747,26 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+
+   public function getStaticGraphCount()
+    {
+        try {
+            global $conn;
+            $username = $_POST['username'];
+            $nameDB = $_POST['nameDB'];
+            $queryStaticGraphCount = "Select * FROM tableFormat where username = '$username' AND live_graph = '0' AND type ='Graph'";
+            $queryStaticGraphCount = queryDB(connectToDB((string)$nameDB), (string)$queryStaticGraphCount, "read");
+            if(!isset($queryStaticGraphCount['error'])){
+                $queryStaticGraphCount=count($queryStaticGraphCount);
+            }else{
+                $queryStaticGraphCount=0;
+            }
+            return $queryStaticGraphCount;
+            die;
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+    }    
 
     public function storeDBValueSession()
     {

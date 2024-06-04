@@ -450,10 +450,14 @@ class dashboardControllerOperations {
             $outside_chart_display = $_POST['outside_chart_display'];
             $chart_outer_table_limit_column = $_POST['chart_outer_table_limit_column'];
             $saved_graph_id = isset($_POST['saved_graph_id']) ? $_POST['saved_graph_id'] : '';
+            $live_graph = isset($_POST['live_graph']) ? $_POST['live_graph'] : '';
+            $graph_table_option = isset($_POST['graph_table_option']) ? $_POST['graph_table_option'] : '';
+            $mst_table_option = isset($_POST['mst_table_option']) ? $_POST['mst_table_option'] : '';
+            $auto_refresh = isset($_POST['auto_refresh']) ? $_POST['auto_refresh'] : '';
 
 
-            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_filter,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,saved_graph_id ) ";
-            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_filter','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$saved_graph_id') ";
+            $insertQuery = "INSERT into tableFormat (type,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,mst_id,chart_filter,chart_type,chart_time_interval,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,prd_anlagen_config_id,saved_graph_id,live_graph,graph_table_option,mst_table_option,auto_refresh ) ";
+            $insertQuery .= "VALUES ('$type','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$mst_id','$chart_filter','$chart_type','$chart_time_interval',$expand_view,$outside_chart_checkbox,'$outside_chart_input_height','$outside_chart_input_width','$outside_chart_display','$chart_outer_table_limit_column','$analgen_config_id','$saved_graph_id','$live_graph','$graph_table_option','$mst_table_option','$auto_refresh') ";
 
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
@@ -744,12 +748,16 @@ class dashboardControllerOperations {
             $input_height = $_POST['input_height'];
             $input_width = $_POST['input_width'];
             $saved_graph_id = $_POST['saved_graph_id'];
+            $live_graph = $_POST['live_graph'];
+            $graph_table_option = isset($_POST['graph_table_option']) ? $_POST['graph_table_option'] : '';
+            $mst_table_option = isset($_POST['mst_table_option']) ? $_POST['mst_table_option'] : '';
+            $auto_refresh = isset($_POST['auto_refresh']) ? $_POST['auto_refresh'] : '';
             $record_type_of_tile = $_POST['record_type_of_tile'];
             // $type_data_tile = $_POST['type_data_tile'];
             $type = $_POST['type'];
             $expand_view = $_POST['expand_view'];
 
-            $updateQuery = "UPDATE tableFormat  set type = '$type',tile_title = '$title',tile_html = '$html',height='$height',width='$width' ,input_height='$input_height' ,input_width = '$input_width' ,saved_graph_id = '$saved_graph_id', tile_record_type = '$record_type_of_tile' ,expand_view = $expand_view";
+            $updateQuery = "UPDATE tableFormat  set type = '$type',tile_title = '$title',tile_html = '$html',height='$height',width='$width' ,input_height='$input_height' ,input_width = '$input_width' ,saved_graph_id = '$saved_graph_id',live_graph = '$live_graph', tile_record_type = '$record_type_of_tile' ,expand_view = $expand_view,graph_table_option = '$graph_table_option',mst_table_option = '$mst_table_option',auto_refresh = '$auto_refresh'";
             $updateQuery .= "WHERE id = $id AND username = '$username' ";
             $updateRecord = queryDB($conn, $updateQuery, "write");
             if($updateQuery){

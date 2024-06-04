@@ -1,3 +1,49 @@
+.tableGroup #tblChartData_1_wrapper, .tableGroup #tblChartData_2_wrapper, .tableGroup #tblChartData_3_wrapper {
+    font-size: 9px;
+}
+#tblChartData_1_wrapper #tblChartData_1_info, #tblChartData_2_wrapper #tblChartData_2_info, #tblChartData_3_wrapper #tblChartData_3_info {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+#dashboard_count_div_tile #tblChartData_1, #dashboard_count_div_tile #tblChartData_2, #dashboard_count_div_tile #tblChartData_3 {
+    margin-left: 0px;
+    margin-top: 0px;
+}
+#tile_loader_div {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 200px;
+    height: 200px;
+    z-index: 1;
+}
+#tile_loader_image {
+    width: 30%;
+}
+.refreshTile {
+    color: #fff;
+    background-color: #71c016;
+    border-color: #71c016;
+    border-radius: 8px;
+    margin-right: 5px;
+    box-shadow: none;
+    border-style: none;
+    font-size: 12px;
+    padding: 2px 6px 2px 6px;
+}
+.autorefresh {
+    margin-right: 5px;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 2px 6px 2px 6px;
+    margin-bottom: 0px;
+    border-radius: 8px;
+    background-color: #71c016;
+    font-size: 12px;
+}
+.graphhide .e-datavisualization-chart {
+    display: none;
+}
 .graph .customgraph {
     padding-left: 25px;
     padding-top: 15px;
@@ -828,7 +874,12 @@ i.angle-down-diagramme-main {
 .cursor_pointer{
     cursor: pointer;
 }
-
+.dashboard_chart_tiles .autorefresh {
+    display: none;
+}
+.dashboard_chart_tiles .refreshTile {
+    display: none;
+}
 .dashboard_chart_tiles .edit_btn_tile_chart{
     display: none;
 }

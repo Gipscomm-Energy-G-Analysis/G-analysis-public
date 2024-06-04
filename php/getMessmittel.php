@@ -43,7 +43,7 @@ if ( $id == "msmSuchen" || $id == "msmSuchenMstE" || $id == "msmSuchenMstB" ) {
 
 		    $record = queryDB( $conn, $query2, "read" ) ;
 
-		    $records1[ $i ][ "messstelleMsm" ] = count($record) > 0 ? $record[ 0 ][ "nameMSt" ] : "" ; // If the query2 doesn't return a record, an empty string is returned 01.03.2020
+		    $records1[ $i ][ "messstelleMsm" ] = count($record) > 0 ? !empty($record[ 0 ][ "nameMSt" ]) : "" ; // If the query2 doesn't return a record, an empty string is returned 01.03.2020
 
 		  }
 		  else {
