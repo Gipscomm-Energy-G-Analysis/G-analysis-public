@@ -2,7 +2,7 @@
 error_reporting(-1);
 ini_set ('display_errors', 'On');
 
-require '..\..\/php/DbOperations.php';
+require '../../php/DbOperations.php';
 
 $nameDB = $_POST['nameDB'];
 // $nameDB = 'g000_demo';
@@ -78,15 +78,18 @@ class dashboardControllerOperations {
             // echo $mst_id; die;
             // echo str_replace("total_records","",$html); die;
 
-
             
             $query_data_records = str_replace("'",'',$query_data_records);
             $query_max_val = str_replace("'",'',$query_max_val);
+        //   print_r($query_max_val);
 
         
             $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,energy_layer_model_name,energy_layer_filter,energy_layer_range,table_type,table_filter ) ";
+
             $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$expand_view',$outside_table_checkbox,'$outside_table_input_height','$outside_table_input_width','$outside_chart_display','$table_outer_table_limit_column','$name_val','$energy_layer_filter','$energy_layer_range','$table_type','$table_filter') ";
-            // echo $insertQuery; die;
+             //echo $insertQuery; 
+             //die;
+ //die('check query');
             $insertRecord = queryDB($conn, $insertQuery, "write");
 
             $selectMaxId = "SELECT MAX(id) as max_id from tableFormat ";

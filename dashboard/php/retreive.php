@@ -3,7 +3,7 @@
 error_reporting(-1);
 ini_set('display_errors', 'On');
 
-require '..\..\/php/DbOperations.php';
+require '../../php/DbOperations.php';
 
 $nameDB = isset($_POST['nameDB']) ? $_POST['nameDB'] : '';
 // $nameDB = 'g000_demo';
@@ -1156,6 +1156,7 @@ class dashboardController
         try {
             global $conn;
             $username = $_SESSION['username'];
+           
             $product_title =  $_POST['product_title'];
             $type =  $_POST['type'];
             $getResult =  "SELECT * from tableFormat Where (tile_data_type='table' OR tile_data_type='overall_count')  AND username = '$username' ";
@@ -5681,6 +5682,7 @@ class dashboardController
     //Get Records Product
     public function getNumberRecordsProduct()
     {
+
         try {
             global $conn;
             // $number_records = $_POST['number_records'];
@@ -5698,7 +5700,7 @@ class dashboardController
 
             // <----29-11-2021--
             $queryTotalRecord  = "SELECT t1.prd_id from produktionsAnlagenConfig as t1 ";
-            $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
+            $queryTotalRecord .= "where t1.iBdeType = 2 AND t1.prd_id != '0' ";
             $queryTotalRecord .= "GROUP BY t1.prd_id ";
             // --end-->
             $resultQuery = queryDB($conn, $queryTotalRecord, "read");
@@ -5743,7 +5745,7 @@ class dashboardController
             $query1 .= "ON Mt.prd_iD = t2.prd_ID ";
             $query1 .= "WHERE iBdePrdktConf_ID  IN ( ";
             $query1 .= "SELECT max(t1.iBdePrdktConf_ID) FROM produktionsAnlagenConfig as t1 ";
-            $query1 .= "where t1.iBdeType='1' AND t1.prd_id != '0' ";
+            $query1 .= "where t1.iBdeType='2' AND t1.prd_id != '0' ";
             $query1 .= "GROUP BY t1.prd_id ";
             $query1 .= "order by t1.prd_id desc ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
@@ -6197,7 +6199,7 @@ class dashboardController
             $queryTotalRecord .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $queryTotalRecord .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
             $queryTotalRecord .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $queryTotalRecord .= "where t1.iBdeType='1' ";
+            $queryTotalRecord .= "where t1.iBdeType='2' ";
             $queryTotalRecord .= "AND t1.prd_iD = '$prd_id' ";
             $queryTotalRecord .= "order by t1.iBdePrdktConf_ID desc ";
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
@@ -6240,13 +6242,15 @@ class dashboardController
             $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $query1 .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
             $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
+            $query1 .= "where t1.iBdeType='2' AND t1.prd_ID = '$prd_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo $query1; die;
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
+           //  echo json_encode($dataProduct); die('ssdws');
+
             $tr = $this->getAllProductClickTableHTML($dataProduct);
+         
             $th = $this->getAllProductClickTableHeaderHTML();
             $pagination_html = $this->getAllProductClickTablePagination($page_val, $pagesCount, $dataProduct, $prd_id);
             $records['product_html'] = $tr;
@@ -6333,7 +6337,7 @@ class dashboardController
             $queryMaxValue .= "t3 ";
             $queryMaxValue .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $queryMaxValue .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $queryMaxValue .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $queryMaxValue .= "where t1.iBdeType='2' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $queryMaxValue .= "order by t3.val $order_condition ";
             // $queryMaxValue .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
 
@@ -6361,7 +6365,7 @@ class dashboardController
             $query1 .= "t3 ";
             $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $query1 .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $query1 .= "where t1.iBdeType='2' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo $query1; die;
@@ -6441,6 +6445,7 @@ class dashboardController
 
     public function getAllProductClickTableHTML($dataProduct, $queryMaxVal = false)
     {
+
         try {
             // echo json_encode($dataProduct); die;
             $tr = '';
@@ -6452,6 +6457,7 @@ class dashboardController
             }
 
             if ($dataProduct != '' && count($dataProduct) > 0) {
+
                 foreach ($dataProduct as $key => $value) {
 
                     $class_val = '';
@@ -7781,11 +7787,12 @@ class dashboardController
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
                     $tbody .= "<tbody>";
                     foreach ($queryEnergyRecords as  $val1) {
+                      
                         $totalValue = $val1['value'] > 0 ? $val1['value'] / 4 : 0;
                         $totalValue = $this->convertValueCommaSeperated($totalValue);
                         $tbody .= "<tr tile_id='$id' mst_id='$mst_id'  class='energy_automatic_row_click'>
                         <td>" . $energy_measurement_text . "</td>
-                        <td>" . $val1['date']->format('Y-m-d') . "</td><td>" . $totalValue . "</td>
+                        <td>" . $val1['date'] . "</td><td>" . $totalValue . "</td>
                         </tr>";
                     }
                     $tbody .= "</tbody>";
