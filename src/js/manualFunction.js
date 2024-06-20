@@ -503,6 +503,7 @@ function intBdeIMwHistorieSpeichernPopUp() {
 
             });
             $("#intBdeIMwHistOk").on("click", function() {
+                alert('hit intBdeIMwHistOk');
                 $("#archiviertIntBdeIMw").val("true");
                 intBdeIMwHistOkSpeichernMethod();
                 interneMesswerteConfigSpeichernMethod();
@@ -665,6 +666,7 @@ function intBdeIMwHistOkSpeichernMethodPrdkt(){
     var endDate =dates[1];
     var iBdeType = $("input[name='BetriebsdatenFilter']:checked").val();
     $("#archiviertIntBdePrdktIMw").val('true');
+ //console.log(Object.keys(sessionStorage));
 
     $.ajax({
         type: "POST",
@@ -744,6 +746,8 @@ function intBdeIMwHistOkGetHistorie(){
 /*Get Produkte History*/
 /*new-mm-start*/
 function intBdeIMwHistOkGetHistoriePrdkt(){
+        //alert("saving prod");
+
     $.ajax({
         type: "POST",
         async: !0,

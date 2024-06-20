@@ -45,6 +45,7 @@ class dashboardControllerOperations {
     public function saveTableFormat(){
         try{
             global $conn;
+
             $username = $_SESSION['username']; 
             $queryData = $_REQUEST['query_data'];
             $number_records = $queryData['number_records']; 
@@ -56,8 +57,8 @@ class dashboardControllerOperations {
             $query_max_val = $queryData['queryMaxValue'];
             $title = $_REQUEST['title'];
             $html = $_POST['tile_html'];
-            $expand_view = isset($_POST['expand_view']) ? $_POST['expand_view'] : '' ;
-            $outside_table_checkbox =  isset($_POST['outside_table_checkbox']) ? $_POST['outside_table_checkbox'] : '';
+            $expand_view = isset($_POST['expand_view']) ? $_POST['expand_view'] : '0' ;
+            $outside_table_checkbox = isset($_POST['outside_table_checkbox']) ? $_POST['outside_table_checkbox'] : '0';
             $outside_table_input_height =  isset($_POST['outside_table_input_height']) ? $_POST['outside_table_input_height'] : '';
             $outside_table_input_width =  isset($_POST['outside_table_input_width']) ? $_POST['outside_table_input_width']: '';
             $outside_chart_display = isset($_POST['outside_chart_display']) ? $_POST['outside_chart_display']: '';
@@ -87,7 +88,7 @@ class dashboardControllerOperations {
             $insertQuery = "INSERT into tableFormat (number_records,pages_count,page_value,type,row_click,query_data_records,query_max_val,tile_title,tile_html,height,width,input_height,input_width,tile_record_type,tile_data_type,username,table_other,mst_id,expand_view,outside_tile_checkbox,outside_tile_input_height,outside_tile_input_width,outside_tile_chart_display,outer_table_column_limit,energy_layer_model_name,energy_layer_filter,energy_layer_range,table_type,table_filter ) ";
 
             $insertQuery .= "VALUES ($number_records,$pages_count,$page_value,'$type','$row_click','$query_data_records','$query_max_val','$title','$html','$height','$width','$input_height','$input_width','$record_type_of_tile','$type_data_tile','$username','$table_other', '$mst_id' ,'$expand_view',$outside_table_checkbox,'$outside_table_input_height','$outside_table_input_width','$outside_chart_display','$table_outer_table_limit_column','$name_val','$energy_layer_filter','$energy_layer_range','$table_type','$table_filter') ";
-             //echo $insertQuery; 
+           //  echo $insertQuery; 
              //die;
  //die('check query');
             $insertRecord = queryDB($conn, $insertQuery, "write");
@@ -362,8 +363,8 @@ class dashboardControllerOperations {
             $query_max_val = $queryData['queryMaxValue'];
             $title = $_REQUEST['title'];
             $html = $_POST['tile_html'];
-            $expand_view = isset($_POST['expand_view']) ? $_POST['expand_view'] : '' ;
-            $outside_table_checkbox =  isset($_POST['outside_table_checkbox']) ? $_POST['outside_table_checkbox'] : '';
+            $expand_view = isset($_POST['expand_view']) ? $_POST['expand_view'] : '0' ;
+            $outside_table_checkbox = isset($_POST['outside_table_checkbox']) ? $_POST['outside_table_checkbox'] : '0';
             $outside_table_input_height =  isset($_POST['outside_table_input_height']) ? $_POST['outside_table_input_height'] : '';
             $outside_table_input_width =  isset($_POST['outside_table_input_width']) ? $_POST['outside_table_input_width']: '';
             $outside_chart_display = isset($_POST['outside_chart_display']) ? $_POST['outside_chart_display']: '';

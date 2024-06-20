@@ -116,7 +116,7 @@ const scpCore =
                     () => {
                         throw new Error("\n\nfpCore.ajaxPost : \n-->\nThe arg for 'url' contains an empty string instead of a server path !\n\n")
                     } :
-                    console.log(`\n\nurl : ${url}\n\n`)
+                    //console.log(`\n\nurl : ${url}\n\n`)
 
                 containsEmptyFields(data) ?
                     () => {

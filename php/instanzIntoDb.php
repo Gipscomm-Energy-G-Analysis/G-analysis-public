@@ -3482,8 +3482,9 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         $endWeek ='';
     }
     //iBdePrdktConf_ID
-    if( $iBdeType == 1 ){
 
+    if( $iBdeType == 1 ){
+        echo 'if part:'.$iBdeType;
         $query="SELECT * FROM produktionsAnlagenConfig WHERE prd_id = '$prd_ID' AND anl_id = '$anl_ID' AND anl_col = '$anl_Col'";
         $records = queryDB($conn, $query, "read");
 
@@ -3498,6 +3499,8 @@ elseif($id == "interneBetriebsdatenProduktConfig") { /*04-03-2021 History save i
         }
     }
     else if ($iBdeType == 2){
+              echo 'else if part:'.$iBdeType;
+
         $query="SELECT * FROM produktionsAnlagenConfig WHERE mst_ID = '$mstID'";
         $records = queryDB($conn, $query, "read");
 

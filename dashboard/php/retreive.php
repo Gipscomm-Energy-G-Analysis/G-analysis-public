@@ -5700,7 +5700,7 @@ class dashboardController
 
             // <----29-11-2021--
             $queryTotalRecord  = "SELECT t1.prd_id from produktionsAnlagenConfig as t1 ";
-            $queryTotalRecord .= "where t1.iBdeType = 2 AND t1.prd_id != '0' ";
+            $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
             $queryTotalRecord .= "GROUP BY t1.prd_id ";
             // --end-->
             $resultQuery = queryDB($conn, $queryTotalRecord, "read");
@@ -5745,13 +5745,14 @@ class dashboardController
             $query1 .= "ON Mt.prd_iD = t2.prd_ID ";
             $query1 .= "WHERE iBdePrdktConf_ID  IN ( ";
             $query1 .= "SELECT max(t1.iBdePrdktConf_ID) FROM produktionsAnlagenConfig as t1 ";
-            $query1 .= "where t1.iBdeType='2' AND t1.prd_id != '0' ";
+            $query1 .= "where t1.iBdeType='1' AND t1.prd_id != '0' ";
             $query1 .= "GROUP BY t1.prd_id ";
             $query1 .= "order by t1.prd_id desc ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
             // --end--
+           // echo $query1;
             $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataProduct = [];
@@ -6199,7 +6200,7 @@ class dashboardController
             $queryTotalRecord .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $queryTotalRecord .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
             $queryTotalRecord .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $queryTotalRecord .= "where t1.iBdeType='2' ";
+            $queryTotalRecord .= "where t1.iBdeType='1' ";
             $queryTotalRecord .= "AND t1.prd_iD = '$prd_id' ";
             $queryTotalRecord .= "order by t1.iBdePrdktConf_ID desc ";
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
@@ -6242,7 +6243,7 @@ class dashboardController
             $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $query1 .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
             $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $query1 .= "where t1.iBdeType='2' AND t1.prd_ID = '$prd_id' ";
+            $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo $query1; die;
@@ -6337,7 +6338,7 @@ class dashboardController
             $queryMaxValue .= "t3 ";
             $queryMaxValue .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $queryMaxValue .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $queryMaxValue .= "where t1.iBdeType='2' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $queryMaxValue .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $queryMaxValue .= "order by t3.val $order_condition ";
             // $queryMaxValue .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
 
@@ -6365,7 +6366,7 @@ class dashboardController
             $query1 .= "t3 ";
             $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
             $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            $query1 .= "where t1.iBdeType='2' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
+            $query1 .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             // echo $query1; die;
