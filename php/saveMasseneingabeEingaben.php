@@ -27,7 +27,7 @@ if($modus == "save"){
 			}
 			$queryCheckEnabled="SELECT * FROM masseneingabeSucheIMw WHERE mst_ID = '$mstIDEnabled' AND on_date = '$dateEnabled' AND type = '$type' AND on_week = '$dateWk1'";
 		    $recordsCheckEnabled = queryDB($conn, $queryCheckEnabled, "read");
-		    if(count($recordsCheckEnabled) > 0){
+		    if(count($recordsCheckEnabled) > 0 && !$recordsCheckEnabled['error']){
 		    	 $queryEnabledUpdate = "UPDATE masseneingabeSucheIMw SET
 			      on_date = '$dateEnabled',on_week = '$dateWk1',val = '$textValEnabled' ";
 			      $queryEnabledUpdate .= "WHERE mst_ID = '$mstIDEnabled' ";
