@@ -51,6 +51,26 @@
       toastr.info('This sample position', 'Toast Position')
     });
 </script>
+<!-- Added by KP for tabs : 26th June,2024 Starts -->
+  <link rel="stylesheet" href= "//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"> 
+  <script src="//code.jquery.com/jquery-1.12.4.js"> </script> 
+  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"> </script> 
+  <style> 
+    #gfg { 
+    /*      width: 600px; */ 
+     text-align: justify; 
+    } 
+  </style> 
+  <script> 
+    $(document).ready(function () { 
+      $("#gfg").on('tabscreate', function () { 
+        //alert('Tabs create Event Triggered!'); 
+      }); 
+  
+      $("#gfg").tabs(); 
+    }); 
+  </script> 
+<!-- Added by KP for tabs : 26th June,2024 End -->
 <!-- partial -->
 <div class="main-panel" id="dashboard_main_div" style="display: none">
         <div class="content-wrapper">
@@ -92,13 +112,34 @@
           </div>
 
           <!-- 20-8-2021-- -->
-            <div class="dashboard-btn">
+           <!--  <div class="dashboard-btn">
                 <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</button>
 
                 <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</button>
 
-            </div>
+            </div> -->
 
+          <div id="gfg"> 
+            <ul> 
+              <li><a id = "gfg1_li" href="#gfg1" class="btn btn-success btn-sm mb-3">Graph</a></li> 
+              <li><a id = "gfg2_li" href="#gfg2" class="btn btn-success btn-sm mb-3">Table</a></li> 
+              <li><a type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</a></li> 
+              <li><a type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</a></li> 
+               
+            </ul> 
+  
+        <div id="gfg1" style = "display: none;"> 
+           Graph Data be loaded
+           
+        </div> 
+  
+        <div id="gfg2" style = "display: none;"> 
+           Table Data be loaded
+           
+        </div> 
+  
+       
+    </div> 
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
           <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->

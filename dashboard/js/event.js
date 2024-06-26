@@ -29,14 +29,79 @@ $(document).ready( function(){
     localStorage.removeItem('edit-i-value');
     // localStorage.removeItem('dashboard_tile_data');
     // --end-->
-    
+    function gettableformatData(formattype){
+        $('#gfg1').show();
+        $('#gfg2').hide();
+
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").show();
+        $(".graphhide").show();
+        countDashboard();
+        energy_consumed_five_days();
+        getTableFormatDashboard(formattype);
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+    }
+    $('#gfg1_li').on('click', function(){
+        $('#gfg1').show();
+        $('#gfg2').hide();
+
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").show();
+        $(".graphhide").show();
+        countDashboard();
+        energy_consumed_five_days();
+        getTableFormatDashboard('graph');
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+        
+    });
+     $('#gfg2_li').on('click', function(){
+        $('#gfg2').show();
+        $('#gfg1').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").show();
+        $(".graphhide").show();
+        countDashboard();
+        energy_consumed_five_days();
+        getTableFormatDashboard('table');
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+        
+    });
 
     $('.nav-item .sidebar_redirect,.nav-item .nav_bar_redirect').on('click', function(){
         var  id_val = $(this).attr('id');
         $('#help_video').get(0).play();    
         $('#help_video').get(0).pause();
         switch(id_val){
+
             case'dashboard_sidebar':
+
                 $('#charts_main_div').hide();
                 $('#dashboard_main_div').show();
                 $('#energy_table_main_div').hide();

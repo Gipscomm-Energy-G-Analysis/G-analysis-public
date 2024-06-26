@@ -925,7 +925,8 @@ function saveTableFormatEnergy(type){
 // --end-->
 
 // <---16-8-2021---
-function getTableFormatDashboard(){
+function getTableFormatDashboard(typeval){
+  console.log('funcion call',typeval);
   $('.dashboard_count_div').html('');
   $.ajax({
     type: "POST",
@@ -935,6 +936,7 @@ function getTableFormatDashboard(){
     data: {
         action: "getTableFormatDashboard",
         nameDB: $("#nameDashboardDB").val(),
+        type:  typeval,
     },
     fail: function() {
         alert("failed!!")

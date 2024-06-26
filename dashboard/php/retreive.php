@@ -613,12 +613,14 @@ class dashboardController
     // <---16-8-2021--
     function getTableFormatDashboard()
     {
+
         try {
             global $conn;
             $username = $_SESSION['username'];
+            $formattype = isset($_POST['type']) ? $_POST['type'] : 'graph';
             $_SESSION['nameDB'] = isset($_POST['nameDB']) ? $_POST['nameDB'] : null;
             //$selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
-            $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' order by tableFormat.priority asc ";
+            $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' AND graph_table_option = '".$formattype."' order by tableFormat.priority asc ";
             $dataResult = queryDB($conn, $selectQuery, "read");
             $records['data'] = $dataResult;
             echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
