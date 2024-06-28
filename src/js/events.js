@@ -7173,7 +7173,6 @@ $("#intBdeIMwSpeichern").click(function(){
     */
 /*new-mm-start 22-03-2021*/
 $("#intBdePrdktIMwSpeichern").click(function(){
-    alert('dd');
     var zeitintervallAnlPrdkt =$("#zeitintervallAnlPrdkt").val();
     var NoEndingAnlPrdkt =$("#anlPrdktIMwNoEnding").is(":checked");
     var validatePrdk = validateIntBdePrdktFrm(NoEndingAnlPrdkt,zeitintervallAnlPrdkt,'infosIntEnergiedaten',1);

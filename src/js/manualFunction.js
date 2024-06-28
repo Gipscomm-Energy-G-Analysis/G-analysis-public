@@ -503,7 +503,7 @@ function intBdeIMwHistorieSpeichernPopUp() {
 
             });
             $("#intBdeIMwHistOk").on("click", function() {
-                alert('hit intBdeIMwHistOk');
+                //alert('hit intBdeIMwHistOk');
                 $("#archiviertIntBdeIMw").val("true");
                 intBdeIMwHistOkSpeichernMethod();
                 interneMesswerteConfigSpeichernMethod();
