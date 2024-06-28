@@ -1242,9 +1242,9 @@ i.angle-down-diagramme-main {
 .expand_view_table_div{
     margin: auto 0;
 }
-select.form-control[multiple] {
+/*select.form-control[multiple] {
     height: 37px;
-}
+}*/
 #colr-transparent{
     background: transparent !important;
 }

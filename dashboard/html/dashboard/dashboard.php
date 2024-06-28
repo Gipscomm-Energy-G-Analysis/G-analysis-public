@@ -142,7 +142,8 @@
     </div> 
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
-          <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
+          <input type="button" class="btn btn-success bt
+          n-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
           <!-- --end-- -->
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -325,7 +326,7 @@
 
                     <div class="form-group col-md-2" id="measurement_point_year_div" style="display:none;">
                       <label for="measurement_point_year" class="text-mute">Year</label>
-                      <select class="form-control form-control-sm text-dark measurement_table_option knz_option measurement_point_year" id="measurement_point_year">
+                      <select class="form-control form-control-sm text-dark measurement_table_option knz_option measurement_point_year" id="measurement_point_year" multiple>
                       </select>
                     </div>
 
