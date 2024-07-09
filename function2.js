@@ -1508,6 +1508,7 @@ function getTableFormatDashboard(){
 
 
                 });
+                
                 $('#dashboard_count_div_tile').html(arHtml);
                 $('#dashboard_count_div_tile .stretch-card').addClass('hide_table_main');
                 

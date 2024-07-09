@@ -119,22 +119,27 @@
 
             </div> -->
 
-          <div id="gfg"> 
+          <div id="gfg" class="dash-tab"> 
             <ul> 
-              <li><a id = "gfg1_li" href="#gfg1" class="btn btn-success btn-sm mb-3">Graph</a></li> 
-              <li><a id = "gfg2_li" href="#gfg2" class="btn btn-success btn-sm mb-3">Table</a></li> 
+              <li><a id = "gfg1_li" href="#gfg1" data-value="Graph" class="btn btn-success btn-sm mb-3">Diagramm</a></li> 
+              <li><a id = "gfg2_li" href="#gfg2" data-value="table" class="btn btn-success btn-sm mb-3">Tabelle</a></li> 
+              <li><a id = "gfg3_li" href="#gfg3" data-value="chart" class="btn btn-success btn-sm mb-3">Wert</a></li> 
               <li><a type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</a></li> 
               <li><a type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</a></li> 
                
             </ul> 
   
         <div id="gfg1" style = "display: none;"> 
-           Graph Data be loaded
+          <span style = "display:none;"> Graphs Data be loaded </span>
            
         </div> 
   
         <div id="gfg2" style = "display: none;"> 
-           Table Data be loaded
+          <span style = "display:none;"> Tables Data be loaded</span>
+           
+        </div> 
+         <div id="gfg3" style = "display: none;"> 
+          <span style = "display:none;"> Charts Data be loaded
            
         </div> 
   
@@ -711,7 +716,8 @@
                           <th>Datum</th>
                           <th>Verbrauch</th>
                         </tr>
-                      </thead>
+                      </thead>I am sharing the Clockify credentials with you for verification. Please check them at your earliest convenience and let me know if everything is in order.
+
                       <tbody id="five_days_energy_consumed_table">
                       </tbody>
                     </table>

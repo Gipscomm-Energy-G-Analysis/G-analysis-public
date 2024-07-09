@@ -21373,3 +21373,29 @@ dl li {
 }
 
 /*# sourceMappingURL=maps/style.css.map */
+
+.dash-tab {
+ 
+  background-color: transparent !important;
+border: none !important;
+
+ 
+}
+  
+  .dash-tab .ui-tabs-nav{
+border: none !important;
+ padding: 0 !important;
+  }
+  .dash-tab .ui-tabs-nav ,   .dash-tab .ui-tabs-nav li ,  .dash-tab .ui-tabs-nav li.ui-state-default{
+    background: none;
+    border: none;
+  }
+  .dash-tab .ui-tabs-nav li a{
+margin: 0 !important;
+color: #fff !important;
+  }
+
+  .dash-tab .ui-tabs-nav .ui-tabs-active a.btn-success{
+    background-color: #396903 !important;
+    border-color: #396903 !important;
+  }

@@ -617,10 +617,10 @@ class dashboardController
         try {
             global $conn;
             $username = $_SESSION['username'];
-            $formattype = isset($_POST['type']) ? $_POST['type'] : 'graph';
+            $formattype = isset($_POST['type']) ? $_POST['type']: 'graph';
             $_SESSION['nameDB'] = isset($_POST['nameDB']) ? $_POST['nameDB'] : null;
             //$selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
-            $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' AND graph_table_option = '".$formattype."' order by tableFormat.priority asc ";
+            $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' AND tile_data_type = '".$formattype."' order by tableFormat.priority asc ";
             $dataResult = queryDB($conn, $selectQuery, "read");
             $records['data'] = $dataResult;
             echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
@@ -10744,7 +10744,8 @@ class dashboardController
             global $conn;
             $username = $_POST['username'];
             $nameDB = $_POST['nameDB'];
-            $queryTileCount = "Select * FROM tableFormat where username = '$username'";
+            $formattype = $_POST['formattype'];
+            $queryTileCount = "Select * FROM tableFormat where username = '$username' AND tile_data_type = '".$formattype."'";
             $queryTileCount = queryDB(connectToDB((string)$nameDB), (string)$queryTileCount, "read");
             if(!isset($queryTileCount['error'])){
                 $queryTileCount=count($queryTileCount);

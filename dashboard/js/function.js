@@ -15762,6 +15762,13 @@ function rowClickEnergyDashboardAutomatic(tile_id,mst_id,name_val,date_val){
 // --end--->
 // <----//08-09-2023--
 function dashboardTileCount(){
+  var listItems = $("#gfg ul li");
+  for (let li of listItems) {
+    if($(li).hasClass('ui-state-active')){
+      var formatType = $(li).find("a").attr('data-value');
+    }
+  }
+console.log('formatType',formatType);
   $.ajax({
     type: "POST",
     url: "php/retreive.php",
@@ -15771,15 +15778,17 @@ function dashboardTileCount(){
         action: "dashboardTileCount",
         username: sessionStorage.getItem("username"),
         nameDB: $("#nameDashboardDB").val(),
+        formattype:formatType,
     },
     fail: function() {
         alert("failed!!")
     },
     success: function(a) {
+      console.log('total count is:',a);
       if (a >= 16) {
-        toastr.warning('Maximum 16 tiles can be added!')
+        toastr.warning('Maximum 16 tiles can be added in'+ formatType+'!')
         $("#dashboard_add_tile").removeAttr('data-target');
-      }  
+      } 
     }
   });
 }
