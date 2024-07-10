@@ -988,6 +988,7 @@ $(document).ready( function(){
 
 
     $(document).on('click','#modal_open_button', function(){
+        alert('sdd');
         setTimeout(function () {
             if ($(".modal-backdrop").length > 1) {
                 $(".modal-backdrop").first().remove();
@@ -4348,6 +4349,7 @@ $(document).ready( function(){
         var savedGraphId = graphClass[1];
         getSavedGraph(savedGraphId);
     });
+
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {

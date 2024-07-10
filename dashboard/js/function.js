@@ -1255,6 +1255,7 @@ function getTableFormatDashboard(typeval){
               containerDiv.outerHTML = containerHtml; // Replace the container div with the new container HTML
               var newTile = temp.querySelector('body').innerHTML;
               value['tile_html']=newTile;
+             // console.log('sample:',value['tile_html']);
               if(value['gDia_ID']){
                 var name =value['name'];
                 var type =value['typ'];
