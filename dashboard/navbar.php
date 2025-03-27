@@ -139,6 +139,7 @@
                     <a href="javascript:void(0);" id="anl_Konfig_Menu" class="dashboard_menu_click">weitere Konfiguration</a>
                     <a href="javascript:void(0);" id="anl_Dok_Menu" class="dashboard_menu_click">Dokumente</a>
                     <a href="javascript:void(0);" id="anl_Hist_Menu" class="dashboard_menu_click">Historie</a>
+                    <a href="javascript:void(0);" id="channel_Menu" class="dashboard_menu_click">Channel</a>
                   </div>
 
                   <div class="column">
@@ -186,6 +187,11 @@
                     <h3>Ex. Rechnungen</h3>
                     <a href="javascript:void(0);" id="extRngMenu" class="dashboard_menu_click">Rechnungen</a>
                     <a href="javascript:void(0);" id="eRngVergleichMenu" class="dashboard_menu_click">Rechnungsvergleich</a>
+                  </div>
+
+                  <div class="column">
+                    <a href="/import-manuell-data.html" class="dashboard_menu_click">Import Manuell Data</a>
+                    <a href="/import-manuell-15min-data.html" class="dashboard_menu_click">Import 15min Data</a>
                   </div>
 
                 </div>

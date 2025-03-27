@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <title>G-Analysis</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.png">
+    <!-- Bootstrap Scripts-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link id="mainStyle" type="text/css" rel="stylesheet" href="src/css/main_style.css" media="all">
+    <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.min.css">
+    <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.structure.min.css">
+    <link type="text/css" rel="stylesheet" href="dist/js/jqueryui/jquery-ui.theme.css">
+    <link type="text/css" rel="stylesheet" href="dist/js/mathquill/mathquill.css" />
+    <link type="text/css" rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
+    <link type="text/css" rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
+    <link type="text/css" rel="stylesheet" href="dist/css/colReorder.dataTables.min.css">
+    <link href="dist/css/pace-theme.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="dashboard/images/G-Analysis/favicon.png" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+    // Function to download a CSV template
+    function downloadCSVTemplate() {
+        var templateName="template.csv";
+        let csvTemplate = [];
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvTemplate = [
+            ["Channel Name","Time Server","Power","DeviceID"],
+            ["Maschine 80 L1","\"2024-12-24  00:30:00\"","7415.50","401"],
+            ["Saeule Maschine 80 L1","\"2024-12-25  00:15:00\"","7215.50","402"],
+            ["F19-F21 Sortimat 1  L1","\"2024-12-26  02:00:30\"","7015.50","403"],
+            ["Kompressor 4 L1","\"2024-12-27  10:00:15\"","7515.50","404"],
+            ["Maschine 606 L1","\"2024-12-28  12:15:00\"","7315.50","405"]
+        ];
+        csvTemplate.forEach(rowArray => {
+            let row = rowArray.join(",");
+            csvContent += row + "\r\n";
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", templateName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    //start code add radio button option check or uncheck
+    document.addEventListener("DOMContentLoaded", function () {
+        // Set "Kw/h" as the default checked radio button
+        document.getElementById("KWH").checked = true;
+    });
+    //end code add radio button option check or uncheck    
+    $(document).ready(function(){
+        ////Download Channel List
+        $('#downloadChannelList').on('click', function() {
+            // Use jQuery to send an AJAX request
+            $.ajax({
+                type: "POST",
+                async: !0,
+                url: "php/getChannelList15min.php",
+                data: {
+                    nameDB: sessionStorage.getItem("nameDB")
+                },
+                success: function(data) {
+                    // Create a temporary link to download the file
+                    const blob = new Blob([data], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'channel-list.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                },
+            })
+        });
+        ////Upload Day Form csv file records
+        $('#csvUpload15minForm').on('submit', function(e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Check if a file is selected
+            let fileInput = $('#csvUpload15minForm #csvFile')[0];
+            if (fileInput.files.length === 0) {
+                alert("Please select a file.");
+                return;
+            }
+            // Create FormData object to hold the CSV file
+            let formData = new FormData(this);
+            formData.append('nameDB', sessionStorage.getItem("nameDB"));
+            formData.append('position', sessionStorage.getItem("position"));
+            formData.append('username', sessionStorage.getItem("username"));
+            $('#tile_loader_div').show();
+            // Use AJAX to send the file to the server
+            $.ajax({
+                url: 'php/import-manuell-15min-data.php', // Server-side script to process the file
+                type: 'POST',
+                data: formData,
+                contentType: false,  // Important for file uploads
+                processData: false,  // Important for file uploads
+                success: function(response) {
+                    $('#tile_loader_div').hide();
+                    $('#csvUpload15minForm').trigger("reset");
+                    document.getElementById("KWH").checked = true;
+                    $('#result').html(response); // Display success message or errors
+                },
+                error: function(err) {
+                    console.error("Error uploading CSV", err);
+                    $('#result').html("<p>Error uploading CSV file.</p>");
+                }
+            });
+        });
+    });
+    </script>    
+</head>
+<style>
+#import-data-section {
+    margin-top: 5%;
+    height: 500px;
+    background-color: #b9c0c7;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    border: 1px solid #b9c0c7;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #333;
+    padding: 10px 1px;
+}
+.title-bar {
+    background-color: #6b6f73;
+    color: #fff;
+    padding: 5px 10px;
+    margin-top: 8px;
+}
+.custom-button {
+    background-color: #71c016;
+    border: 1px solid #71c016;
+    color: #fff;
+    padding: 5px 8px 5px 8px;
+    border-radius: 4px;
+    margin: 0px 2px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+}
+.custom-button:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.left-sec {
+    flex: 1;
+}
+.right-sec {
+    /* flex: 1; */
+    text-align: right;
+}
+#import-data-inner-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+.tab-section {
+    margin: 30px 30px 30px 30px;
+}
+.form-sec {
+    padding: 30px 50px 50px 50px;
+}
+.form-content {
+    padding: 20px;
+    background-color: #ccc;
+    border: 1px solid #ccc;
+    border-radius: 0 5px 5px 5px;
+}
+#tile_loader_image {
+    width: 30%;
+}
+#tile_loader_div {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    width: 200px;
+    height: 200px;
+    z-index: 1;
+}
+</style>
+<body>
+    <div id="import-data-section">
+        <div id="import-data-inner-section">
+            <div class="left-sec">
+                <a href="/dashboard/" class="custom-button">Back To Dashboard</a>
+            </div>
+            <div class="right-sec">
+                <!-- Download CSV List buttons-->
+                <button class="custom-button" id="downloadChannelList">Download Channel List</button>
+                <button onclick="downloadCSVTemplate()" class="custom-button">Download CSV Template</button>
+            </div>
+        </div>
+            <div class="title-bar">Import Manuell 15min Data</div>
+            <div class="tab-section">
+                <!-- form Content -->
+                <div id="form-section" class="form-content">
+                    <h3>Upload 15min Data File</h3>
+                    <div id="tile_loader_div" style="display: none;">
+                        <img src="/dashboard/images/loader_dashboard.gif" id="tile_loader_image">
+                    </div>
+                    <!-- Upload CSV File -->
+                    <div class="form-sec">
+                        <form id="csvUpload15minForm" enctype="multipart/form-data">
+                            <label>
+                                <input type="radio" id="KWH" name="powerUnit" value="KWH" class="radio-option" style="height:16px; width:16px; vertical-align: middle;"> Kw/h
+                            </label>
+                            <label>
+                                <input type="radio" id="KW" name="powerUnit" value="KW" class="radio-option" style="height:16px; width:16px; vertical-align: middle;"> Kilowatt
+                            </label>
+                            <br><br>
+                            <label for="csvFile">Select file:</label>
+                            <input type="file" id="csvFile" name="csvFile" accept=".csv,.xls,.xlsx" required>
+                            <button type="submit" class="custom-button">Upload</button>
+                        </form>
+                        <p style="font-size: 12px;">Note:- Please upload only file in CSV, XLS or XLSX format.</p>
+                        <!-- Result Message -->
+                        <div id="result"></div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+
+</html>

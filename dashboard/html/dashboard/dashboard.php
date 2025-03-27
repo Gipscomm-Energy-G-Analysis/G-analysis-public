@@ -16,7 +16,7 @@
 <script type="text/javascript" src="https://g-analysis.com/dist/js/fpGeometry.min.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/src/js/formula.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/math.min.js" defer></script>
-<script type="text/javascript" src="https://g-analysis.com/dashboard/js/graph-chart-popup.js" defer></script>
+<script type="text/javascript" src="/dashboard/js/graph-chart-popup.js" defer></script>
 <!-- end graph popup files -->
 <script type="text/javascript">
   // Default Configuration
@@ -111,7 +111,7 @@
             </div>
           </div>
 
-          <!-- 20-8-2021-- -->
+            <!-- 20-8-2021-- -->
            <!--  <div class="dashboard-btn">
                 <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</button>
 
@@ -123,10 +123,14 @@
             <ul> 
               <li><a id = "gfg1_li" href="#gfg1" data-value="Graph" class="btn btn-success btn-sm mb-3">Diagramm</a></li> 
               <li><a id = "gfg2_li" href="#gfg2" data-value="table" class="btn btn-success btn-sm mb-3">Tabelle</a></li> 
-              <li><a id = "gfg3_li" href="#gfg3" data-value="chart" class="btn btn-success btn-sm mb-3">Wert</a></li> 
+              <li><a id = "gfg3_li" href="#gfg3" data-value="chart" class="btn btn-success btn-sm mb-3">Wert</a></li>
               <li><a type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</a></li> 
               <li><a type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</a></li> 
-               
+              <li><a id = "gfg4_li" href="#gfg4" data-value="messstellen" class="btn btn-success btn-sm mb-3">Messstellen</a></li> 
+              <li><a id = "gfg5_li" href="#gfg5" data-value="zeitvergleich" class="btn btn-success btn-sm mb-3">Zeitvergleich</a></li> 
+              <li><a id = "gfg6_li" href="#gfg6" data-value="kennzahlen" class="btn btn-success btn-sm mb-3">Kennzahlen</a></li>
+              <li><a id = "gfg7_li" href="#gfg7" data-value="manuell" class="btn btn-success btn-sm mb-3">Manuell Data</a></li>
+              <li><a id = "gfg8_li" href="#gfg8" data-value="manuell15min" class="btn btn-success btn-sm mb-3">Manuell 15min Data</a></li>   
             </ul> 
   
         <div id="gfg1" style = "display: none;"> 
@@ -138,17 +142,198 @@
           <span style = "display:none;"> Tables Data be loaded</span>
            
         </div> 
-         <div id="gfg3" style = "display: none;"> 
-          <span style = "display:none;"> Charts Data be loaded
+        <div id="gfg3" style = "display: none;"> 
+          <span style = "display:none;"> Charts Data be loaded</span>
+           
+        </div>
+        <div id="gfg4" style = "display: none;"> 
+          <!--Gespeicherte Diagrammliste-->
+          <div class="savedGraphSection">
+            <div id="messstellen_tile_loader_div" style = "display: none;">
+              <img src="images/loader_dashboard.gif" id="tile_loader_image">
+            </div>
+            <div id="messstellenSavedGraphContainer">
+              <div class="bartitle">Messstellen Saved Graph</div>
+                <table id="messstellenDiagrammeListe" class="stripe hover row-border compact dt-left custom"
+                    style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                    <thead>
+                        <tr>
+                            <th>gDia_ID</th>
+                            <th>Bezeichnung</th>
+                            <th>Beschreibung</th>
+                            <th>Typ</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+          </div>
+        </div> 
+        <div id="gfg5" style = "display: none;"> 
+          <!--Gespeicherte Diagrammliste-->
+          <div class="savedGraphSection">
+            <div id="zeitvergleich_tile_loader_div" style = "display: none;">
+              <img src="images/loader_dashboard.gif" id="tile_loader_image">
+            </div>
+            <div id="zeitvergleichSavedGraphContainer">
+              <div class="bartitle">Zeitvergleich Saved Graph</div>
+                <table id="zeitvergleichDiagrammeListe" class="stripe hover row-border compact dt-left custom"
+                    style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                    <thead>
+                        <tr>
+                            <th>gDia_ID</th>
+                            <th>Bezeichnung</th>
+                            <th>Beschreibung</th>
+                            <th>Typ</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+          </div>
            
         </div> 
-  
+        <div id="gfg6" style = "display: none;">
+          <!--Gespeicherte Diagrammliste-->
+          <div class="savedGraphSection">
+            <div id="kennzahlen_tile_loader_div" style = "display: none;">
+              <img src="images/loader_dashboard.gif" id="tile_loader_image">
+            </div>
+            <div id="kennzahlenSavedGraphContainer">
+              <div class="bartitle">Kennzahlen Saved Graph</div>
+                <table id="kennzahlenDiagrammeListe" class="stripe hover row-border compact dt-left custom"
+                    style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                    <thead>
+                        <tr>
+                            <th>gDia_ID</th>
+                            <th>Bezeichnung</th>
+                            <th>Beschreibung</th>
+                            <th>Typ</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+          </div>
+           
+        </div>  
+        <div id="gfg7" style = "display: none;">
+          <!--Imported Manuell Data-->
+          <div class="importedManuellSection">
+            <div id="importedManuellDataContainer">
+              <div class="bartitle">Imported Manuell Data</div>
+              <div class="tab-section">
+                <!-- Tab Navigation -->
+                <div class="tab-container">
+                    <div class="tab active" data-target="tab1">Tage</div>
+                    <div class="tab" data-target="tab2">Stunden</div>
+                    <div class="tab" data-target="tab3">Monate</div>
+                    <div class="tab" data-target="tab4">Jahre</div>
+                </div>
+                <div id="tile_loader_div" style="display: none;">
+                    <img src="/dashboard/images/loader_dashboard.gif" id="tile_loader_image">
+                </div>
+                <!-- Tab Content -->
+                <div id="tab1" class="tab-content active">
+                  <table id="importManuellDataDayListe" class="stripe hover row-border compact dt-left custom"
+                      style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Channel Name</th>
+                              <th>MST Name</th>
+                              <th>Value</th>
+                              <th>Power</th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+                </div>
+                <div id="tab2" class="tab-content">
+                  <table id="importManuellDataHourListe" class="stripe hover row-border compact dt-left custom"
+                      style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Channel Name</th>
+                              <th>MST Name</th>
+                              <th>Value</th>
+                              <th>Power</th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+                </div>
+                <div id="tab3" class="tab-content">
+                  <table id="importManuellDataMonthListe" class="stripe hover row-border compact dt-left custom"
+                      style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Channel Name</th>
+                              <th>MST Name</th>
+                              <th>Value</th>
+                              <th>Power</th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+                </div>
+                <div id="tab4" class="tab-content">
+                  <table id="importManuellDataYearListe" class="stripe hover row-border compact dt-left custom"
+                      style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Channel Name</th>
+                              <th>MST Name</th>
+                              <th>Value</th>
+                              <th>Power</th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+                  </table>
+                </div>
+            </div>
+            </div>
+          </div>
+           
+        </div>
+        <div id="gfg8" style = "display: none;">
+          <!--Imported Manuell 15min Data-->
+          <div class="importedManuell15minSection">
+            <div id="importedManuell15minDataContainer">
+              <div id="manuell15min_tile_loader_div" style = "display: none;">
+                <img src="images/loader_dashboard.gif" id="tile_loader_image">
+              </div>
+              <div class="bartitle">Import Manuell 15min Data</div>
+              <table id="importManuell15minDataListe" class="stripe hover row-border compact dt-left custom"
+                      style="font-size:12px;margin-top:10px;text-align:left;border:1px solid black;margin-right:10px;">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Channel Name</th>
+                              <th>Time Server</th>
+                              <th>Value</th>
+                              <th>Power</th>
+                          </tr>
+                      </thead>
+                      <tbody></tbody>
+              </table>
+            </div>
+          </div>
+           
+        </div>
+
        
     </div> 
+
           <!-- 7-9-2021- -->
           <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
-          <input type="button" class="btn btn-success bt
-          n-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
+          <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
           <!-- --end-- -->
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -171,7 +356,7 @@
                       <label for="record_type_of_tile">Art des Datensatzes</label>
                       <select class="form-control form-control-sm text-dark" id="record_type_of_tile">
                           <option value="energy" description="Energy Entries Count">Messtellen-Energie</option>
-                          <option value="product" description="Product Entries Count">Produktion</option>
+                          <option value="product" description="Product Entries Count">Alarm-Info Board</option>
                           <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
                           <option value="graph" description="Save Graph">Graph</option>
                           <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
@@ -330,8 +515,17 @@
                     </div>
 
                     <div class="form-group col-md-2" id="measurement_point_year_div" style="display:none;">
-                      <label for="measurement_point_year" class="text-mute">Year</label>
-                      <select class="form-control form-control-sm text-dark measurement_table_option knz_option measurement_point_year" id="measurement_point_year" multiple>
+                      <label for="measurement_point_year" class="text-mute">Date Filter</label>
+                      <select class="form-control form-control-sm text-dark measurement_table_option knz_option measurement_point_year" id="measurement_point_year">
+                      </select>
+                    </div>
+
+                    <div class="form-group col-md-2" id="numberofday" style="display:none;">
+                      <label for="number_of_day" class="text-mute">Number of Days</label>
+                      <select class="form-control form-control-sm text-dark number_of_day" id="number_of_day">
+                        <option value="10" >10 day</option>
+                        <option value="20" >20 day</option>
+                        <option value="30" >30 day</option>
                       </select>
                     </div>
 
@@ -716,8 +910,7 @@
                           <th>Datum</th>
                           <th>Verbrauch</th>
                         </tr>
-                      </thead>I am sharing the Clockify credentials with you for verification. Please check them at your earliest convenience and let me know if everything is in order.
-
+                      </thead>
                       <tbody id="five_days_energy_consumed_table">
                       </tbody>
                     </table>
@@ -759,7 +952,7 @@
         <!-- end -->
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
-        
+        <input type="hidden" id="username" value="">
         <footer class="footer">
           <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>

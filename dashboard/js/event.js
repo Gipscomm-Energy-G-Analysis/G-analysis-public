@@ -1,7 +1,10 @@
 $(document).ready( function(){
+    var username = sessionStorage.getItem("username");
+    $("#username").val(username);
 
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
     $('#nameDashboardDB').val(dashboardDBStorage);
+    sessionStorage.setItem("nameDB", dashboardDBStorage);
     //Hide All Files
     $('#charts_main_div').hide();
     $('#dashboard_main_div').show();
@@ -29,31 +32,37 @@ $(document).ready( function(){
     localStorage.removeItem('edit-i-value');
     // localStorage.removeItem('dashboard_tile_data');
     // --end-->
-    function gettableformatData(formattype){
-        $('#gfg1').show();
-        $('#gfg2').hide();
+    
+    //     function gettableformatData(formattype){
+    //     $('#gfg1').show();
+    //     $('#gfg2').hide();
 
-        $('#charts_main_div').hide();
-        $('#dashboard_main_div').show();
-        $('#energy_table_main_div').hide();
-        $('#measurement_table_main_div').hide();
-        $('#production_data_table_main_div').hide();
-        $('#production_table_main_div').hide();
-        $('#wert_main_div').hide();
-        $('#alerts_table_main_div').hide();
-        $('#help_table_main_div').hide();
-        $(".movetile").show();
-        $(".graphhide").show();
-        countDashboard();
-        energy_consumed_five_days();
-        getTableFormatDashboard(formattype);
-        localStorage.removeItem('edit-measurement-tile');
-        localStorage.removeItem('edit-i-value');
-    }
+    //     $('#charts_main_div').hide();
+    //     $('#dashboard_main_div').show();
+    //     $('#energy_table_main_div').hide();
+    //     $('#measurement_table_main_div').hide();
+    //     $('#production_data_table_main_div').hide();
+    //     $('#production_table_main_div').hide();
+    //     $('#wert_main_div').hide();
+    //     $('#alerts_table_main_div').hide();
+    //     $('#help_table_main_div').hide();
+    //     $(".movetile").show();
+    //     $(".graphhide").show();
+    //     countDashboard();
+    //     energy_consumed_five_days();
+    //     getTableFormatDashboard(formattype);
+    //     localStorage.removeItem('edit-measurement-tile');
+    //     localStorage.removeItem('edit-i-value');
+    // }
     $('#gfg1_li').on('click', function(){
         $('#gfg1').show();
         $('#gfg2').hide();
         $('#gfg3').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#gfg6').hide();
+        $('#gfg7').hide();
+        $('#gfg8').hide();
         $('#charts_main_div').hide();
         $('#dashboard_main_div').show();
         $('#energy_table_main_div').hide();
@@ -76,6 +85,11 @@ $(document).ready( function(){
         $('#gfg2').show();
         $('#gfg1').hide();
         $('#gfg3').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#gfg6').hide();
+        $('#gfg7').hide();
+        $('#gfg8').hide();
         $('#charts_main_div').hide();
         $('#dashboard_main_div').show();
         $('#energy_table_main_div').hide();
@@ -98,6 +112,11 @@ $(document).ready( function(){
         $('#gfg3').show();
         $('#gfg2').hide();
         $('#gfg1').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#gfg6').hide();
+        $('#gfg7').hide();
+        $('#gfg8').hide();
         $('#charts_main_div').hide();
         $('#dashboard_main_div').show();
         $('#energy_table_main_div').hide();
@@ -116,16 +135,366 @@ $(document).ready( function(){
         localStorage.removeItem('edit-i-value');
         
     });
+    messstellenDiagrammeListe = $("#messstellenDiagrammeListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    zeitvergleichDiagrammeListe = $("#zeitvergleichDiagrammeListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    kennzahlenDiagrammeListe = $("#kennzahlenDiagrammeListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    importManuellDataDayListe = $("#importManuellDataDayListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    importManuellDataHourListe = $("#importManuellDataHourListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    importManuellDataMonthListe = $("#importManuellDataMonthListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    importManuellDataYearListe = $("#importManuellDataYearListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    importManuell15minDataListe = $("#importManuell15minDataListe").DataTable({
+        dom: "Bfrtip",
+        buttons: [{
+            extend: "copy",
+            text: "Kopieren",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "csv",
+            text: "CSV-Export",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }, {
+            extend: "print",
+            text: "Drucken",
+            exportOptions: {
+                columns: ":visible"
+            }
+        }],
+        pageLength: 15,
+        bAutoWidth: !1,
+        colReorder: !0
+    }),
+    $('#gfg4_li').on('click', function(){
+        $('#gfg4').show();
+        $('#gfg3').hide();
+        $('#gfg2').hide();
+        $('#gfg1').hide();
+        $('#gfg5').hide();
+        $('#gfg6').hide();
+        $('#gfg7').hide();
+        $('#gfg8').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").hide();
+        $(".graphhide").hide();
+        messstellenSavedGraphListing('messstellenvergleich');
+        sessionStorage.setItem("saved_graph_popup_module", 'messstellenvergleich');
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+        
+    });
+    $('#gfg5_li').on('click', function(){
+        $('#gfg5').show();
+        $('#gfg3').hide();
+        $('#gfg2').hide();
+        $('#gfg1').hide();
+        $('#gfg4').hide();
+        $('#gfg6').hide();
+        $('#gfg7').hide();
+        $('#gfg8').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").hide();
+        $(".graphhide").hide();
+        zeitvergleichSavedGraphListing('zeitvergleich');
+        sessionStorage.setItem("saved_graph_popup_module", 'zeitvergleich');
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+        
+    });
+    $('#gfg6_li').on('click', function(){
+        $('#gfg6').show();
+        $('#gfg8').hide();
+        $('#gfg7').hide();
+        $('#gfg3').hide();
+        $('#gfg2').hide();
+        $('#gfg1').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").hide();
+        $(".graphhide").hide();
+        kennzahlenSavedGraphListing('Kennzahlendarstellung');
+        sessionStorage.setItem("saved_graph_popup_module", 'Kennzahlendarstellung');
+        localStorage.removeItem('edit-measurement-tile');
+        localStorage.removeItem('edit-i-value');
+        
+    });
+    $('#gfg7_li').on('click', function(){
+        $('#gfg7').show();
+        $('#gfg8').hide();
+        $('#gfg6').hide();
+        $('#gfg3').hide();
+        $('#gfg2').hide();
+        $('#gfg1').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").hide();
+        $(".graphhide").hide();
+        importManuellDataListing('day');
+        
+    });
+    $('#gfg8_li').on('click', function(){
+        $('#gfg8').show();
+        $('#gfg7').hide();
+        $('#gfg6').hide();
+        $('#gfg3').hide();
+        $('#gfg2').hide();
+        $('#gfg1').hide();
+        $('#gfg4').hide();
+        $('#gfg5').hide();
+        $('#charts_main_div').hide();
+        $('#dashboard_main_div').show();
+        $('#energy_table_main_div').hide();
+        $('#measurement_table_main_div').hide();
+        $('#production_data_table_main_div').hide();
+        $('#production_table_main_div').hide();
+        $('#wert_main_div').hide();
+        $('#alerts_table_main_div').hide();
+        $('#help_table_main_div').hide();
+        $(".movetile").hide();
+        $(".graphhide").hide();
+        importManuell15minDataListing();
+        
+    });
+    //Start Dashboard manuell data tabs code
+    // Get all tabs and content
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
 
+    // Add click event to each tab
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove 'active' class from all tabs and contents
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
 
+            // Add 'active' class to the clicked tab and corresponding content
+            tab.classList.add('active');
+            document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+        });
+    });
+    //End Dashboard manuell data tabs code
+    $('.tab').on('click', function(){
+        var tabId = $(this).attr('data-target');
+        if(tabId=='tab1'){
+            importManuellDataListing('day');
+        }else if(tabId=='tab2'){
+            importManuellDataListing('hour');
+        }else if(tabId=='tab3'){
+            importManuellDataListing('month');
+        }else if(tabId=='tab4'){
+            importManuellDataListing('year');
+        }
+    });
     $('.nav-item .sidebar_redirect,.nav-item .nav_bar_redirect').on('click', function(){
         var  id_val = $(this).attr('id');
         $('#help_video').get(0).play();    
         $('#help_video').get(0).pause();
         switch(id_val){
-
             case'dashboard_sidebar':
-
                 $('#charts_main_div').hide();
                 $('#dashboard_main_div').show();
                 $('#energy_table_main_div').hide();
@@ -139,7 +508,7 @@ $(document).ready( function(){
                 $(".graphhide").show();
                 countDashboard();
                 energy_consumed_five_days();
-                getTableFormatDashboard();
+                $('#gfg1_li').trigger('click');
                 // dashboardChart();
 
                 // <---31-8-2021---
@@ -154,6 +523,7 @@ $(document).ready( function(){
                 var dashboardDBChart = localStorage.getItem('dashboardDBName');
                 localStorage.setItem('dashboardDBChart',dashboardDBChart);
                 localStorage.removeItem('dashboardDBName');
+                $('#gfg1_li').trigger('click');
                 var pathname = window.location.pathname;
                 var arPathname = pathname.split('/');
                 var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
@@ -184,6 +554,7 @@ $(document).ready( function(){
                 parentElements.each(function() {
                     $(this).show();
                 });
+                
                 break;
 
             case "measurement_sidebar_option":
@@ -217,6 +588,7 @@ $(document).ready( function(){
                 break;
 
             case "product_sidebar_option":
+                $('.tile_name_product_div').show();
                 $('#charts_main_div').hide();
                 $('#dashboard_main_div').hide();
                 $('#energy_table_main_div').hide();
@@ -246,6 +618,7 @@ $(document).ready( function(){
                 break;
 
             case "energy_sidebar_option":
+                $('.tile_name_energy_div').show();
                 $('#charts_main_div').hide();
                 $('#dashboard_main_div').hide();
                 $('#energy_table_main_div').show();
@@ -988,7 +1361,6 @@ $(document).ready( function(){
 
 
     $(document).on('click','#modal_open_button', function(){
-        alert('sdd');
         setTimeout(function () {
             if ($(".modal-backdrop").length > 1) {
                 $(".modal-backdrop").first().remove();
@@ -1265,6 +1637,33 @@ $(document).ready( function(){
 
 
     $(document).on('click','#energy_modal_open_button', function(){
+        var tile_edit_value = $(this).attr('tile-edit');
+        if(tile_edit_value == 'false'){
+            var dashboardcountTiles='';
+                $.ajax({
+                        type: "POST",
+                        url: "php/retreive.php",
+                        async: false,
+                        dataType: 'json',
+                        data: {
+                        action: "dashboardTileCount",
+                        username: $("#username").val(),
+                        nameDB: $("#nameDashboardDB").val(),
+                    },
+                    fail: function() {
+                        alert("failed!!")
+                    },
+                    success: function(a) {
+                        if (a >= 16) {
+                            dashboardcountTiles=a;
+                            toastr.warning('Maximum 16 tiles can be added!');
+                        }  
+                    }
+                });
+            if(dashboardcountTiles >= 16){
+                return false;
+            }
+        }
         var edit_id = localStorage.getItem('edit-measurement-tile');
         var tile_edit_value = $(this).attr('tile-edit');
         var ar = localStorage.getItem('dashboard_tile_data');
@@ -1646,6 +2045,7 @@ $(document).ready( function(){
             $('#tables_sidebar').click();
             $('#product_sidebar_option').click();
             $('#dashboard_tile_modal').modal('hide');
+            $('.tile_name_product_div').hide();
 
             var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
@@ -1691,6 +2091,7 @@ $(document).ready( function(){
             $('#tables_sidebar').click();
             $('#energy_sidebar_option').click();
             $('#dashboard_tile_modal').modal('hide');
+            $('.tile_name_energy_div').hide();
          
             var edit_value = $(this).attr('data-edit');
             if(edit_value == 'true'){
@@ -1935,6 +2336,7 @@ $(document).ready( function(){
             $('#isLiveGraph').hide();
             $('#auto_refresh_div').hide();
             $('#refreshTile').hide();
+            $('#numberofday').hide();
             $('#graph_table_chart').prop('selectedIndex',0);
             $('#measurement_point_chart').prop('selectedIndex',0);
             $('#measurement_point_year').prop('selectedIndex',0);
@@ -2157,6 +2559,7 @@ $(document).ready( function(){
 
     // <----01-9-2021---
     $(document).on('click','#dashboard_add_tile', function(){
+        $("#dashboard_add_tile").attr('data-target','#dashboard_tile_modal');
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
         $('#save_and_proceed_btn_dashboard').attr('data-edit','false');
         $('#save_and_proceed_btn_dashboard').attr('data-edit-chart','false');
@@ -2258,12 +2661,23 @@ $(document).ready( function(){
                     $('#measurement_point_year').trigger('change');
                     $('#graph_table_chart').trigger('change');
 
+                    var graphTileWidth = $(".default #container").css("width");
+                    var graphTileHeight = $(".default #container").css("height");
+                    var displayTableData1 = $(".default").find("#table-chart-data-container_1").css("display");
+                    var displayTableData2 = $(".default").find("#table-chart-data-container_2").css("display");
+                    var displayTableData3 = $(".default").find("#table-chart-data-container_3").css("display");
+                    var displayTableData = $(".default").find("#table-chart-data-container").css("display");
+                    $(".default").find("#table-chart-data-container_1").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData1+";");
+                    $(".default").find("#table-chart-data-container_2").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData2+";");
+                    $(".default").find("#table-chart-data-container_3").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData3+";");
+                    $(".default").find("#table-chart-data-container").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData+";");
                     $(".default .dataTables_scrollBody").css("max-height", scrollYValue);
                     $(".default .dataTables_scrollHeadInner").css("width", '100%');
                     $(".default .dataTables_scrollHeadInner table").css("width", '100%');
                     $(".default #tblChartData_1").css("width", '100%');
                     $(".default #tblChartData_2").css("width", '100%');
                     $(".default #tblChartData_3").css("width", '100%');
+                    $(".default #tblChartData").css("width", '100%');
                     $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).css('height',height_value);
                     $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).find('#container').css('height',graph_height_value);
                     $("#container").ejChart("redraw");
@@ -2328,12 +2742,23 @@ $(document).ready( function(){
                     $('#measurement_point_year').trigger('change');
                     $('#graph_table_chart').trigger('change');
 
+                    var graphTileWidth = $(".default #container").css("width");
+                    var graphTileHeight = $(".default #container").css("height");
+                    var displayTableData1 = $(".default").find("#table-chart-data-container_1").css("display");
+                    var displayTableData2 = $(".default").find("#table-chart-data-container_2").css("display");
+                    var displayTableData3 = $(".default").find("#table-chart-data-container_3").css("display");
+                    var displayTableData = $(".default").find("#table-chart-data-container").css("display");
+                    $(".default").find("#table-chart-data-container_1").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData1+";");
+                    $(".default").find("#table-chart-data-container_2").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData2+";");
+                    $(".default").find("#table-chart-data-container_3").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData3+";");
+                    $(".default").find("#table-chart-data-container").removeAttr("style","width: ''; height: '';").attr("style", "width: "+graphTileWidth+"; height: "+graphTileHeight+"; display: "+displayTableData+";");
                     $(".default .dataTables_scrollBody").css("max-height", scrollYValue);
                     $(".default .dataTables_scrollHeadInner").css("width", '100%');
                     $(".default .dataTables_scrollHeadInner table").css("width", '100%');
                     $(".default #tblChartData_1").css("width", '100%');
                     $(".default #tblChartData_2").css("width", '100%');
                     $(".default #tblChartData_3").css("width", '100%');
+                    $(".default #tblChartData").css("width", '100%');
 
                     $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).css('width',width_value);
                     $('.dashboard_chart_tiles #measurement_count_tile_modal_chart_'+total_records).find('#container').css('width',width_value=='500' ? '430' : width_value-70);
@@ -2486,9 +2911,12 @@ $(document).ready( function(){
         localStorage.setItem('dashboardDBName',val);
         localStorage.setItem('dashboardDB',dashboardDbName);
         $("#nameDashboardDB").val(dashboardDbName);
+        sessionStorage.setItem("nameDB", dashboardDbName);
         getAllProductTables();
         // getTableFormatDashboard();
-        $('#dashboard_sidebar').click();
+        setTimeout( ()=>{
+            $('#dashboard_sidebar').click();
+        },500);
         storeDBValueSession();
 
     });
@@ -3309,7 +3737,7 @@ $(document).ready( function(){
         $('#help_table_main_div').hide();
         countDashboard();
         energy_consumed_five_days();
-        getTableFormatDashboard();
+        $('#gfg1_li').trigger('click');
         // dashboardChart();
 
         // <---31-8-2021---
@@ -3502,6 +3930,33 @@ $(document).ready( function(){
 
     // <---2-12-2021---
     $(document).on('click','#product_modal_open_button', function(){
+        var tile_edit_value = $(this).attr('tile-edit');
+        if(tile_edit_value == 'false'){
+            var dashboardcountTiles='';
+            $.ajax({
+                    type: "POST",
+                    url: "php/retreive.php",
+                    async: false,
+                    dataType: 'json',
+                    data: {
+                    action: "dashboardTileCount",
+                    username: $("#username").val(),
+                    nameDB: $("#nameDashboardDB").val(),
+                },
+                fail: function() {
+                    alert("failed!!")
+                },
+                success: function(a) {
+                    if (a >= 16) {
+                        dashboardcountTiles=a;
+                        toastr.warning('Maximum 16 tiles can be added!');
+                    }  
+                }
+            });
+            if(dashboardcountTiles >= 16){
+                return false;
+            }
+        }
         var edit_id = localStorage.getItem('edit-measurement-tile');
         var tile_edit_value = $(this).attr('tile-edit');
         var ar = localStorage.getItem('dashboard_tile_data');
@@ -3840,12 +4295,14 @@ $(document).ready( function(){
         $('#all_product_input_text_field').val('');
         if(prdTypeVal == 'automatic')
         {
+            $('.product-small-table-tiles').show();
             $('#product_field_div').hide();
             $('#product_records_order_by_div').hide();
             getAllProductTables();
             $('#production_btn_table').show();
             // getNumberRecordsProductAutomatic();
         }else {
+            $('.product-small-table-tiles').hide();
             var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Product</td></tr>";
             $('#product_select_table_entries').html(tr);
             $('#product_select_table_entries_pagination').html('');
@@ -4349,7 +4806,6 @@ $(document).ready( function(){
         var savedGraphId = graphClass[1];
         getSavedGraph(savedGraphId);
     });
-
     // // <---1-10-2021--
     // // Graph
     // // window.onload = function () {
@@ -4614,9 +5070,6 @@ $(document).ready( function(){
     // --end-->
 
 
-
-   
-
 })
 $(".messstellen_graph").click(function(){
     sessionStorage.setItem('menuClick','messstellen_graph'); 
@@ -4628,3 +5081,39 @@ $(".kennzahlen_graph").click(function(){
     sessionStorage.setItem('menuClick','kennzahlen_graph'); 
 });
 
+$('.tile_name_product_div #title_modal_tile').on('input', function() {
+    var value = $(this).val();
+    localStorage.setItem('product_title_modal_tile',value);
+    var ar = {'title_modal_tile':value,'record_type_of_tile':'product','type_data_tile':'table'};
+    localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+    $('.modal-body #title_modal_tile').val(value);
+});
+
+$('.tile_name_energy_div #title_modal_tile').on('input', function() {
+    var value = $(this).val();
+    localStorage.setItem('energy_title_modal_tile',value);
+    var ar = {'title_modal_tile':value,'record_type_of_tile':'energy','type_data_tile':'table'};
+    localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
+    $('.modal-body #title_modal_tile').val(value);
+});
+
+$(document).on('change','#measurement_auto_refresh_hourly',function(){
+    var hourValue= $(this).val();
+    var textValue= $(this).find(":selected").text().split(' ');
+    $('.gernerated_measurement_modal_tiles .action-modal-button-div').find('.measurementautorefresh').remove();
+    $('.gernerated_measurement_modal_tiles .action-modal-button-div').prepend("<div class='measurementautorefresh'>Auto Refresh <span class='measurement-refresh-hours'>"+hourValue+"</span> "+textValue[1]+"</div>");
+});
+
+$(document).on('change','#energy_auto_refresh_hourly',function(){
+    var hourValue= $(this).val();
+    var textValue= $(this).find(":selected").text().split(' ');
+    $('.gernerated_energy_modal_tiles .action-modal-button-div').find('.energyautorefresh').remove();
+    $('.gernerated_energy_modal_tiles .action-modal-button-div').prepend("<div class='energyautorefresh'>Auto Refresh <span class='energy-refresh-hours'>"+hourValue+"</span> "+textValue[1]+"</div>");
+});
+
+$(document).on('change','#product_auto_refresh_hourly',function(){
+    var hourValue= $(this).val();
+    var textValue= $(this).find(":selected").text().split(' ');
+    $('.gernerated_product_modal_tiles .action-modal-button-div').find('.productautorefresh').remove();
+    $('.gernerated_product_modal_tiles .action-modal-button-div').prepend("<div class='productautorefresh'>Auto Refresh <span class='product-refresh-hours'>"+hourValue+"</span> "+textValue[1]+"</div>");
+});
