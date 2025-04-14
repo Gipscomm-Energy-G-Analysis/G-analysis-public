@@ -1,0 +1,478 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  font-family: "Poppins", sans-serif;
+  background: url(../images/bg-img.jpg) no-repeat center center fixed;
+  background-size: cover;
+}
+.gp-header{
+  position: relative;
+  z-index: 100;
+}
+.gp-banner{
+  background: url(../images/banner-bg.jpg) center no-repeat;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  padding: 89px 0px 188px;
+}
+.gpsum-img{
+  height: 200px;
+  width: 100%;
+  border-radius: 5px;
+}
+.gp-heading{
+  color: white;
+  font-size: 50px;
+  font-weight: 500;  
+}
+.yellow-btn{
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  border-radius: 8px;
+  border: 1px solid grey;
+  background-color: #FB8E00;
+  color: #fff;
+  font-size: 28px;
+  transition: all 0.4s ease-in-out;
+  margin: 0px 3px 0px;
+}
+.yellow-smbtn{
+  padding: 7px 28px;
+  border-radius: 6px;
+  border: 0px;
+  background-color: #FB8E00;
+  color: #fff;
+  font-size: 17px;
+  transition: all 0.4s ease-in-out;
+}
+.yellow-btn:hover, .yellow-smbtn:hover{
+  background-color: #FFCE00;
+    color: black;
+    border: 1px solid grey;
+    cursor: pointer;
+}
+#LoginModal .modal-header{
+  background-color: #FB8E00;
+  border-radius: 7px 7px 0px 0px;
+}
+#LoginModal .form-label span{
+  color: #FB8E00;
+}
+#LoginModal .modal-content{
+  border-radius: 7px;
+}
+#DemoModal .modal-content{
+  background-color: #d3d3d3;
+}
+#DemoModal .modal-body p{
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+.bg-gray{
+  background-color:#b5b8c1;
+}
+
+.config-img{
+  max-width: 6% !important;
+}
+.logo-analyis{
+  width: 125px;
+}
+
+
+.dro-sec{
+  font-size: 11px;
+  height: 29px;
+}
+.dropdown-menu:li {
+  text-align: left;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0; 
+}
+.drop-custom{
+  z-index: 1000;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: unset !important;
+    border: unset !important;
+     border-radius:unset !important;
+} 
+
+.dropdown-toggle::after {
+display: none;
+}
+
+li.dropdown.nav-item.custom-drop {
+  position: unset !important;
+}
+.megamenu-lists {
+  display: flex;
+  position: absolute;
+  display: flex;
+  position: absolute;
+  width: 56%;
+  left: 0;
+  margin: 0 auto;
+  right: 0;
+}
+.navbar-expand-lg .navbar-nav .dropdown-menu {
+  position: unset !important;
+}
+.navbar-nav .dropdown-menu {
+  position: unset;
+}
+.br-company-about-detail-sign {
+  font-size: 28px;
+  color: #fd8a00;
+  width: 40px;
+  text-align: center;
+}
+.line-inner-side{
+  display: flex;
+  align-items: center;
+}
+
+.hov-color:hover{
+color: #fff !important;
+}
+
+
+.hov-inner-text:hover{
+  color: #fd8a00 !important;
+}
+
+a:after {    
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  background: #fff;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+a:hover:after { 
+  width: 100%; 
+  left: 0; 
+}
+
+
+.controlDivProductionn {
+  width: 99% !important;
+  margin-bottom: 5px;
+  border: 1px solid #706161;
+}
+
+.controlDiv {
+  display: inline-block;
+  background-color: #A1A7AD;
+  margin-bottom: 0.1cm;
+  width: 7.2cm;
+  /* border: 1px solid red; */
+}
+.controlDivProductionn input {
+  width: 2.9cm;
+  float: right;
+}
+.controlDiv input, #clearFieldKurve1 {
+  margin-left: 0.1cm;
+  margin-top:4px;
+  display: inline;
+  font-size: 11px;
+  height: 0.4cm;
+  left: 100px;
+  clear: both;
+  width: 3.3cm;
+  padding: 0px;
+  vertical-align: central;
+}
+
+.main-allgemein{
+  width: 955px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #CED6DE;
+  border: 1px solid #A1A7AD;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.blasan-img {
+  height: 176px;
+  width: 290px;
+}
+.Production-bg-color{
+  background-color: #6b6f73;
+}
+
+.acc-bg-color{
+  background-color: #6b6f73 !important;
+}
+.accordion-body{
+  background-color:#B9C0C7 !important;
+}
+
+.main-box{
+  background-color: #B9C0C7;
+  border: 1px solid black;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 0 5px #333;
+  box-shadow: 0 0 5px #333;
+  clear: both;
+  padding: 2px;
+}
+
+/* button */
+
+.toggleswitch, .toggleswitch2 .toggleswitch3 .toggleswitch4{
+  position: relative;
+  width: 15%;
+  margin: 0 85% 1%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+
+.toggleswitch-checkbox {
+  display: none;
+}
+
+.toggleswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.toggleswitch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  -moz-transition: margin 0.3s ease-in 0s;
+  -webkit-transition: margin 0.3s ease-in 0s;
+  -o-transition: margin 0.3s ease-in 0s;
+  transition: margin 0.3s ease-in 0s;
+}
+
+.toggleswitch-inner:before,
+.toggleswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-clip: padding-box;
+}
+
+.toggleswitch-inner:before {
+  content: "View Mode";
+  padding-left: 24px;
+  background-color: #71c016;
+  color: white;
+  font-weight: 500;
+  border-color: #569211;
+}
+.toggleswitch-inner:hover:before{
+  background-color: #569211;
+  transition: 0.3s;
+  border-color: #569211;
+}
+.toggleswitch-inner:after {
+  content: "Edit Mode";
+  padding-right: 24px;
+  background-color: black;
+  color: white;    
+  font-weight: 500;            
+  text-align: right;
+}
+
+.toggleswitch-switch {
+  display: block;
+  width: 26px;
+  margin: 0px;
+  height: 26px;
+  background: #ffff;
+  position: absolute;
+  top: 2px;
+  border-radius: 0.1875rem;
+  bottom: 0;
+  right: 112px;
+  -moz-transition: all 0.3s ease-in 0s;
+  -webkit-transition: all 0.3s ease-in 0s;
+  -o-transition: all 0.3s ease-in 0s;
+  transition: all 0.3s ease-in 0s;
+}
+
+.toggleswitch-checkbox:checked + .toggleswitch-label .toggleswitch-inner {
+  margin-left: 0;
+}
+
+.toggleswitch-checkbox:checked + .toggleswitch-label .toggleswitch-switch {
+  right: 2px;
+}
+/* 2 */
+.toggleswitch2{
+  width: 17%;
+}
+
+.toggleswitch2 .toggleswitch-inner:before {
+  content: "Graph Mode"; 
+}
+
+.toggleswitch2 .toggleswitch-inner:after {
+  content: "History Mode";
+}
+
+.toggleswitch2 .toggleswitch-switch {
+  right: 121px;
+}
+/* 03 */
+.toggleswitch3{
+  width: 17%;
+}
+
+.toggleswitch3 .toggleswitch-inner:before {
+  content: "Graph Mode"; 
+}
+
+.toggleswitch3 .toggleswitch-inner:after {
+  content: "History Mode";
+}
+
+.toggleswitch3 .toggleswitch-switch {
+  right: 121px;
+}
+/* 4 */
+.toggleswitch4{
+  width: 17%;
+}
+
+.toggleswitch4 .toggleswitch-inner:before {
+  content: "Graph Mode"; 
+}
+
+.toggleswitch4 .toggleswitch-inner:after {
+  content: "History Mode";
+}
+
+.toggleswitch4 .toggleswitch-switch {
+  right: 121px;
+}
+ /* 05 */
+ .toggleswitch5{
+  width: 17%;
+}
+
+.toggleswitch5 .toggleswitch-inner:before {
+  content: "Graph Mode"; 
+}
+
+.toggleswitch5 .toggleswitch-inner:after {
+  content: "History Mode";
+}
+
+.toggleswitch5 .toggleswitch-switch {
+  right: 121px;
+}
+/* button-end */
+.fs-12{
+  font-size: 12px;
+ 
+}
+.fs-14{
+  font-size: 14px;
+ 
+}
+.w-17{
+  width: 17px;
+}
+.Production-sec{
+  position: absolute;
+  top: -22px;
+    left: 0px;
+    margin: 0px;
+    background-color: #B9C0C7;
+    font-size: 12px;
+    border: 1px solid #A1A7AD;
+    border-bottom: #B9C0C7;
+    border-top-left-radius: 8px;
+}
+
+.accordion-button::after{
+  display: none !important;
+}
+
+.accordion-button:focus {
+  z-index: 3;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow:unset !important;
+}
+
+.auftrag-sec sssselect:focus-visible {
+  outline: unset !important;
+}
+
+.auftrag-sec select{
+  background-color: white;
+  border: 0px solid;
+  height: 20px;
+  width: 160px;
+  color: #000 !important;
+}
+
+.auftrag-sec select:focus-visible{
+  outline: none !important;
+}
+
+.accordion-header{
+  position: relative;
+}
+
+.accordion-switch{
+  position: absolute;
+  right: 0;
+  z-index: 100;
+  margin: 0;
+  top: 11px;
+}
+.controlDiv input:focus-visible{
+  outline: none !important;
+}
+.Organisation-sec select:focus-visible{
+  outline: none !important;
+}
+.text-hover{
+  color: #000;
+}
+.text-hover:hover{
+color: rgb(255, 255, 255) !important;
+}
+
+.accordion-main-sec{
+  border: 2px solid  rgb(255, 255, 255) !important;
+}

@@ -1,0 +1,77 @@
+.error{
+    color:#ff0000ba;
+}
+
+.card-sec-submit{
+    padding: 0.75rem 1.25rem;
+}
+
+.g-ana-logo{
+    position: absolute;
+    top: 11px;
+}
+.modal-dialog {
+    overflow-y: initial !important
+}
+.modal-body {
+    height: 80vh;
+    overflow-y: auto;
+}
+.modal-header {
+    background: #343a40;
+}
+.modal-header span{
+    color: #fff;
+}
+
+/* .idmain-box :hover{
+    background-color:#c4e2ff;
+} */
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color:#dee2e6;
+}
+.datatbox{
+    background-color:#40434617;
+}
+.copy-notification {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 180px;
+    margin-top: -30px;
+    margin-left: -85px;
+    display: none;
+    text-align: center;
+}
+
+table.dataTable thead>tr>th.sorting:before, table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>th.sorting_asc_disabled:before, table.dataTable thead>tr>th.sorting_desc_disabled:before, table.dataTable thead>tr>td.sorting:before, table.dataTable thead>tr>td.sorting_asc:before, table.dataTable thead>tr>td.sorting_desc:before, table.dataTable thead>tr>td.sorting_asc_disabled:before, table.dataTable thead>tr>td.sorting_desc_disabled:before {
+    bottom: 50%;
+    content: "▲";
+}
+
+table.dataTable thead>tr>th.sorting:before, table.dataTable thead>tr>th.sorting:after, table.dataTable thead>tr>th.sorting_asc:before, table.dataTable thead>tr>th.sorting_asc:after, table.dataTable thead>tr>th.sorting_desc:before, table.dataTable thead>tr>th.sorting_desc:after, table.dataTable thead>tr>th.sorting_asc_disabled:before, table.dataTable thead>tr>th.sorting_asc_disabled:after, table.dataTable thead>tr>th.sorting_desc_disabled:before, table.dataTable thead>tr>th.sorting_desc_disabled:after, table.dataTable thead>tr>td.sorting:before, table.dataTable thead>tr>td.sorting:after, table.dataTable thead>tr>td.sorting_asc:before, table.dataTable thead>tr>td.sorting_asc:after, table.dataTable thead>tr>td.sorting_desc:before, table.dataTable thead>tr>td.sorting_desc:after, table.dataTable thead>tr>td.sorting_asc_disabled:before, table.dataTable thead>tr>td.sorting_asc_disabled:after, table.dataTable thead>tr>td.sorting_desc_disabled:before, table.dataTable thead>tr>td.sorting_desc_disabled:after {
+    position: absolute;
+    display: block;
+    opacity: .125;
+    right: 10px;
+    top: 12px;
+    line-height: 9px;
+    font-size: .8em;
+}
+
+.dataTables_wrapper .dataTables_info {
+    font-weight: 700;
+}
+
+.admin-mar{
+    margin-left: 0px !important;
+	word-wrap: break-word;
+}
+.dataTable{
+	table-layout: fixed;
+}

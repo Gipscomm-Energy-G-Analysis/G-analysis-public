@@ -1,0 +1,26 @@
+<?php
+return [
+    'Dashboard' => 'Dashboard',
+    'UserManagement' => 'User Management',
+    'Users' => 'Users',
+    'AddUser' => 'Add User',
+    'TenantGroups' => 'Tenant Groups',
+    'TenantGroupsListing' => 'Tenant Groups Listing',
+    'AddTenantGroup' => 'Add Tenant Group',   
+    'SupervisorGroups' => 'Supervisor Groups/', 
+    'SuperAdmins' => 'Superadmins',
+    'Groups' => 'Groups',
+    'GroupsListing' => 'Groups Listing',
+    'AddGroup' => 'Add Group',
+    'Menus' => 'Menus',
+    'MenusListing' => 'Menus Listing',
+    'AddMenu' => 'Add Menu',
+    'Companies' => 'Companies',
+    'CompanyListing' => 'Company Listing',
+    'GipscommAdmins' => 'GipscommAdmins',
+    'Listing' => 'Listing',
+    'AddCompany' => 'Add Company',
+    'Permission' => 'Permission',
+    'Search' => 'Search',
+];
+?>

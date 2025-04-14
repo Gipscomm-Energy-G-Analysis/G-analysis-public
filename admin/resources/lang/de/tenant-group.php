@@ -1,0 +1,27 @@
+<?php
+return [
+    'mainHeading' => 'Mandantengruppen',
+    'breadcrumb' => 'Armaturenbrett',
+    'subBreadcrumb' => 'Mandantengruppen',
+    'general' => 'Allgemein', 
+    'reGroup' => 'Betr. Gruppe:', 
+    'surname' => 'Name',
+    'abbreviation' => 'Kurzbezeichnung',
+    'addClient' => 'Mandant hinzufügen',
+    'copyBtn' => 'Kopieren', 
+    'csvBtn' => 'CSV-Export', 
+    'pressBtn' => 'Drucken',  
+    'id' => 'Id', 
+    'name' => 'Mandant', 
+    'database' => 'Datenbank', 
+    'noData' => 'Keine Daten in der Tabelle verfügbar',
+    'note' => 'Notiz',
+    'cancel' => 'Stornieren',
+    'submit' => 'Einreichen',
+    'mainEditHeading' => 'Mandantengruppen bearbeiten',
+    'subEditBreadcrumb' => 'Mandantengruppen bearbeiten',
+    'tenantGroup' => 'Mandantengruppen',
+    'tenantGroupList' => 'Mandantengruppen Aufführen',
+    'action' => 'Aktion',
+];
+?>

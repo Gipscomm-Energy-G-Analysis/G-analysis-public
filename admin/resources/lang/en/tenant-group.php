@@ -1,0 +1,27 @@
+<?php
+return [
+    'mainHeading' => 'Tenant Group',
+    'breadcrumb' => 'Dashboard',
+    'subBreadcrumb' => 'Tenant Group',
+    'general' => 'General', 
+    'reGroup' => 'Betr. Gruppe:',
+    'surname' => 'Surname',
+    'abbreviation' => 'Abbreviation',
+    'addClient' => 'Add client',
+    'copyBtn' => 'Copy', 
+    'csvBtn' => 'CSV Export', 
+    'pressBtn' => 'Press', 
+    'id' => 'Id', 
+    'name' => 'client', 
+    'database' => 'Database',
+    'noData' => 'No data available in table.',
+    'note' => 'Note',
+    'cancel' => 'Cancel',
+    'submit' => 'Submit',
+    'mainEditHeading' => 'Edit Tenant Group',
+    'subEditBreadcrumb' => 'Edit Tenant Group',
+    'tenantGroup' => 'Tenant Group',
+    'tenantGroupList' => 'Tenant Group List',
+    'action' => 'Aktion',
+];
+?>

@@ -1,0 +1,26 @@
+<?php
+return [
+    'Dashboard' => 'Armaturenbrett',
+    'UserManagement' => 'Benutzerverwaltung',
+    'Users' => 'Benutzer',
+    'AddUser' => 'Benutzer hinzufügen',
+    'TenantGroups' => 'Mandantengruppen',
+    'TenantGroupsListing' => 'Mandantengruppen Auflistung',
+    'AddTenantGroup' => 'Hinzufügen Mandantengruppen',
+    'SupervisorGroups' => 'Betreuergruppen/', 
+    'SuperAdmins' => 'Superadmins',
+    'Groups' => 'Gruppen',
+    'GroupsListing' => 'Gruppen Auflistung',
+    'AddGroup' => 'hinzufüg Gruppen',
+    'Menus' => 'Menüs',
+    'MenusListing' => 'Menüs Auflistung',
+    'AddMenu' => 'hinzufüg Menü',
+    'Companies' => 'Firmen',
+    'CompanyListing' => 'Firme Auflistung',
+    'GipscommAdmins' => 'GipscommAdmins',
+    'Listing' => 'Auflistung',
+    'AddCompany' => 'hinzufüg Firme',
+    'Permission' => 'Erlaubnis',
+    'Search' => 'Suchen',
+];
+?>
