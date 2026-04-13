@@ -1,3 +1,7 @@
+/**
+ * Main initialization block for the dashboard.
+ * Sets up initial UI state, loads session/local storage data, and register core event listeners.
+ */
 $(document).ready( function(){
     var username = sessionStorage.getItem("username");
     $("#username").val(username);
@@ -5,7 +9,7 @@ $(document).ready( function(){
     var dashboardDBStorage = localStorage.getItem('dashboardDB');
     $('#nameDashboardDB').val(dashboardDBStorage);
     sessionStorage.setItem("nameDB", dashboardDBStorage);
-    //Hide All Files
+    //Hide All Div
     $('#charts_main_div').hide();
     $('#dashboard_main_div').show();
     $('#energy_table_main_div').hide();
@@ -15,45 +19,20 @@ $(document).ready( function(){
     $('#wert_main_div').hide();
     $('#alerts_table_main_div').hide();
     $('#help_table_main_div').hide();
-
     $('.footer').html('');
     $('#energy_not_consumed_table').html('');
-
-     // <---22-7-2021--
      $('.container-fluid nav').addClass('background-image');
      $('#dashboard_main_div .content-wrapper').addClass('background-image');
      $('.footer').addClass('background-image');
      $('.sidebar_redirect').addClass('text-dark');
-     // --end-->
-
-    // <---31-8-2021---
     // Edit Local Storage Remove
     localStorage.removeItem('edit-measurement-tile');
     localStorage.removeItem('edit-i-value');
-    // localStorage.removeItem('dashboard_tile_data');
-    // --end-->
-    
-    //     function gettableformatData(formattype){
-    //     $('#gfg1').show();
-    //     $('#gfg2').hide();
 
-    //     $('#charts_main_div').hide();
-    //     $('#dashboard_main_div').show();
-    //     $('#energy_table_main_div').hide();
-    //     $('#measurement_table_main_div').hide();
-    //     $('#production_data_table_main_div').hide();
-    //     $('#production_table_main_div').hide();
-    //     $('#wert_main_div').hide();
-    //     $('#alerts_table_main_div').hide();
-    //     $('#help_table_main_div').hide();
-    //     $(".movetile").show();
-    //     $(".graphhide").show();
-    //     countDashboard();
-    //     energy_consumed_five_days();
-    //     getTableFormatDashboard(formattype);
-    //     localStorage.removeItem('edit-measurement-tile');
-    //     localStorage.removeItem('edit-i-value');
-    // }
+    /**
+     * Handles navigation between different dashboard views (Graph, Table, Chart, etc.).
+     * These handlers update the UI visibility, trigger data counts, and reset relevant local storage items.
+     */
     $('#gfg1_li').on('click', function(){
         $('#gfg1').show();
         $('#gfg2').hide();
@@ -135,6 +114,10 @@ $(document).ready( function(){
         localStorage.removeItem('edit-i-value');
         
     });
+    /**
+     * Initialize DataTables for various listing views.
+     * Configuration includes copy/csv/print buttons and pagination settings.
+     */
     messstellenDiagrammeListe = $("#messstellenDiagrammeListe").DataTable({
         dom: "Bfrtip",
         buttons: [{
@@ -477,6 +460,10 @@ $(document).ready( function(){
         });
     });
     //End Dashboard manuell data tabs code
+    /**
+     * Secondary tab click handler for manual data import types.
+     * Triggers listing based on the target tab ID (Day, Hour, Month, Year).
+     */
     $('.tab').on('click', function(){
         var tabId = $(this).attr('data-target');
         if(tabId=='tab1'){
@@ -489,6 +476,10 @@ $(document).ready( function(){
             importManuellDataListing('year');
         }
     });
+    /**
+     * Sidebar and Navigation Bar redirection handler.
+     * Manages high-level view switching between Dashboard, Charts, Measurements, Products, Energy, etc.
+     */
     $('.nav-item .sidebar_redirect,.nav-item .nav_bar_redirect').on('click', function(){
         var  id_val = $(this).attr('id');
         $('#help_video').get(0).play();    
@@ -509,14 +500,9 @@ $(document).ready( function(){
                 countDashboard();
                 energy_consumed_five_days();
                 $('#gfg1_li').trigger('click');
-                // dashboardChart();
-
-                // <---31-8-2021---
                 // Edit Local Storage Remove
                 localStorage.removeItem('edit-measurement-tile');
                 localStorage.removeItem('edit-i-value');
-                // localStorage.removeItem('dashboard_tile_data');
-                // --end-->
                 break;
             
             case "charts_sidebar":
@@ -527,23 +513,6 @@ $(document).ready( function(){
                 var pathname = window.location.pathname;
                 var arPathname = pathname.split('/');
                 var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
-                // window.open('/'+mainDirectory+'/main.html','_self');
-                /*if(arPathname.length > 3){
-                    window.open('/'+arPathname[1]+'/main.html','_self');
-                }
-                else{
-                    window.open('/main.html','_self');
-                }*/
-                // window.open(mainDirectory+'/main.html','_self');
-                /*$('#charts_main_div').show();
-                $('#dashboard_main_div').hide();
-                $('#energy_table_main_div').hide();
-                $('#measurement_table_main_div').hide();
-                $('#production_data_table_main_div').hide();
-                $('#production_table_main_div').hide();
-                $('#wert_main_div').hide();
-                $('#alerts_table_main_div').hide();
-                $('#help_table_main_div').hide();*/
                 //show only graph type tiles on diagramm buuton click
                 var child = $(".graph"); // Assume this is the child element class
                 child.parents("#dashboard_count_div_tile .movetile");
@@ -567,24 +536,15 @@ $(document).ready( function(){
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
-                // getNumberRecordsMesurement();
-                // <---5-8--2021--
                 var number_record_local_val = localStorage.getItem('number_record_measurement');
                 if(number_record_local_val != undefined && number_record_local_val != null){
                     $('#measurement_total_number_record').val(number_record_local_val);
                     $('#measurement_search_record').val('');
                     getNumberRecordsMesurement();
-                    // return false;
                 }
                 else{
                     $('#measurement_total_number_record').val('');
                 }
-                // $('#mesurement_select_table_entries').html('');
-                // $('#pagination_html').html('');
-                // $('#measurement_search_record').val('');
-                // $('.table-margin').removeClass('margin-remove-table');
-                // $('.measurement_table_header').removeClass('row_click_table');
-                //-end-->
                 break;
 
             case "product_sidebar_option":
@@ -604,17 +564,12 @@ $(document).ready( function(){
                 $('#product_select_table_entries_pagination').html('');
                 $('#all_product_input_text_field').val('');
                 $('#product_records_order_by_div').hide();
-
-                // getNumberRecordsProduct();
                 $("#product_type option[value='automatic']").prop('selected','selecetd');
                 var number_record_local_val = localStorage.getItem('number_record_product');
                 if(number_record_local_val != undefined && number_record_local_val != null){
                     $('#product_total_number_record').val(number_record_local_val);
                 }
                 getAllProductTables();
-                // getNumberRecordsProductAutomatic();
-
-
                 break;
 
             case "energy_sidebar_option":
@@ -628,28 +583,19 @@ $(document).ready( function(){
                 $('#wert_main_div').hide();
                 $('#alerts_table_main_div').hide();
                 $('#help_table_main_div').hide();
-
-                // <--18-11-2021--
                 var number_record_local_val = localStorage.getItem('number_record_energy');
                 if(number_record_local_val != undefined && number_record_local_val != null){
                     $('#energy_total_number_record').val(number_record_local_val);
                     $('#energy_search_record').val('');
-                    //getNumberRecordsEnergy(); //03-3-2022
-                    // return false;
-
                     $('#energy_automatic_input').val('');
                     getAllMeasurementEnergyAutomatic();
                 }
                 else{
                     $('#energy_total_number_record').val('');
                     $('#energy_search_record').val('');
-                    // getNumberRecordsEnergy(); //03-3-2022
-
-
                     $('#energy_automatic_input').val('');
                     getAllMeasurementEnergyAutomatic();
                 }
-                // ---end--->
                 break;
 
             case "production_data_sidebar_option":
@@ -709,11 +655,6 @@ $(document).ready( function(){
                 localStorage.removeItem('dashboardDBName');
                 var pathname = window.location.pathname;
                 var arPathname = pathname.split('/');
-                // console.log('pathname',pathname);
-                // console.log('ar pathname',arPathname);
-                //return false;
-                // var mainDirectory = arPathname.length > 2 ? '/'+arPathname[1] : arPathname[0];
-                // window.open('/'+mainDirectory+'/main.html','_self');
                 if(arPathname.length > 3){
                     window.open('/'+arPathname[1]+'/main.html','_self');
                 }
@@ -726,18 +667,17 @@ $(document).ready( function(){
 
     // <---Count Dashboard Entries--
     countDashboard();
-    // dashboardChart();
     energy_consumed_five_days();
     getDatabaseList();
     setTimeout( ()=>{
         $('#dashboard_database_list').trigger('change');
-        //getTableFormatDashboard();
         $('#dashboard_main_div').click();
     },500);
-    // getDashboardSelectOption();
 
-
-    //Mesurement
+    /**
+     * Change handler for measurement table filters (Interval and Order By).
+     * Refreshes table data based on selected criteria.
+     */
     $(document).on('change','#measurement_time_interval,#measurement_records_order_by',function(){
         var id_val = $(this).attr('id');
         if(id_val == 'measurement_records_order_by'){
@@ -755,10 +695,10 @@ $(document).ready( function(){
         
     });
 
-
-    
-    // <----17-11-2021---
-    //Energy
+    /**
+     * Change handler for energy table filters (Interval and Order By).
+     * Refreshes energy data based on selected criteria.
+     */
     $(document).on('change','#energy_time_interval,#energy_records_order_by',function(){
         var id_val = $(this).attr('id');
         if(id_val == 'energy_records_order_by'){
@@ -775,10 +715,8 @@ $(document).ready( function(){
         }
         
     });
-    // --end-->
 
-    $(document).on('blur change', '#measurement_total_number_record', function(){
-        // getNumberRecordsMesurement(); 
+    $(document).on('blur change', '#measurement_total_number_record', function(){ 
         var val = $(this).val();
         if(val <=0){
             $('.measurement_number_record_error').text('Value always be greater than 0');
@@ -798,21 +736,15 @@ $(document).ready( function(){
         else{
             $('.measurement_number_record_error').text('');
             localStorage.setItem('number_record_measurement',val);
-            // var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Click on Search Bar</td></tr>";
-            // $('#mesurement_select_table_entries').html(tr);
             var data_type = $('#row_click_table').attr('data_type');
             var data_mst = $('#row_click_table').attr('data_mst');
             if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
-                // rowClickMeasurementTableData(data_mst,data_type);
             }
             else{
-                // getNumberRecordsMesurement();
             }
         }
     });
 
-
-    // <---17-11-2021--
     $(document).on('blur change', '#energy_total_number_record', function(){
         var val = $(this).val();
         if(val <=0){
@@ -837,22 +769,22 @@ $(document).ready( function(){
             var data_type = $('#row_click_table_energy').attr('data_type');
             var data_mst = $('#row_click_table_energy').attr('data_mst');
             if(data_type != undefined && data_mst != undefined && data_type != '' && data_mst != ''){
-                // rowClickEnergyTableData(data_mst,data_type);
             }
             else{
-                // getNumberRecordsEnergy();
             }
         }
     });
-    // --end-->
 
+    /**
+     * Keypress and focus handlers for measurement search records.
+     * Updates label terminology and triggers record retrieval.
+     */
     $(document).on('keypress keyup blur focusin', '#measurement_search_record', function(){
         $('#measurement_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
         $('#measurement_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');
         getNumberRecordsMesurement(); 
     });
 
-    // <---17-11-2021---
     $(document).on('keypress keyup blur focusin', '#energy_search_record', function(){
         $('#energy_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
         $('#energy_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');
@@ -863,8 +795,11 @@ $(document).ready( function(){
         }
         
     });
-    // --end--->
 
+    /**
+     * Handles clicks on measurement table rows.
+     * Selects the record, updates labels, and retrieves detailed measurement data.
+     */
     $(document).on('click','.row_click', function(){
         var data_type = $(this).attr('data-type');
         var mst_id = $(this).attr('data-mst');
@@ -875,7 +810,10 @@ $(document).ready( function(){
         rowClickMeasurementTableData(mst_id,data_type);
     })
 
-
+    /**
+     * Handles pagination button clicks for measurement and general table data.
+     * Manages Previous/Next navigation and active page state.
+     */
     $(document).on('click', '.page_count_val', function(){
         var id = $(this).attr('id');
         var data_type = $(this).attr('data_type');
@@ -898,10 +836,12 @@ $(document).ready( function(){
         }
       
     });
-
-    //<--- 6-8-2021--
+    /**
+     * Triggered when a pagination input field loses focus (blur)
+     * Used to validate or apply the entered page number for navigation
+     */
     $(document).on('blur','.pagination_input_val', function(){
-        var page_value = $(this).val(); //$(this).val();
+        var page_value = $(this).val();
         var id = $(this).attr('id');
         var data_type = $(this).attr('data_type');
         var mst_id = $(this).attr('data_mst');
@@ -926,7 +866,10 @@ $(document).ready( function(){
         }
 
     })
-
+    /**
+     * Triggered when the measurement number of records selection changes
+     * Used to update or reload data based on the selected record count
+     */
     $(document).on('change','#measurement_number_record', function(){
         var page_value = $('div').find('li.active').find('input').val();
         var data_type = $(this).attr('data_type');
@@ -941,30 +884,16 @@ $(document).ready( function(){
         }
 
     })
-    // --end>
 
-    
-    // <---18-11-2021---
-
+    /**
+     * Handles clicks on energy table rows.
+     * Depending on energy type (layer_modal, automatic, or manual), triggers specific data retrieval.
+     */
     $(document).on('click','.row_click_energy', function(){
         var energy_type = $('#energy_type').val();
 
         if(energy_type == 'layer_modal')
         {
-            // var valid_from = $(this).attr('valid_from');
-            // var valid_to = $(this).attr('valid_to');
-            // var name_val = $(this).children('td:first').text();
-            // $('#energy_search_record').val(name_val);
-            // console.log($(this).children('td:eq(1)'));
-            // <---14-01-2021---
-            // var click_row_array = [];
-            // $(this).closest('tr').find('td').each((key,val)=>{
-            //     click_row_array.push(val.innerHTML);
-            // });
-            // console.log(click_row_array); 
-            // --end--->
-
-            // <-----15-2-2021---
             var name_val = $(this).children('td:eq(0)').text();
             var valid_from = $(this).children('td:eq(1)').text();
             var valid_to = $(this).children('td:eq(2)').text();
@@ -972,8 +901,6 @@ $(document).ready( function(){
             var time_to = $(this).children('td:eq(5)').text();
             var energy_total_value = $(this).children('td:eq(6)').text();
             $('#energy_search_record').val(name_val);
-            
-            // console.log(energy_total_value);
             if(energy_total_value == '0')
             {
                 var tr = "<tr><td colspan='50' class='text-center text-muted'>No Record Found</td></tr>";
@@ -983,7 +910,6 @@ $(document).ready( function(){
             else{
                 rowClickEnergyLayer(name_val,valid_from,valid_to,time_from,time_to); 
             }
-            // rowClickEnergyTableDataLayer(valid_from,valid_to,click_row_array)
         }
         else if(energy_type == 'automatic'){
             var name_val = $(this).children('td:eq(0)').text();
@@ -1011,7 +937,10 @@ $(document).ready( function(){
         }
     })
 
-
+    /**
+     * Triggered when an energy pagination page count element is clicked
+     * Calls function to fetch/update records based on selected energy page count
+     */
     $(document).on('click', '.page_count_val_energy', function(){
         var id = $(this).attr('id');
         var data_type = $(this).attr('data_type');
@@ -1034,8 +963,10 @@ $(document).ready( function(){
         }
       
     });
-
-    // <----17-1-2022-
+    /**
+     * Determines the correct page value (including previous/next navigation) 
+     * calls function to fetch/update records for the selected page
+     */
     $(document).on('click', '.page_count_val_energy_layer', function(){
         var id = $(this).attr('id');
         var page_value = $('div').find('li.active').find('input').val();
@@ -1051,11 +982,8 @@ $(document).ready( function(){
         getNumberRecordsEnergyLayerModalPagination(page_value); 
       
     });
-    // -end--->
-
-
     $(document).on('blur','.pagination_input_val_energy', function(){
-        var page_value = $(this).val(); //$(this).val();
+        var page_value = $(this).val();
         var id = $(this).attr('id');
         var data_type = $(this).attr('data_type');
         var mst_id = $(this).attr('data_mst');
@@ -1080,10 +1008,8 @@ $(document).ready( function(){
         }
 
     })
-
-    // <---17-01-2022--
     $(document).on('blur','.pagination_input_val_energy_layer', function(){
-        var page_value = $(this).val(); //$(this).val();
+        var page_value = $(this).val();
         var id = $(this).attr('id');
         var last_input_val = $('#last_input_val_energy_layer').text();
         if(parseInt(page_value) <= 0){
@@ -1100,8 +1026,10 @@ $(document).ready( function(){
         getNumberRecordsEnergyLayerModalPagination(page_value); 
 
     })
-    // --end-->
-
+    /**
+     * Triggered when the energy number of records selection changes
+     * Stores selected value in localStorage and updates pagination data
+     */
     $(document).on('change','#energy_number_record', function(){
         var page_value = $('div').find('li.active').find('input').val();
         var data_type = $(this).attr('data_type');
@@ -1122,27 +1050,11 @@ $(document).ready( function(){
         getNumberRecordsEnergyLayerModalPagination(page_value,energy_search_record = 'true'); 
     });
 
-
-    // ---end--->
-
-
-
-    //Energy Select Table
-    $(document).on('change','#energy_number_record',function(){
-        // getNumberRecordsEnergy();
-    });
-
-    //Product
-    $(document).on('change','#product_number_record',function(){
-        // getNumberRecordsProduct();
-    });
-
     //Production Data 
     $(document).on('change','#production_data_number_record',function(){
         getNumberRecordsProductionData();
     });
 
-    // <<---29-7-2021--
     $(document).on('click', '#save_select_changes' , function(){
         var arData = [];
         $('#dashboard_select_tag :selected').each(function(index){
@@ -1151,29 +1063,27 @@ $(document).ready( function(){
             arData.push({
                 'div_id_val' : div_id, 'description_val' : description 
             })
-        })
-        // if(arData.length > 0){
-        //     saveDashboardSelect(arData);
-        // }
-     
+        })     
     });
-    // --end-->
 
+    /**
+     * Generic modal close handler.
+     * Resets opacity and hides the large modal.
+     */
     $(".close").click(function(){
       $('.bd-example-modal-lg .modal-content').css('opacity','1');
               $('.bd-example-modal-lg').modal('hide');
     });  
+    /**
+     * Handles clicks on dashboard tiles.
+     * Manages tile expansion, table visibility, and toggles small vs large tile UI states.
+     */
     $(document).on('click', '.tiles-click', function(){
         setTimeout(() => {
         const checkTable = $(this).hasClass('hide_table_main');
-        //$(this).find('.save_table_div_show_table').removeClass('hide-table');
         if($(this).hasClass('table_tile_expand_view')) {
             return false;
         } else{
-            //$('.table_tile_outside_structure').click(false);
-            // var div_id = $(this).attr('class');
-            // console.log($(this).attr('data-i'));
-            // $("#"+div_id).fadeOut("20");
             if(checkTable) {
                 if(($(this).width() == 225) && ($(this).height() == 145)){
                     $(this).find('.save_table_div_show_table .table').css("display", "none");
@@ -1203,7 +1113,6 @@ $(document).ready( function(){
             
             var id=$(this).attr('class');
             div_id =id.split(" ")[0];
-         //   $('.'+div_id+'.tiles-click').fadeOut("20");
             $(".small-table_"+$(this).attr('data-i')).hide();
             tiles_click(div_id,prd_automatic_tile = false);
         }
@@ -1214,28 +1123,19 @@ $(document).ready( function(){
     $(document).on("click",".chart_tile",function() {
         $(this).find(".card-body").addClass("set-tile");
     });
-    // $(document).on('click', '.hide_table_main', function(){
-    //     if($(this).hasClass('hide_table_main')) {
-    //         $(this).find('.hide_table_main .save_table_div_show_table .table').css("display", "none"); 
-    //     } else{
-    //         $(this).find('.save_table_div_show_table .table').css("display", "block"); 
-    //     }    
-    // });
 
-    // <----28-12-2021--
     $(document).on('click', '.product_automatic_tile', function(){
-        // var div_id = $(this).attr('id');
-        // console.log($(this).attr('data-i'));
-        // $("#"+div_id).fadeOut("20");
         var id=$(this).attr('class');
         div_id =id.split(" ")[0];
         $('.'+div_id+'.product_automatic_tile').fadeOut("20");
         $(".small-table_"+$(this).attr('data-i')).hide();
         tiles_click(div_id,prd_automatic_tile = true);
     });
-    // --end-->
 
-    //<--15-8-2021--
+    /**
+     * Handler for the save table button in modals.
+     * Saves overall count or table format tiles based on the current dashboard tile data.
+     */
     $(document).on('click','#save_table_btn', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -1248,9 +1148,10 @@ $(document).ready( function(){
             saveTableFormat(type);
         }
     })
-    //-end-->
-
-    // <---22-11-2021---
+    /**
+     * Triggered when the save button for the energy table is clicked
+     * Used to save or persist the current energy table configuration/data
+     */
     $(document).on('click','#save_table_btn_energy', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -1262,8 +1163,10 @@ $(document).ready( function(){
             saveTableFormatEnergy();
         }
     })
-    //--end--->
-
+    /**
+     * Triggered when the save button for the product table is clicked
+     * Used to save or persist the current product table configuration/data
+     */
     $(document).on('click','#save_table_btn_product', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -1282,8 +1185,11 @@ $(document).ready( function(){
             }
         }
     })
-    
-    // <---16-8-2021--
+    /**
+     * Triggered when a dashboard tile is clicked
+     * Navigates to the corresponding table section (measurement, product, or energy)
+     * by triggering sidebar menu actions based on the clicked tile ID
+     */
     $(document).on('click','.tile-click-table', function(){
         var id_val = $(this).attr('id');
         switch(id_val){
@@ -1303,9 +1209,10 @@ $(document).ready( function(){
             break;
         }
     });
-    // --end-->
-
-    // <---17-8-2021---
+    /**
+     * Triggered when measurement modal height or width inputs lose focus (blur) or their value changes
+     * Used to update or validate the modal dimensions for the measurement view
+     */
     $(document).on('blur change','#modal-height-input-measurement,#modal-width-input-measurement', function(){
         var id_val = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -1322,7 +1229,6 @@ $(document).ready( function(){
 
             }
             else{
-                // height_val = parseInt(height_val)+1;
                 height_value = parseInt(height_val)*145;
                 if(height_value >=580){
                     height_value = 580;
@@ -1342,11 +1248,8 @@ $(document).ready( function(){
                 width_value = 250;
                 $('.gernerated_measurement_modal_tiles #measurement_count_tile_modal_'+total_records).css('width',width_value);
                 $('#modal-width-input-measurement-hidden').val(width_value);
-                // alert('Width Always be equal to greater than to actual Width');
-                // $('#modal-width-input-measurement').val(width_val);
             }
             else{
-                // width_val = parseInt(width_val) + 1;
                 width_value = parseInt(width_val)*250;
                 if(width_value >=1000){
                     width_value = 1000;
@@ -1359,7 +1262,10 @@ $(document).ready( function(){
         
     });
 
-
+    /**
+     * Main handler for opening the measurement tile configuration modal.
+     * Prepares the modal with default or existing (edit mode) data for measurement tiles.
+     */
     $(document).on('click','#modal_open_button', function(){
         setTimeout(function () {
             if ($(".modal-backdrop").length > 1) {
@@ -1374,8 +1280,6 @@ $(document).ready( function(){
         var measurement_type = $('#measurement_type').val();
 
         $('.energy_tile_modal').modal('hide'); //Energy Modal Hide
-
-         //25-09-2023
         $('#expand_view_table').prop('checked',false);
         $('#expand_view_table').val(0);
         $('#table_outside_tile_structure').prop('checked',false);
@@ -1386,11 +1290,8 @@ $(document).ready( function(){
             $('#save_table_btn').removeClass('display-none');
             $('#update_table_btn_measurement').addClass('display-none');
             $('.bd-example-modal-lg').modal('show');
-            // <----08-9--2021---
             var type = "Measurement";
             generateHtmlMeasurementTiles(type);
-
-            // --end-->
             var countValue = $('#overall_count').val();
             var record_name = $('#mst_id_hidden').attr('data-name');
             var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
@@ -1402,20 +1303,9 @@ $(document).ready( function(){
 
             $('.measurement_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
             $('.measurement_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
-
-            // <----17-9-2021----
             $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
             $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
-            $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
-
-            // --end--->
-
-            //<--Edit and Delete Button
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div .edit_val').addClass('edit_btn_tile_count');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('edit_btn_tile');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('id_val delete_btn_tile');
-            
-
+            $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');         
             $('#modal-height-input-measurement').attr('disabled',true);
             $('#modal-width-input-measurement').attr('disabled',true);
 
@@ -1435,11 +1325,8 @@ $(document).ready( function(){
             var tableLength = $('#mesurement_select_table_entries tr').length;
             if(parseInt(tableLength) <= 5){
                 $('.bd-example-modal-lg').modal('show');
-                // <----20-8--2021---
                 var type = "Measurement";
-
                 generateHtmlMeasurementTiles(type);
-                // --end-->
                 var last_div_index = $('#total_records').val();
                 var table_html = $('#measurement_record_tb').html();
                 $('.measurement_html_modal_'+last_div_index+' #measurement_modal_table').html(table_html);
@@ -1454,18 +1341,12 @@ $(document).ready( function(){
                 $('.outer_table_tile_structure .count_result_tile').css("display", "none");
                 $(".gernerated_measurement_modal_tiles").find('[data-type-tile="Measurement"]').first().hide();
 
-                // <---23-8-2021---
                 $('#modal-height-input-measurement-hidden').val(290);
                 $('#modal-height-input-measurement').val('2');
                 $('#modal-width-input-measurement-hidden').val(500);
                 $('#modal-width-input-measurement').val('2');
-                // --end-->
-
                 $('#modal-height-input-measurement').attr('disabled',false);
                 $('#modal-width-input-measurement').attr('disabled',false);
-
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -1482,8 +1363,6 @@ $(document).ready( function(){
                 else{
                     $('.measurement_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
-
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1513,8 +1392,6 @@ $(document).ready( function(){
 
                 $('#modal-height-input-measurement').attr('disabled',false);
                 $('#modal-width-input-measurement').attr('disabled',false);
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -1531,7 +1408,6 @@ $(document).ready( function(){
                 else{
                     $('.measurement_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1551,20 +1427,9 @@ $(document).ready( function(){
             var last_div_index = $('#total_records').val();
             $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
             $('.measurement_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
-
-             // <----17-9-2021----
              $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
              $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
-             $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
- 
-             // --end--->
-             
-            //<--Edit and Delete Button
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div .edit_val').addClass('edit_btn_tile_count');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('edit_btn_tile');
-            // $('.measurement_html_modal_'+last_div_index+' .action-modal-button-div img').removeClass('id_val delete_btn_tile');
-            
-
+             $('.measurement_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');          
             $('#modal-height-input-measurement').attr('disabled',true);
             $('#modal-width-input-measurement').attr('disabled',true);
 
@@ -1579,9 +1444,10 @@ $(document).ready( function(){
         }
 
     })
-    // --end->
-
-    // <----22-11-2021----
+    /**
+     * Triggered when energy modal height or width inputs lose focus (blur) or their value changes
+     * Used to update or validate the modal dimensions for the energy view
+     */
     $(document).on('blur change','#modal-height-input-energy,#modal-width-input-energy', function(){
         var id_val = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -1598,7 +1464,6 @@ $(document).ready( function(){
 
             }
             else{
-                // height_val = parseInt(height_val)+1;
                 height_value = parseInt(height_val)*145;
                 if(height_value >=580){
                     height_value = 580;
@@ -1618,11 +1483,8 @@ $(document).ready( function(){
                 width_value = 250;
                 $('.gernerated_energy_modal_tiles #energy_count_tile_modal_'+total_records).css('width',width_value);
                 $('#modal-width-input-energy-hidden').val(width_value);
-                // alert('Width Always be equal to greater than to actual Width');
-                // $('#modal-width-input-measurement').val(width_val);
             }
             else{
-                // width_val = parseInt(width_val) + 1;
                 width_value = parseInt(width_val)*250;
                 if(width_value >=1000){
                     width_value = 1000;
@@ -1635,7 +1497,10 @@ $(document).ready( function(){
         
     });
 
-
+    /**
+     * Main handler for opening the energy tile configuration modal.
+     * Checks tile limits and prepares the energy modal UI for new or edited tiles.
+     */
     $(document).on('click','#energy_modal_open_button', function(){
         var tile_edit_value = $(this).attr('tile-edit');
         if(tile_edit_value == 'false'){
@@ -1671,7 +1536,6 @@ $(document).ready( function(){
         var type_data_tile = dashboard_tile_data['type_data_tile'];
         var energy_type = $('#energy_type').val();
         $('.bd-example-modal-lg').modal('hide'); //Measurement Modal Hide
-        //25-09-2023
         $('#expand_view_energy_table').prop('checked',false);
         $('#expand_view_energy_table').val(0);
         $('#energy_table_outside_tile_structure').prop('checked',false);
@@ -1682,11 +1546,8 @@ $(document).ready( function(){
             $('#save_table_btn_energy').removeClass('display-none');
             $('#update_table_btn_measurement_energy').addClass('display-none');
             $('.energy_tile_modal').modal('show');
-            // <----08-9--2021---
             var type = "Energy";
             generateHtmlEnergyTiles(type);
-
-            // --end-->
             var countValue = $('#overall_count_energy').val();
             var record_name = $('#mst_id_hidden_energy').attr('data-name');
             var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
@@ -1698,13 +1559,9 @@ $(document).ready( function(){
 
             $('.energy_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
             $('.energy_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
-
-            // <----17-9-2021----
             $('.energy_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
             $('.energy_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
             $('.energy_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
-
-            // --end--->
 
             $('#modal-height-input-energy').attr('disabled',true);
             $('#modal-width-input-energy').attr('disabled',true);
@@ -1726,10 +1583,8 @@ $(document).ready( function(){
             var energyType = $('#energy_type').val();
             if(parseInt(tableLength) <= 5 || energyType == 'layer_modal' || energyType == 'automatic'){
                 $('.energy_tile_modal').modal('show');
-                // <----20-8--2021---
                 var type = "Energy";
                 generateHtmlEnergyTiles(type);
-                // --end-->
                 var last_div_index = $('#total_records').val();
                 var table_html = $('#energy_record_tb').html();
                 $('.energy_html_modal_'+last_div_index+' #energy_modal_table').html(table_html);
@@ -1743,19 +1598,12 @@ $(document).ready( function(){
                 $('.energy_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table #energy_outer_modal_table').css("display", "none");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "none");
                 $(".gernerated_energy_modal_tiles").find('[data-type-tile="Energy"]').first().hide();
-
-                // <---23-8-2021---
                 $('#modal-height-input-energy-hidden').val(290);
                 $('#modal-height-input-energy').val('2');
                 $('#modal-width-input-energy-hidden').val(500);
                 $('#modal-width-input-energy').val('2');
-                // --end-->
-
                 $('#modal-height-input-energy').attr('disabled',false);
                 $('#modal-width-input-energy').attr('disabled',false);
-
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -1772,8 +1620,6 @@ $(document).ready( function(){
                 else{
                     $('.energy_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
-
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1804,8 +1650,6 @@ $(document).ready( function(){
 
                 $('#modal-height-input-energy').attr('disabled',false);
                 $('#modal-width-input-measurement').attr('disabled',false);
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -1822,7 +1666,6 @@ $(document).ready( function(){
                 else{
                     $('.energy_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
             }
             else{
                 alert('Records are Always be less than 5');
@@ -1842,13 +1685,9 @@ $(document).ready( function(){
             var last_div_index = $('#total_records').val();
             $('.energy_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
             $('.energy_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
-
-             // <----17-9-2021----
              $('.energy_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
              $('.energy_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
              $('.energy_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
- 
-
             $('#modal-height-input-energy').attr('disabled',true);
             $('#modal-width-input-energy').attr('disabled',true);
 
@@ -1863,22 +1702,12 @@ $(document).ready( function(){
         }
 
     })
-    // ---end-->
 
-    // <---20-8-2021----
   setTimeout( function(){
         $(".small-table table").css('display','none')
     },1000);
     $(document).on('click', function (event) {
-        
-        // if(!$(event.target).closest('.chart_tile_outside_structure').length){
-        //    console.log('Outside click');
-        // }
         if (!$(event.target).closest('#mesurement_count_div,#product_count_div,#energy_count_div,#energy_consumed_div,#five_days_energy_consumed').length) {
-            // $('.dashboard_count_div .stretch-card').css('height',145);
-            // $('.dashboard_count_div .stretch-card').css('width',285);
-
-            // $('.dashboard_count_div .movetile').addClass('col-md-3');
             $('.dashboard_count_div .stretch-card .card-body').addClass('row');
             $('.dashboard_count_div .stretch-card .card-body div:first-child').addClass('col-md-12');
 
@@ -1888,26 +1717,13 @@ $(document).ready( function(){
             
             $('.dashboard_count_div .stretch-card').removeClass('tile-click-table');
             $('.dashboard_count_div .stretch-card').addClass('tiles-click');
-            $('.dashboard_count_div .stretch-card.product_automatic_tile ').removeClass('tiles-click');
-            // <----03-03-2022--
-            // $('.dashboard_count_div .stretch-card').addClass('hide_table_main');
-            // ---end--->        
-
+            $('.dashboard_count_div .stretch-card.product_automatic_tile ').removeClass('tiles-click'); 
             $('.save_table_div_show').hide();
             $('.action-modal-button-div').removeClass('col-md-12');
-
-            // $('.dashboard_count_div .stretch-card .small-table').show();
-
-            // <----25-10-2021---
             $('.dashboard_count_div .movetile .overall_value_tile .card-body').removeClass('row');
             $('.dashboard_count_div .movetile .overall_value_tile .card-body div:first-child').removeClass('col-md-12');
-            // --end-->
-
-            // <--26-10-2021--
             $('.dashboard_count_div .movetile .table_tile .card-body').removeClass('row');
             $('.dashboard_count_div .movetile .table_tile .card-body div:first-child').removeClass('col-md-12');
-            // ---end-->
-
             var tile_click_data = localStorage.getItem('tile_click_data');
 
             if(tile_click_data != null && tile_click_data != undefined)
@@ -1920,7 +1736,6 @@ $(document).ready( function(){
                 localStorage.removeItem('tile_click_data');
             }
 
-            // <--9-11-2021---
             var x = document.querySelectorAll(".chart_tile_outside_structure");
             if(x.length > 0){
                 for(var i = 0; i < x.length; i++){
@@ -1936,12 +1751,10 @@ $(document).ready( function(){
                     x[i].style.setProperty("width", width_outer+"px", "important");
                 }
             }
-            // --end-->
             var energy = $("#dashboard_count_div_tile").find('[data-type-tile="energy"]');
             if (energy) {
             
             }else{
-                // <--20-09-2023---
                 var x = document.querySelectorAll(".table_tile_outside_structure");
                 if(x.length > 0){
                     for(var i = 0; i < x.length; i++){
@@ -1957,22 +1770,7 @@ $(document).ready( function(){
                     }
                 }
             }
-            // --end-->
 
-            // // <---7-10-2021---
-            // console.log('Click Working');
-            // var tile_html = $('.dashboard_count_div').html();
-            // // // <---7-10-2021--
-            //     tile_html = tile_html.replace("lineChart",'lineChart-none'); 
-            //     tile_html = tile_html.replace("areaChart",'areaChart-none');
-            //     tile_html = tile_html.replace("pieChart",'pieChart-none');
-            //     tile_html = tile_html.replace("barChart",'barChart-none');
-            // $('.dashboard_count_div').html(tile_html);
-
-            // <---3-9-2021---
-            // $('.dashboard_count_div canvas').removeAttr('id'); 
-            
-            // <---8-10-2021---
             $('.dashboard_count_div canvas').each(function(){
                 var id = $(this).attr('id');
                 if(id == 'areaChart'){
@@ -1988,20 +1786,14 @@ $(document).ready( function(){
                     $(this).attr('id','barChart-none');
                 }
             });
-            // --end-->  
-            // <---20-10-2021---
-            // $('.dashboard_count_div .small-table').show();
-            // --end--> 
-            
-            // --end-->
         }
         
     });
 
-
-    // ---end--->
-
-    // <----20-8-2021--
+    /**
+     * Primary handler for "Save & Proceed" button within the dashboard tile modal.
+     * Redirects users to relevant configuration screens (Measurement, Product, Energy) based on selection.
+     */
     $(document).on('click', '.save_and_proceed_btn_dashboard', function(e){
         $('#modal_open_button').val('Save & Preview');
         $('#modal_open_button').attr('tile-edit','false');
@@ -2060,11 +1852,7 @@ $(document).ready( function(){
                 if(edit_tile_db_name != '' && all_column != '' && edit_tile_db_table != '')
                 {
                     $('#dashboard_database_list option[dashboardbvalue=' + edit_tile_db_name + ']').prop('selected', 'selected');
-                    // $('#dashboard_database_list').trigger('change');
                      $('#all_tables_product option[value=' + edit_tile_db_table + ']').prop('selected', 'selected');
-                    // getAllColumnProductTables(all_column);
-                    // getAllColumnProductTables();
-                    // getNumberRecordsProductAutomatic();
                 }
                 else if(tile_click_manually != '' && tile_click_manually == 'true'){
                     $("#product_type option[value='mannual']").prop('selected','selecetd');
@@ -2085,9 +1873,6 @@ $(document).ready( function(){
             $('.energy_automatic_filter_div').show();
             $('.layer_modal_filter_div').hide();
             $('#energy_search_record').attr('readonly',true);
-            // $('#energy_type').trigger('change');
-
-
             $('#tables_sidebar').click();
             $('#energy_sidebar_option').click();
             $('#dashboard_tile_modal').modal('hide');
@@ -2104,13 +1889,11 @@ $(document).ready( function(){
         else if((record_type_of_tile == "measurement" || record_type_of_tile == "energy")  && type_data_tile == "chart" && data_edit_chart == 'false')
         {
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getChartTileDashboard();                                   
             $('#time_interval_chart option[value=1]').prop('selected','selected');
             getChartTimeIntervalRecord();
-            // dashboardChart();
             $('#measurement-height-chart').val('1');
             $('#measurement-height-chart-hidden').val('145');
             $('#measurement-width-chart').val('1');
@@ -2120,8 +1903,6 @@ $(document).ready( function(){
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
             $('#dashboard_loader_div').hide();
-
-            // <---1-11-2021---
             $('#expand_view_chart').prop('checked',false);
             $('#expand_view_chart').val('0');
 
@@ -2131,49 +1912,33 @@ $(document).ready( function(){
             $('.chart_outisde_tile_controls').hide();
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
-            // --end-->
-
-            // <--7-12-2021--
             $('.chart_product_div').hide();
             $('#chart_record_div').show();
             $('#time_interval_div').show();
-            // --end--->
-
-            // <---18-02-2021--
             if(record_type_of_tile == "energy")
-            {
-                
+            {               
                 $('#energy_type_dashboard_chart_div').show();
-                // $('#energy_type_dashboard_chart option[value=manually').prop('selected','selected');
                 $('#energy_type_dashboard_chart option[value=automatic').prop('selected','selected');
                 $('#energy_type_dashboard_chart').trigger('change');
-
             }
             else{
                 $('.energy_automatic_div').hide();
                 $('#energy_type_dashboard_chart_div').hide();
                 $('.energy_chart_layer_div').hide();
             }
-            // --end-->
-
         }
         else if((record_type_of_tile == "measurement" || record_type_of_tile == "energy") && type_data_tile == "chart" && data_edit_chart == 'true')
         {
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
-            //getChartTimeIntervalRecord();
             $('#expand_view_chart').prop('checked',false);
             $('#expand_view_chart').val('0');
-
             $('#chart_outside_tile_structure').prop('checked',false);
             $('#chart_outside_tile_structure').val('0');
-
             $('.chart_outisde_tile_controls').hide();
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
-
             if(record_type_of_tile == 'measurement')
             {
                 getEditChartTileDashboard();
@@ -2227,26 +1992,17 @@ $(document).ready( function(){
             $('#update_and_proceed_btn_dashboard_chart').show();
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label').text('Select '+record_type_of_tile);
-            $('#dashboard_loader_div').hide();
-
-            // <--7-12-2021--
-            
+            $('#dashboard_loader_div').hide();            
             $('.chart_product_div').hide();
-           
-            // --end--->
-            
-
         }
         else if(record_type_of_tile == "product" && type_data_tile == "chart" && data_edit_chart == 'false')
         {
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getChartTileDashboard();
             $('#time_interval_chart option[value=1]').prop('selected','selected');
             getChartTimeIntervalRecordProduct();
-            // dashboardChart();
             $('#measurement-height-chart').val('1');
             $('#measurement-height-chart-hidden').val('145');
             $('#measurement-width-chart').val('1');
@@ -2256,36 +2012,23 @@ $(document).ready( function(){
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
             $('#dashboard_loader_div').hide();
-
-            // <---1-11-2021---
             $('#expand_view_chart').prop('checked',false);
             $('#expand_view_chart').val('0');
-
             $('#chart_outside_tile_structure').prop('checked',false);
             $('#chart_outside_tile_structure').val('0');
-
             $('.chart_outisde_tile_controls').hide();
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
-            // --end-->
-
-            // <--7-12-2021--
             $('.chart_product_div').show();
             $('#chart_record_div').hide();
             $('#time_interval_div').hide();
-            // --end--->
-
-            // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
             $('.energy_automatic_div').hide();
-            // --end--->
-
         }
         else if(record_type_of_tile == "product" && type_data_tile == "chart" && data_edit_chart == 'true')
         {
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':record_type_of_tile,'type_data_tile':type_data_tile};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
 
@@ -2306,21 +2049,12 @@ $(document).ready( function(){
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#chart_records_label_product').text('Select '+record_type_of_tile);
             $('#dashboard_loader_div').hide();
-
-            // <--7-12-2021--
             $('.chart_product_div').show();
             $('#chart_record_div').hide();
             $('#time_interval_div').hide();
-            // --end--->
-
-
-            // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
-            $('.energy_automatic_div').hide();
-            // --end--->
-            
-
+            $('.energy_automatic_div').hide();           
         }
         else if(record_type_of_tile == "graph" && $(this).attr('data-edit') == 'false')
         {
@@ -2345,13 +2079,10 @@ $(document).ready( function(){
             $('.outsideView').hide();
             savedGraphList();
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             var ar = {'title_modal_tile':title_modal_tile,'record_type_of_tile':'graph','type_data_tile':'Graph'};
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getGraphChartTileDashboard();
             $('#time_interval_chart option[value=1]').prop('selected','selected');
-            //getChartTimeIntervalRecordProduct();
-            // dashboardChart();
             $('#measurement-height-chart').val('2');
             $('#measurement-height-chart-hidden').val('290');
             $('#measurement-width-chart').val('2');
@@ -2361,30 +2092,18 @@ $(document).ready( function(){
             $('#update_and_proceed_btn_dashboard_chart').hide();
             $('#save_and_proceed_btn_dashboard_chart').show();
             $('#dashboard_loader_div').hide();
-
-            // <---1-11-2021---
             $('#expand_view_chart').prop('checked',false);
             $('#expand_view_chart').val('0');
-
             $('#chart_outside_tile_structure').prop('checked',false);
             $('#chart_outside_tile_structure').val('0');
-
             $('.chart_outisde_tile_controls').hide();
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
-            // --end-->
-
-            // <--7-12-2021--
-            //$('.chart_product_div').show();
             $('#chart_record_div').hide();
             $('#time_interval_div').hide();
-            // --end--->
-
-            // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
             $('.energy_automatic_div').hide();
-            // --end--->
             $('.outer_chart_tile_structure').hide();
             $('.default').hide();
             $('.msgGraph').show();
@@ -2401,9 +2120,6 @@ $(document).ready( function(){
             $('#newGraph').show();
             $('#graph_table_div').show();
             $('#measurement_point_year_div').hide();
-            /*$('#graph_table_chart').prop('selectedIndex',0);
-            $('#measurement_point_chart').prop('selectedIndex',0);
-            $('#measurement_point_year').prop('selectedIndex',0);*/
             $('#chart_btn_click').hide();
             $('.expandViewChart').hide();
             $('.outsideView').hide();
@@ -2412,35 +2128,22 @@ $(document).ready( function(){
             localStorage.setItem('dashboard_tile_data',JSON.stringify(ar));
             getEditGraphChartTileDashboard();
             $('#dashboard_tile_modal').modal('hide');
-            // $('#dashboard_add_tile_chart').click();
             $('#dashboard_tile_modal_chart').modal('show');
             $('#update_and_proceed_btn_dashboard_chart').show();
             $('#save_and_proceed_btn_dashboard_chart').hide();
             $('#dashboard_loader_div').hide();
-
-            // <---1-11-2021---
             $('#expand_view_chart').prop('checked',false);
             $('#expand_view_chart').val('0');
-
             $('#chart_outside_tile_structure').prop('checked',false);
             $('#chart_outside_tile_structure').val('0');
-
             $('.chart_outisde_tile_controls').hide();
             $('#chart_height_outer_structure').val('');
             $('#chart_width_outer_structure').val('');
-            // --end-->
-
-            // <--7-12-2021--
-            //$('.chart_product_div').show();
             $('#chart_record_div').hide();
             $('#time_interval_div').hide();
-            // --end--->
-
-            // <----23-2-2022--
             $('#energy_type_dashboard_chart_div').hide();
             $('.energy_chart_layer_div').hide();
             $('.energy_automatic_div').hide();
-            // --end--->
             $('.outer_chart_tile_structure').hide();
         }  
         if(record_type_of_tile != "graph"){
@@ -2458,11 +2161,12 @@ $(document).ready( function(){
         $('#title_modal_tile').val('');
         $('#record_type_of_tile option[value=energy]').prop('selected','selected');
         $('#type_data_tile option[value=table').prop('selected', 'selected');
-        // $('#dashboard_loader_div').hide();
     });
-    // --end-->
 
-    // 23-8-2021---
+    /**
+     * Delete button handler for dashboard tiles.
+     * Prompts for confirmation and triggers the delete operation.
+     */
     $(document).on('click','.delete_btn_tile',function(){
         var confResult = confirm('Are you sure want to Delete');
         if(confResult == true){
@@ -2473,9 +2177,11 @@ $(document).ready( function(){
         }
         
     })
-    //--end-->
-
-    // <----30-8-2021---
+    
+    /**
+     * Edit button handler for dashboard tiles (Table/Count tiles).
+     * Retrieves existing tile data and opens the configuration modal in edit mode.
+     */
     $(document).on('click','.edit_btn_tile',function(){
      
         var id=$(this).attr('class');
@@ -2484,23 +2190,12 @@ $(document).ready( function(){
         var product_automatic_tile = $(this).hasClass('product_automatic_tile_edit');
         getEditDataDashboard(id_val,i_value,product_automatic_tile);
         $('#dashboard_tile_modal').modal('show');   
-
-        // if(data_type == "Measurement"){
-        //     var id=$(this).attr('class');
-        //     var i_value = $(this).attr('data-i-value');
-        //     id_val =id.split(" ")[0];
-        //     $('#tables_sidebar').click();
-        //     $('#measurement_sidebar_option').click();
-        //     $('#dashboard_tile_modal').modal('hide');
-        //     localStorage.setItem('edit-measurement-tile',id_val)
-        //     localStorage.setItem('edit-i-value',i_value);
-        //     $('#modal_open_button').val('Update & Preview');
-        // }
-
     });
-    // --end-->
 
-    // <----31-8-2021---
+    /**
+     * Update button handler for measurement tiles.
+     * Triggers update for either table format or overall count records.
+     */
     $(document).on('click','#update_table_btn_measurement', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -2514,10 +2209,10 @@ $(document).ready( function(){
         }
         
     })
-    // --end--
-
-
-    // <----30-11-2021---
+    /**
+     * Update button handler for energy tiles.
+     * Triggers update for either table format or overall count records.
+     */
     $(document).on('click','#update_table_btn_energy', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -2531,10 +2226,9 @@ $(document).ready( function(){
         }
         
     })
-    // --end--
-
-
-    // <---6-12-2021---
+    /**
+     * Update button handler for product tiles.
+     */
     $(document).on('click','#update_table_btn_product', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -2555,9 +2249,10 @@ $(document).ready( function(){
         }
         
     })
-    // --end-->
-
-    // <----01-9-2021---
+    /**
+     * Triggered when the "Add Tile" button on the dashboard is clicked
+     * Used to open or initialize the process of adding a new dashboard tile
+     */
     $(document).on('click','#dashboard_add_tile', function(){
         $("#dashboard_add_tile").attr('data-target','#dashboard_tile_modal');
         $('#save_and_proceed_btn_dashboard').val('Save & Proceed');
@@ -2586,9 +2281,11 @@ $(document).ready( function(){
         $('#edit_tile_click_manually').attr('data_click','');
         
     });
-    // --end-->
 
-    // <----02-9-2021---
+    /**
+     * Handles dimension changes (height/width) for chart tiles in modals.
+     * Adjusts the preview tile size and redraws charts if necessary.
+     */
     $(document).on('blur change','#measurement-height-chart,#measurement-width-chart', function(){
         var id = $(this).attr('id');
         var total_records = $('#total_records_chart').val();
@@ -2769,9 +2466,11 @@ $(document).ready( function(){
 
         }
     })
-    // --end-->
 
-    // <---02-8-2021----
+    /**
+     * Save button handler for chart tiles.
+     * Routes to specific save functions based on record type (Product, Energy, Measurement).
+     */
     $(document).on('click', '#save_and_proceed_btn_dashboard_chart', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -2792,7 +2491,6 @@ $(document).ready( function(){
             saveDashboardTileChart();
         }
     })
-    // --end-->
 
     $(document).on('change','#time_interval_chart',function(){
         getChartTimeIntervalRecord();
@@ -2803,7 +2501,6 @@ $(document).ready( function(){
        chartRecordFilter(); 
     });
 
-    // <---7-9-2021----
     $(document).on('change','#measurement_type', function(){
         var val = $(this).val();
         if(val == 'automatic'){
@@ -2813,17 +2510,9 @@ $(document).ready( function(){
             $('#measurement_records_order_by option:contains("Maximum")').text('Order By Max Units Consumed');
             $('#measurement_records_order_by option:contains("Minimum")').text('Order By Min Units Consumed');   
         }
-        // if(val == 'manually')
-        // {
-            getNumberRecordsMesurement();
-        // }
-        // else{
-        //     var tr = "<tr><td colspan='5' class='text-center text-muted'>Please Select Measurement Type Entered Manually</td></tr>";
-        //     $('#mesurement_select_table_entries').html(tr);
-        // }
+        getNumberRecordsMesurement();
     })
 
-    // <---17-11-2021---
     $(document).on('change','#energy_type', function(){
         var val = $(this).val();
         $('#energy_record_order_by_label').text('Filter Units Consumed');
@@ -2839,7 +2528,6 @@ $(document).ready( function(){
             $('.energy_automatic_filter_div').show();
             $('.layer_modal_filter_div').hide()
             $('#energy_search_record').attr('readonly',true);
-            // getNumberRecordsEnergy();
             $('#energy_automatic_input').val('');
             getAllMeasurementEnergyAutomatic();
 
@@ -2866,15 +2554,14 @@ $(document).ready( function(){
         }
        
     })
-    // ---end--->
-
-    // <---21-9-2021---
+    /**
+     * Triggered when the save position button for dashboard tiles is clicked
+     * Used to persist or update the current tile layout/positions on the dashboard
+     */
     $(document).on('click','#save_position_tile', function(){
-        //let tilelength = $('#dashboard_count_div_tile .stretch-card').length;
         let tilelength = $('#dashboard_count_div_tile .grid-margin').length;
         if(tilelength > 0){
             var ar = [];
-            //$('#dashboard_count_div_tile .stretch-card').each(function(i,val){
             $('#dashboard_count_div_tile .grid-margin').each(function(i,val){
                 var id = $(this).attr('class');
                 id_val =id.split(" ")[0];
@@ -2883,10 +2570,10 @@ $(document).ready( function(){
             saveDashboardTilePosititon(ar);
         }
     });
-    // ---end-->
-
-
-    //<----28-9-2021---
+    /**
+     * Triggered when a dashboard menu item is clicked
+     * Stores selected menu option in localStorage and redirects to the main dashboard page
+     */
     $(document).on('click','.dashboard_menu_click', function(){
         var id_val = $(this).attr('id');
         localStorage.setItem('dashboard_menu_click_option',id_val);
@@ -2899,36 +2586,27 @@ $(document).ready( function(){
             window.open('/main.html','_self');
         }
     });
-    // --end-->
-
-
-    // <---30-9-2021---
+    /**
+     * Triggered when the dashboard database selection changes
+     * Used to load or update dashboard data based on the selected database
+     */
     $(document).on('change','#dashboard_database_list',function(){
         var val = $(this).val();
-        // var dashboardDbName = $(this).attr("dashboardbValue");
         var dashboardDbName = $('option:selected', this).attr('dashboardbValue');
-        // console.log(dashboardDbName);
         localStorage.setItem('dashboardDBName',val);
         localStorage.setItem('dashboardDB',dashboardDbName);
         $("#nameDashboardDB").val(dashboardDbName);
         sessionStorage.setItem("nameDB", dashboardDbName);
         getAllProductTables();
-        // getTableFormatDashboard();
         setTimeout( ()=>{
             $('#dashboard_sidebar').click();
         },500);
         storeDBValueSession();
-
     });
-    // -end-->
-
-    // <---3-9-2021--
     $(document).on('change','#chart_records,#chart_type', function(){
         chartRecordFilter();
     });
-    // --end-->
 
-    // <--7-10-2021---
     $(document).on('click','.edit_btn_tile_chart',function(){
         var id=$(this).attr('class');
         var i_value = $(this).attr('data-i-value');
@@ -2936,9 +2614,11 @@ $(document).ready( function(){
         getEditDataDashboard(id_val,i_value);
         $('#dashboard_tile_modal').modal('show');   
     });
-    // --end---->
-    
-    // <---7-10-2021--
+
+    /**
+     * Update button handler for existing chart tiles.
+     * Routes to specific update functions based on record type and chart mode.
+     */
     $(document).on('click','#update_and_proceed_btn_dashboard_chart', function(){
         var ar = localStorage.getItem('dashboard_tile_data');
         ar = JSON.parse(ar);
@@ -2963,9 +2643,11 @@ $(document).ready( function(){
             updateDashboardChart();
         }
     });
-    // --end--->
 
-    // <----20-10-2021---
+    /**
+     * Toggle handler for expanded view in charts.
+     * Manages UI state and resets manual dimension settings when toggled.
+     */
     $(document).on('click','#expand_view_chart', ()=>{
         var valIsChecked = $('#expand_view_chart').is(":checked");
         if(valIsChecked == true){
@@ -2985,9 +2667,7 @@ $(document).ready( function(){
             $('#expand_view_chart').val("0");
         }
     });
-    // --end-->
 
-    // <----07-9-23--->
     $(document).on('click','#expand_view_table', ()=>{
         var valIsChecked = $('#expand_view_table').is(":checked");
         if(valIsChecked == true){
@@ -3002,21 +2682,16 @@ $(document).ready( function(){
             var id = $('#total_records').val();
             $('#measurement_count_outer_tile_modal_table_'+id).css('height',145);
             $('#measurement_count_outer_tile_modal_table_'+id).css('width',250);
-            /*$('#modal-height-input-measurement-hidden').val(290);
-            $('#modal-width-input-measurement-hidden').val(500);*/
             $(".gernerated_measurement_modal_tiles").find(".outer_table_tile_structure").hide();
             $(".gernerated_measurement_modal_tiles").find("[data-type-tile='Measurement']").first().show();
         }
         else{
             $('#expand_view_table').val("0");
-            /*$('#modal-height-input-measurement-hidden').val(290);
-            $('#modal-width-input-measurement-hidden').val(500);*/
             $(".gernerated_measurement_modal_tiles").find("[data-type-tile='Measurement']").first().hide();
             $(".gernerated_measurement_modal_tiles").find(".outer_table_tile_structure").show();
         }
     });
-    // --end-->
-    // <---08-09-2023--
+    
     $(document).on('click','#table_outside_tile_structure', ()=>{
         var valIsChecked = $('#table_outside_tile_structure').is(":checked");
         if(valIsChecked == true){
@@ -3042,8 +2717,10 @@ $(document).ready( function(){
         }
     });
 
-
-    // product<----07-9-23--->
+    /**
+     * Toggle handler for expanded view in product tables.
+     * Adjusts modal tile visibility and handles complex UI updates for product table previews.
+     */
     $(document).on('click','#expand_view_product_table', ()=>{
         var valIsChecked = $('#expand_view_product_table').is(":checked");
         if(valIsChecked == true){
@@ -3058,12 +2735,8 @@ $(document).ready( function(){
             var id = $('#total_records').val();
             $('#product_count_outer_tile_modal_table_'+id).css('height',145);
             $('#product_count_outer_tile_modal_table_'+id).css('width',250);
-            /*$('#modal-height-input-product-hidden').val(290);
-            $('#modal-width-input-product-hidden').val(500);*/
             $(".gernerated_product_modal_tiles").find(".outer_table_tile_structure").hide();
             $(".gernerated_product_modal_tiles").find("[data-type-tile='Product']").first().show();
-
-            //checks-2023
             let modalHeightInputProduct = $('#modal-height-input-product').val();
             let modalWidthInputProduct = $('#modal-width-input-product').val();
             $('#modal-height-input-product').attr('disabled',false);
@@ -3083,12 +2756,8 @@ $(document).ready( function(){
         }
         else{
             $('#expand_view_product_table').val("0");
-            /*$('#modal-height-input-product-hidden').val(290);
-            $('#modal-width-input-product-hidden').val(500);*/
             $(".gernerated_product_modal_tiles").find(".outer_table_tile_structure").show();
             $(".gernerated_product_modal_tiles").find("[data-type-tile='Product']").first().hide();
-
-            //checks-2023
             $('.tiles-custom-table').show();
             $('.small-table-tile-icon .logo-image-main-div .tile-image-icon-table').addClass('display-none');
             $('.small-table-tile-icon .count_result_tile').css('display', 'none');
@@ -3096,8 +2765,7 @@ $(document).ready( function(){
             $('.small-table-tile-icon').addClass('one-by-one-tile');
         }
     });
-    // --end-->
-    // <---08-09-2023--
+
     $(document).on('click','#product_table_outside_tile_structure', ()=>{
         var valIsChecked = $('#product_table_outside_tile_structure').is(":checked");
         if(valIsChecked == true){
@@ -3107,8 +2775,6 @@ $(document).ready( function(){
             $('#expand_view_product_table').prop("checked",false);
             $(".gernerated_product_modal_tiles").find("[data-type-tile='Product']").first().hide();
             $(".gernerated_product_modal_tiles").find(".outer_table_tile_structure").show();
-
-            //checks-2023
             $('#product_table_height_outer_structure').val(1).trigger("change");
             $('#product_table_width_outer_structure').val(1).trigger("change");
             $('#modal-height-input-product').attr('disabled',true);
@@ -3142,8 +2808,6 @@ $(document).ready( function(){
             $('#product_count_outer_tile_modal_table_'+id).css('width',250);
             $(".gernerated_product_modal_tiles").find(".outer_table_tile_structure").show();
             $(".gernerated_product_modal_tiles").find("[data-type-tile='Product']").first().hide();
-
-            //checks-2023
             $('#product_table_height_outer_structure').val('');
             $('#product_table_width_outer_structure').val('');
             $('#modal-height-input-product').trigger("change").attr('disabled',false);
@@ -3166,7 +2830,10 @@ $(document).ready( function(){
         }
     });
 
-    // energy<----07-9-23--->
+    /**
+     * Toggle handler for expanded view in energy tables.
+     * Manages UI state and visibility for energy table previews in modals.
+     */
     $(document).on('click','#expand_view_energy_table', ()=>{
         var valIsChecked = $('#expand_view_energy_table').is(":checked");
         if(valIsChecked == true){
@@ -3181,21 +2848,20 @@ $(document).ready( function(){
             var id = $('#total_records').val();
             $('#energy_count_outer_tile_modal_table_'+id).css('height',145);
             $('#energy_count_outer_tile_modal_table_'+id).css('width',250);
-            /*$('#modal-height-input-energy-hidden').val(290);
-            $('#modal-width-input-energy-hidden').val(500);*/
             $(".gernerated_energy_modal_tiles").find(".outer_table_tile_structure").hide();
             $(".gernerated_energy_modal_tiles").find("[data-type-tile='Energy']").first().show();
         }
         else{
             $('#expand_view_energy_table').val("0");
-            /*$('#modal-height-input-energy-hidden').val(290);
-            $('#modal-width-input-energy-hidden').val(500);*/
             $(".gernerated_energy_modal_tiles").find(".outer_table_tile_structure").show();
             $(".gernerated_energy_modal_tiles").find("[data-type-tile='Energy']").first().hide();
         }
     });
-    // --end-->
-    // energy<---08-09-2023--
+
+    /**
+     * Toggle handler for showing energy tables outside of the standard tile structure.
+     * Manages control visibility and resets dimensions when toggled.
+     */
     $(document).on('click','#energy_table_outside_tile_structure', ()=>{
         var valIsChecked = $('#energy_table_outside_tile_structure').is(":checked");
         if(valIsChecked == true){
@@ -3220,7 +2886,11 @@ $(document).ready( function(){
             $(".gernerated_energy_modal_tiles").find(".outer_table_tile_structure").show();
         }
     });
-    // <----13-03-2024---
+
+    /**
+     * Toggle handler for live graph updates.
+     * Sets numerical value (1 or 0) for the live graph state.
+     */
     $(document).on('click','#is_live_graph', ()=>{
         var valIsChecked = $('#is_live_graph').is(":checked");
         if(valIsChecked == true){
@@ -3230,25 +2900,20 @@ $(document).ready( function(){
             $('#is_live_graph').val("0");
         }
     });
-    // --end-->
 
-    // <---22-10-2021--
-    // $("body").not($(".dashboard_count_div .movetile")).click(function(){
-    //     // console.log("323");
-    // });
-
+    /**
+     * Secondary catch-all click handler for resetting dashboard UI elements.
+     * Checks if a click is within specific dashboard components.
+     */
     $(document).on('click', function (event) {
-        // console.log($(event.target).closest('#dashboard_count_div_tile .movetile .tiles-click').length);
-        if (!$(event.target).closest('#dashboard_count_div_tile .movetile .tiles-click').length) {
-          // ... clicked on the 'body', but not inside of #menutop
-          //   getTableFormatDashboard();
-          // console.log('Working on a OutSide tile');
-            
+        if (!$(event.target).closest('#dashboard_count_div_tile .movetile .tiles-click').length) {            
         }
     });
-    // --end-->
 
-    // <---29-10-2021--
+    /**
+     * Toggle handler for chart outside tile structure in modals.
+     * Shows/hides advanced dimension controls.
+     */
     $(document).on('click','#chart_outside_tile_structure', ()=>{
         var valIsChecked = $('#chart_outside_tile_structure').is(":checked");
         if(valIsChecked == true){
@@ -3314,7 +2979,6 @@ $(document).ready( function(){
                 {
                     $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).css('height',height_value);
                 }
-                // $('#measurement-height-chart-hidden').val(height_value);
             }
         }
         else if(id == 'chart_width_outer_structure'){
@@ -3354,14 +3018,15 @@ $(document).ready( function(){
                 {
                     $('.dashboard_chart_tiles #product_count_outer_tile_modal_chart_'+total_records).css('width',width_value);
                 }
-
-                // $('#measurement-width-chart-hidden').val(width_value);
             }
 
         }
     })
-    // --end--->
-    //14-09-2023
+
+    /**
+     * Handles dimension changes (height/width) for tables placed outside the tile structure.
+     * Dynamically updates preview table size in the modal.
+     */
     $(document).on('blur change','#table_height_outer_structure,#table_width_outer_structure', function(){
         var id = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -3386,7 +3051,6 @@ $(document).ready( function(){
                 $('.dashboard_modal_tile #product_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_height');
             }
             var height_val = $('#table_height_outer_structure').val();
-            //27-09-2023
             if(height_val != 1){
                 $('.save_table_div_show_table #measurement_outer_modal_table').css("display", "table");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
@@ -3435,7 +3099,6 @@ $(document).ready( function(){
                 $('.dashboard_modal_tile #product_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_width');
             }
             var width_val = $('#table_width_outer_structure').val();
-            //27-09-2023
             if(width_val != 1){
                 $('.save_table_div_show_table #measurement_outer_modal_table').css("display", "table");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
@@ -3469,9 +3132,10 @@ $(document).ready( function(){
 
         }
     })
-    // --end--->
-
-//14-09-2023
+    /**
+     * Triggered when height or width input fields value changes.
+     * Used to handle updates for outer structure dimensions of the product table.
+     */
     $(document).on('blur change','#product_table_height_outer_structure,#product_table_width_outer_structure', function(){
         var id = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -3497,13 +3161,10 @@ $(document).ready( function(){
             }
             var height_val = $('#product_table_height_outer_structure').val();
 
-            //27-09-2023
             if(height_val != 1){
-                $('.save_table_div_show_table #product_outer_modal_table').css("display", "table");
-                //$('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
+                $('.save_table_div_show_table #product_outer_modal_table').css("display", "table"); 
             }else{
                 $('.save_table_div_show_table #product_outer_modal_table').css("display", "none");
-                //$('.outer_table_tile_structure .count_result_tile').css("display", "none");
             }
 
             if(height_val <= 0){
@@ -3546,14 +3207,10 @@ $(document).ready( function(){
                 $('.dashboard_modal_tile #product_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_width');
             }
             var width_val = $('#product_table_width_outer_structure').val();
-
-            //27-09-2023
             if(width_val != 1){
-                $('.save_table_div_show_table #product_outer_modal_table').css("display", "table");
-                //$('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
+                $('.save_table_div_show_table #product_outer_modal_table').css("display", "table"); 
             }else{
                 $('.save_table_div_show_table #product_outer_modal_table').css("display", "none");
-                //$('.outer_table_tile_structure .count_result_tile').css("display", "none");
             }
             
             if(width_val <= 0){
@@ -3581,7 +3238,6 @@ $(document).ready( function(){
             }
 
         }
-        //checks-2023
         let productTableHeightOuterStructure = $('#product_table_height_outer_structure').val();
         let productTableWidthOuterStructure = $('#product_table_width_outer_structure').val();
         let product_table_outside_tile_structure = $('#product_table_outside_tile_structure').val();
@@ -3609,9 +3265,10 @@ $(document).ready( function(){
             $('.small-table-tile-icon').removeClass('one-by-one-tile');
         }
     })
-    // --end--->
-
-//14-09-2023
+    /**
+    * Triggered when energy table height or width fields value changes
+    * Used to handle updates related to the outer structure dimensions of the energy table
+    */
     $(document).on('blur change','#energy_table_height_outer_structure,#energy_table_width_outer_structure', function(){
         var id = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -3636,8 +3293,6 @@ $(document).ready( function(){
                 $('.dashboard_modal_tile #product_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_height');
             }
             var height_val = $('#energy_table_height_outer_structure').val();
-
-            //27-09-2023
             if(height_val != 1){
                 $('.save_table_div_show_table #energy_outer_modal_table').css("display", "table");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
@@ -3686,8 +3341,6 @@ $(document).ready( function(){
                 $('.dashboard_modal_tile #product_count_outer_tile_modal_table_'+total_records).removeClass('actual_tile_width');
             }
             var width_val = $('#energy_table_width_outer_structure').val();
-
-            //27-09-2023
             if(width_val != 1){
                 $('.save_table_div_show_table #energy_outer_modal_table').css("display", "table");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "block"); 
@@ -3722,9 +3375,10 @@ $(document).ready( function(){
 
         }
     })
-    // --end--->
 
-    // <---8-11-2021---
+    /**
+     * Redirects to the dashboard and triggers a refresh of dashboard components.
+     */
     $(document).on('click','.dashboard_redirect_option', ()=>{
         $('#charts_main_div').hide();
         $('#dashboard_main_div').show();
@@ -3738,14 +3392,9 @@ $(document).ready( function(){
         countDashboard();
         energy_consumed_five_days();
         $('#gfg1_li').trigger('click');
-        // dashboardChart();
-
-        // <---31-8-2021---
         // Edit Local Storage Remove
         localStorage.removeItem('edit-measurement-tile');
         localStorage.removeItem('edit-i-value');
-        // localStorage.removeItem('dashboard_tile_data');
-        // --end-->
     });
 
     $(document).on('click', '#display_chart_outside_tile', ()=>{
@@ -3759,10 +3408,7 @@ $(document).ready( function(){
             $('#display_chart_outside_tile').val(0);
         }
     })
-    // -end--->
 
-
-    // <---12-11-2021---
     $(document).on('blur change', '#chart_outer_table_limit_column', function(){
         var val = $('#chart_outer_table_limit_column').val();
         if(val < 1)
@@ -3774,26 +3420,20 @@ $(document).ready( function(){
         }
         chartRecordFilter();
     });
-    // --end-->
 
-
-    // <--24-11-2021--
     $('.modal_close').click(()=>{ 
         $('.bd-example-modal-lg').hide(); 
         $('.energy_tile_modal').modal('hide');
     });
-    // --end-->
 
-
-
-    // <-----26-11-2021---
+    /**
+     * Opens the product selection modal and triggers product record retrieval.
+     */
     $(document).on('click','#all_product_image', function(){
         $('.modal_all_products').modal('show');
         getNumberRecordsProduct();
     });
-    // --end--->
 
-    // <---29-11-2021---
     $(document).on('click','.page_count_val_all_product,.pagination_input_val_all_product', function(){
         var id = $(this).attr('id');
         var class_btn = $(this).hasClass('pagination_input_val_all_product');
@@ -3814,12 +3454,13 @@ $(document).ready( function(){
         }
     });
 
-
+    /**
+     * Handles row clicks in the product selection modal.
+     * Selects a product and retrieves its specific data for the dashboard.
+     */
     $(document).on('click','.all_product_table_row_click' , function(){
         var prd_id  = $(this).attr('prd_id');
         var prd_name  = $(this).attr('prd_name');
-        // console.log('prd_id',prd_id);
-        // console.log('Name',prd_name);
         var textNoRecord = $('.modal_all_products  table #all_product_table_entries tr').children('td:first').text();
         if(textNoRecord != 'No Data')
         {
@@ -3837,7 +3478,10 @@ $(document).ready( function(){
         
     });
 
-
+    /**
+     * Triggered when pagination elements are clicked for a particular product
+     * Handles page count selection or direct pagination input interaction
+    */
     $(document).on('click','.page_count_val_particluar_product,.pagination_input_val_particular_product', function(){
         var id = $(this).attr('id');
         var prd_id = $(this).attr('prd_id');
@@ -3880,12 +3524,13 @@ $(document).ready( function(){
             }
         } 
     })
-
-    // <--14-12-2021--
+    /**
+     * Triggered when automatic product pagination elements are clicked
+     * Handles page count selection or direct pagination input for automatic product listing
+     */
     $(document).on('click','.page_count_product_automatic,.pagination_input_val_product_automatic', function(){
         var id = $(this).attr('id');
         var class_btn = $(this).hasClass('pagination_input_val_product_automatic');
-        // var order_by = $('#product_records_order_by').val();
         if(id == 'previous_pagination_val_product_automatic'){
             var page_val = $('#product_select_table_entries_pagination').find('li.active').find('input').val();
             page_val = parseInt(page_val) - 1;
@@ -3903,8 +3548,9 @@ $(document).ready( function(){
         } 
        
     })
-    // --end--->
-
+    /**
+     * Triggered when the product records "order by" dropdown value changes
+     */
     $(document).on('change','#product_records_order_by', function(){
         var textNoRecord = $('#product_select_table_entries_table_div table #product_select_table_entries tr').children('td:first').text();
         if(textNoRecord == 'No Data')
@@ -3925,10 +3571,9 @@ $(document).ready( function(){
         var analgen_config_id =  $(this).attr('analgen_config_id');
         rowClickParticularProductEntry(analgen_config_id);
     });
-    // --end--->
-
-
-    // <---2-12-2021---
+    /**
+     * Triggered when the product modal open button is clicked
+     */
     $(document).on('click','#product_modal_open_button', function(){
         var tile_edit_value = $(this).attr('tile-edit');
         if(tile_edit_value == 'false'){
@@ -3963,7 +3608,6 @@ $(document).ready( function(){
         dashboard_tile_data = JSON.parse(ar);
         var type_data_tile = dashboard_tile_data['type_data_tile'];
         var product_type = 'Mannual';
-        //25-09-2023
         $('#expand_view_product_table').prop('checked',false);
         $('#expand_view_product_table').val(0);
         $('#product_table_outside_tile_structure').prop('checked',false);
@@ -3975,11 +3619,8 @@ $(document).ready( function(){
             $('#save_table_btn_product').removeClass('display-none');
             $('#update_table_btn_measurement_product').addClass('display-none');
             $('.product_tile_modal').modal('show');
-            // <----08-9--2021---
             var type = "Product";
             generateHtmlProductTiles(type);
-
-            // --end-->
             var countValue = $('#overall_count_product').val();
             var record_name = $('#analgen_config_id_input').attr('data-name');
             var count_html = "<h4 class='text-muted record-name-overall-count font-weight-bold mb-2'>"+record_name+"</h4>";
@@ -3991,14 +3632,9 @@ $(document).ready( function(){
 
             $('.product_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html('');
             $('.product_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table').html(count_html);
-
-            // <----17-9-2021----
             $('.product_html_modal_'+last_div_index+' .tile-image-icon').attr('src','images/sum_logo.png');
             $('.product_html_modal_'+last_div_index+' .tile-image-icon').removeClass('tile-image-icon-table');
             $('.product_html_modal_'+last_div_index+' .tile-image-icon').addClass('tile-image-icon-count');
-
-            // --end--->
-
             $('#modal-height-input-product').attr('disabled',true);
             $('#modal-width-input-product').attr('disabled',true);
 
@@ -4018,10 +3654,8 @@ $(document).ready( function(){
             var tableLength = $('#product_select_table_entries tr').length;
             if(parseInt(tableLength) <= 5){
                 $('.product_tile_modal').modal('show');
-                // <----20-8--2021---
                 var type = "Product";
                 generateHtmlProductTiles(type);
-                // --end-->
                 var last_div_index = $('#total_records').val();
                 var tiles_table_html = $('#tiles_product_select_table_entries_table').html();
                 var table_html = $('#product_select_table_entries_table').html();
@@ -4038,22 +3672,16 @@ $(document).ready( function(){
                 $('.product_table_outer_html_modal_'+last_div_index+' .save_table_div_show_table #product_outer_modal_table').css("display", "none");
                 $('.outer_table_tile_structure .count_result_tile').css("display", "none");
                 $(".gernerated_product_modal_tiles").find('[data-type-tile="Product"]').first().hide();
-
-                // <---23-8-2021---
                 $('#modal-height-input-product-hidden').val(290);
                 $('#modal-height-input-product').val('2');
                 $('#modal-width-input-product-hidden').val(500);
                 $('#modal-width-input-product').val('2');
-                // --end-->
                 $('.card-body').addClass('small-table-tile-icon one-by-one-tile');
                 $('.small-table-tile-icon .logo-image-main-div .tile-image-icon-table').addClass('display-none');
                 $('.small-table-tile-icon .count_result_tile').css('display', 'none');
 
                 $('#modal-height-input-product').attr('disabled',false);
                 $('#modal-width-input-product').attr('disabled',false);
-
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -4070,8 +3698,6 @@ $(document).ready( function(){
                 else{
                     $('.product_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
-
             }
             else{
                 alert('Records are Always be less than 5');
@@ -4101,8 +3727,6 @@ $(document).ready( function(){
 
                 $('#modal-height-input-product').attr('disabled',false);
                 $('#modal-width-input-product').attr('disabled',false);
-
-                // <---10-11-2021---
                 var query_data_row_click = localStorage.getItem('query_data');
                 query_data_row_click = JSON.parse(query_data_row_click);
 
@@ -4119,7 +3743,6 @@ $(document).ready( function(){
                 else{
                     $('.product_html_modal_'+last_div_index+' .small-table').html('');
                 }
-                // --end-->
             }
             else{
                 alert('Records are Always be less than 5');
@@ -4158,9 +3781,9 @@ $(document).ready( function(){
         }
 
     })
-
-
-    // <---17-8-2021---
+    /**
+     * Triggered when product modal height or width inputs value changes
+     */
     $(document).on('blur change','#modal-height-input-product,#modal-width-input-product', function(){
         var id_val = $(this).attr('id');
         var total_records = $('#total_records').val();
@@ -4177,7 +3800,6 @@ $(document).ready( function(){
 
             }
             else{
-                // height_val = parseInt(height_val)+1;
                 height_value = parseInt(height_val)*145;
                 if(height_value >=580){
                     height_value = 580;
@@ -4197,11 +3819,8 @@ $(document).ready( function(){
                 width_value = 250;
                 $('.gernerated_product_modal_tiles #product_count_tile_modal_'+total_records).css('width',width_value);
                 $('#modal-width-input-product-hidden').val(width_value);
-                // alert('Width Always be equal to greater than to actual Width');
-                // $('#modal-width-input-measurement').val(width_val);
             }
             else{
-                // width_val = parseInt(width_val) + 1;
                 width_value = parseInt(width_val)*250;
                 if(width_value >=1000){
                     width_value = 1000;
@@ -4211,8 +3830,6 @@ $(document).ready( function(){
             }
             
         }
-
-        //checks-2023
         let modalHeightInputProduct = $('#modal-height-input-product').val();
         let modalWidthInputProduct = $('#modal-width-input-product').val();
         let expand_view_product_table = $('#expand_view_product_table').val();
@@ -4276,9 +3893,7 @@ $(document).ready( function(){
         }
 
     });
-    // --end-->
 
-    // <---7-12-2021--
     $(document).on('change','#chart_records_product', function(){
         getChartSelectProductItem();
     });
@@ -4286,10 +3901,9 @@ $(document).ready( function(){
     $(document).on('change','#chart_records_product_item', function(){
         chartRecordFilterProduct();
     });
-    // --end-->
-
-
-    // <---14-12-2021----
+    /**
+     * // Triggered when the product type selection changes
+    */
     $(document).on('change','#product_type', function(){
         var prdTypeVal= $(this).val();
         $('#all_product_input_text_field').val('');
@@ -4300,7 +3914,6 @@ $(document).ready( function(){
             $('#product_records_order_by_div').hide();
             getAllProductTables();
             $('#production_btn_table').show();
-            // getNumberRecordsProductAutomatic();
         }else {
             $('.product-small-table-tiles').hide();
             var tr = "<tr><td colspan='50' style='padding: 12px !important; font-size: small' class='text-center'>Please Select Product</td></tr>";
@@ -4312,25 +3925,9 @@ $(document).ready( function(){
             $('#production_btn_table').hide();
         }
     })
-    // --end-->
-
-
-    // <---20-12-2021---
-    // $(document).on('click','#open_end_layer', function(){
-    //     var layer_val_checked = $(this).is(":checked");
-    //     if(layer_val_checked == true){
-    //         $('#open_end_layer').val('1');
-    //         $('#open_end_layer').prop('checked',true);
-    //     }
-    //     else{
-    //         $('#open_end_layer').val('0');
-    //         $('#open_end_layer').prop('checked',false);
-    //     }
-    //     getNumberRecordsEnergy();
-    // })
-    // ----end--->
-
-    // <----22-11-2021---
+    /**
+     * // Triggered when the "all tables" dropdown for product selection changes
+     */
     $(document).on('change','#all_tables_product', function(){
         var val = $(this).val();
         $('#product_field_div').hide();
@@ -4342,7 +3939,6 @@ $(document).ready( function(){
         getNumberRecordsProductAutomatic();
     });
 
-    // <----22-11-2023---
     $(document).on('change','#tiles_columns_product', function(){
         $('#product_field_div').hide();
         var tiles_columns_product = $('#tiles_columns_product').val();
@@ -4353,7 +3949,9 @@ $(document).ready( function(){
         }
         getTilesColumnsNumberRecordsProductAutomatic();
     });
-
+    /**
+     * Triggered when the total number of product records input value changes
+     */
     $(document).on('change blur', '#product_total_number_record', function(){
         var val = $(this).val();
         if(val <=0){
@@ -4373,41 +3971,19 @@ $(document).ready( function(){
         else{
             $('.product_number_record_error').text('');
             localStorage.setItem('number_record_product',val);
-            // getNumberRecordsProductAutomatic();
         }
         
     });
-
-
-    //<---12-1-2022--
+    /**
+     * Triggered when the modal day filter selection changes
+     */
     $(document).on('change','.modal_day_filter',function(){
         var id = $(this).attr('id');
         var day_from_val = $('#day_from').val();
         var day_to_val = $('#day_to').val();
         if(day_from_val != '' && day_to_val != '')
         {
-            // if(day_from_val == day_to_val)
-            // {
-            //     $('.energy_number_layer_day_filter_error').text('Day From and Day To Cannot be same');
-            //     $('.energy_number_layer_day_filter_error').fadeIn('slow');
-            //     setTimeout( function(){
-            //         $('.energy_number_layer_day_filter_error').fadeOut('slow');
-            //     },3000);
-            //     $("#day_from option[value='']").prop('selected','selected')
-            //     $("#day_to option[value='']").prop('selected','selected')
-            // }
-            // else{
-                getNumberRecordsEnergyLayerModal();
-            // }
-            // else
-            // if(id == 'day_from')
-            // {
-
-            // }
-            // else if(id == 'day_to')
-            // {
-
-            // }
+           getNumberRecordsEnergyLayerModal();
         }
         else if(day_from_val == '' || day_to_val == ''){
             var tr = "<tr><td colspan='50' class='text-center text-muted'>Please Select All Filters</td></tr>";
@@ -4415,19 +3991,16 @@ $(document).ready( function(){
             $('#pagination_html_energy').html('');
         }
     })
-    // --end--->
-
-    // <---13-1-2022--
+    /**
+     * Triggered when the layer modal date value changes
+     * Calls function to fetch/update the number of records for the selected energy layer date
+     */
     $(document).on('change','#layer_modal_date', function(){
         getNumberRecordsEnergyLayerModal();
     });
-    
-    // --end-->
-
-    // --end--->
-
-
-    // <----25-1-2022---
+    /**
+     * Triggered when the weekday input field loses focus (blur)
+     */
     $(document).on('blur', '#input_val_week_day', function(){
         var input_val = $(this).val();
         var select_day_week = $('#select_day_week').val();
@@ -4464,13 +4037,8 @@ $(document).ready( function(){
                 $('#input_val_week_day').val('');
             }
         }
-        // getNumberRecordsEnergyLayerModal();
     });
     
-    // ---end--->
-
-
-    // <----03-3-2022-----
     $(document).on('blur', '#energy_automatic_input', function(){
         var input_val = $(this).val();
         if(input_val > 5 || input_val < 1)
@@ -4482,32 +4050,26 @@ $(document).ready( function(){
             },3000);
             $('#energy_automatic_input').val('');
         }
-      
-        // getNumberRecordsEnergyAutomatic();
     });
-    // --end----->
-
- 
-
-
-    // <----04-03-2022--
+    /**
+     * Triggered when the automatic energy measurement selection changes
+     * Calls function to fetch/update the number of records for automatic energy data
+     */
     $(document).on('change','#energy_measurement_automatic', function(){
         getNumberRecordsEnergyAutomatic();
     })
-    // --end--->
-
-
-    // <---27-01-2022---
+    /**
+     * Triggered when energy measurement or day/week selection changes
+     * Resets weekday input and updates record count for the energy layer modal
+     */
     $(document).on('change','#energy_measurement,#select_day_week', function(){
-        // $('#input_val_week_day').trigger('blur');
         $('#input_val_week_day').val('');
         getNumberRecordsEnergyLayerModal();
     })
-
-    // ---end--->
-
-
-    // <----18-02-2022--
+    /**
+     * Triggered when the energy type selection for the dashboard chart changes
+     * Used to update or reload the chart data based on the selected energy type
+     */
     $(document).on('change','#energy_type_dashboard_chart', function(){
         var val = $(this).val();
         if(val == 'layer_modal')
@@ -4527,7 +4089,10 @@ $(document).ready( function(){
             $('.energy_automatic_div').hide();
         }
     });
-
+    /**
+     * Triggered when the energy chart layer range input loses focus (blur)
+     * Used to validate or apply the entered range for the energy chart layer
+     */
     $(document).on('blur', '#energy_chart_layer_range', function(){
         var input_val = $(this).val();
         var select_day_week = $('#energy_chart_layer_filter').val();
@@ -4565,25 +4130,27 @@ $(document).ready( function(){
             }
         }
         chartRecordFilter();
-        // getNumberRecordsEnergyLayerModal();
     });
-    // --end--->
-
-
-    // <----22-2-2022--
+    /**
+     * Triggered when the energy chart measurement selection changes
+     * Resets the layer range input and updates the chart based on the selected measurement
+     */
     $(document).on('change', '#energy_chart_measurement' , function(){
         $('#energy_chart_layer_range').val('');
         chartRecordFilter();
     });
-
+    /**
+     * Triggered when the energy chart layer filter selection changes
+     * Resets the layer range input and updates the chart based on the selected layer filter
+     */
     $(document).on('change', '#energy_chart_layer_filter' , function(){
         $('#energy_chart_layer_range').val('');
         chartRecordFilter();
     });
-    // --end--->
-
-
-    // <----24-2-2022-
+    /**
+     * Triggered when an energy layer table row is clicked
+     * Used to handle row selection and load/display related layer data
+     */
     $(document).on('click','.energy_layer_row_click', function(){
         var tile_id = $(this).attr('tile_id');
         var mst_id = $(this).attr('mst_id');
@@ -4623,17 +4190,17 @@ $(document).ready( function(){
             rowClickEnergyDashboardLayer(tile_id,mst_id,energy_layer_filter,input_val_week_day,name_val,valid_from,valid_to,time_from,time_to); 
         }
     });
-    // --end-->
-
-
-    // <----02-03-2022--
+    /**
+     * Triggered when the logout button is clicked
+     * Calls the logout function to end the user session
+     */
     $(document).on('click','#logout' , function(){
         logout();
     });
-    // --end--->
-
-
-    // <----04-3-2022--
+    /**
+     * Triggered when an automatic energy table row is clicked
+     * Used to handle row selection and load/display related energy data
+     */
     $(document).on('click','.energy_automatic_row_click', function(){
         var tile_id = $(this).attr('tile_id');
         var mst_id = $(this).attr('mst_id');
@@ -4666,19 +4233,15 @@ $(document).ready( function(){
             rowClickEnergyDashboardAutomatic(tile_id,mst_id,name_val,date_val); 
         }
     });
-    // --end--->
 
-
-    // <---04-03-2022--
     $(document).on('click','.inner_table_energy_automatic' , function(){
         $(this).removeClass('inner_table_energy_automatic');
         $(this).addClass('hide_table_main');
     });
-    // --end-->
 
-
-    // <----07-3-2022----
-    // *** Energy Table Case
+    /**
+     * General handler for retrieving energy records based on selected filters (Automatic, Manual, Layer).
+     */
     $(document).on('click','#energy_btn_table', function(){
         var energy_type= $('#energy_type').val();
         if(energy_type == 'automatic')
@@ -4716,8 +4279,9 @@ $(document).ready( function(){
         }
     });
 
-
-    //Product Case
+    /**
+     * General handler for retrieving product records based on selected filters.
+     */
     $(document).on('click','#production_btn_table', function(){
         var product_type = $('#product_type').val();
         if(product_type == 'automatic')
@@ -4736,8 +4300,9 @@ $(document).ready( function(){
         }
     });
 
-
-    //Measuement Case
+    /**
+     * General handler for retrieving measurement records based on selected filters.
+     */
     $(document).on('click', '#measurement_btn_table' , function(){
         var measurement_type = $('#measurement_type').val();
         if(measurement_type == 'automatic')
@@ -4763,10 +4328,10 @@ $(document).ready( function(){
             } 
         }
     }); 
-
-    // --end--->
-
-
+    /**
+     * Triggered when the energy chart layer range input loses focus (blur)
+     * Used to validate or apply the entered range for automatic chart data
+    */
     $(document).on('blur', '#energy_chart_layer_range_automatic', function(){
         var input_val = $(this).val();
         if(input_val > 30 || input_val < 1)
@@ -4785,6 +4350,9 @@ $(document).ready( function(){
         chartRecordFilter();
     });
     
+    /**
+     * Cancel button handler. Returns to the main dashboard sidebar.
+     */
     $(document).on('click', '.cancel', function(event) { 
         event.preventDefault(); 
         $("#dashboard_sidebar").click(); 
@@ -4799,6 +4367,9 @@ $(document).ready( function(){
         }
     });
 
+    /**
+     * Double-click handler for graphs. Retrieves and displays the full saved graph.
+     */
     $(document).on('dblclick', '.graph', function(){
         var className = $(this).attr("class");
         var st = className.split(' ');
@@ -4806,271 +4377,10 @@ $(document).ready( function(){
         var savedGraphId = graphClass[1];
         getSavedGraph(savedGraphId);
     });
-    // // <---1-10-2021--
-    // // Graph
-    // // window.onload = function () {
-
-    //     var chart = new CanvasJS.Chart("chartContainer", {
-    //         animationEnabled: true,
-    //         theme: "light2",
-    //         title:{
-    //             text: "Site Traffic"
-    //         },
-    //         axisX:{
-    //             valueFormatString: "DD MMM",
-    //             crosshair: {
-    //                 enabled: true,
-    //                 snapToDataPoint: true
-    //             }
-    //         },
-    //         axisY: {
-    //             title: "Number of Visits",
-    //             includeZero: true,
-    //             crosshair: {
-    //                 enabled: true
-    //             }
-    //         },
-    //         toolTip:{
-    //             shared:true
-    //         },  
-    //         legend:{
-    //             cursor:"pointer",
-    //             verticalAlign: "bottom",
-    //             horizontalAlign: "left",
-    //             dockInsidePlotArea: true,
-    //             itemclick: toogleDataSeries
-    //         },
-    //         data: [{
-    //             type: "line",
-    //             showInLegend: true,
-    //             name: "Total Visit",
-    //             markerType: "square",
-    //             xValueFormatString: "DD MMM, YYYY",
-    //             color: "#F08080",
-    //             dataPoints: [
-    //                 { x: new Date(2017, 0, 3), y: 650 },
-    //                 { x: new Date(2017, 0, 4), y: 700 },
-    //                 { x: new Date(2017, 0, 5), y: 710 },
-    //                 { x: new Date(2017, 0, 6), y: 658 },
-    //                 { x: new Date(2017, 0, 7), y: 734 },
-    //                 { x: new Date(2017, 0, 8), y: 963 },
-    //                 { x: new Date(2017, 0, 9), y: 847 },
-    //                 { x: new Date(2017, 0, 10), y: 853 },
-    //                 { x: new Date(2017, 0, 11), y: 869 },
-    //                 { x: new Date(2017, 0, 12), y: 943 },
-    //                 { x: new Date(2017, 0, 13), y: 970 },
-    //                 { x: new Date(2017, 0, 14), y: 869 },
-    //                 { x: new Date(2017, 0, 15), y: 890 },
-    //                 { x: new Date(2017, 0, 16), y: 930 }
-    //             ]
-    //         },
-    //         {
-    //             type: "line",
-    //             showInLegend: true,
-    //             name: "Unique Visit",
-    //             lineDashType: "dash",
-    //             dataPoints: [
-    //                 { x: new Date(2017, 0, 3), y: 510 },
-    //                 { x: new Date(2017, 0, 4), y: 560 },
-    //                 { x: new Date(2017, 0, 5), y: 540 },
-    //                 { x: new Date(2017, 0, 6), y: 558 },
-    //                 { x: new Date(2017, 0, 7), y: 544 },
-    //                 { x: new Date(2017, 0, 8), y: 693 },
-    //                 { x: new Date(2017, 0, 9), y: 657 },
-    //                 { x: new Date(2017, 0, 10), y: 663 },
-    //                 { x: new Date(2017, 0, 11), y: 639 },
-    //                 { x: new Date(2017, 0, 12), y: 673 },
-    //                 { x: new Date(2017, 0, 13), y: 660 },
-    //                 { x: new Date(2017, 0, 14), y: 562 },
-    //                 { x: new Date(2017, 0, 15), y: 643 },
-    //                 { x: new Date(2017, 0, 16), y: 570 }
-    //             ]
-    //         }]
-    //     });
-    //     chart.render();
-        
-    //     function toogleDataSeries(e){
-    //         console.log(e)
-    //         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-    //             e.dataSeries.visible = false;
-    //         } else{
-    //             e.dataSeries.visible = true;
-    //         }
-    //         chart.render();
-    //     }
-        
-    //     // }
-    // --end-->
-
-    // $(document).on('click','#dashboard_drag_btn', function(){
-    //     $('#dashboard_count_div_tile .stretch-card').draggable();
-    // })
-
-    // $(document).on('click','#reset_drag_btn', function(){
-    //     getTableFormatDashboard();
-    //     $(document).trigger('click');
-    //     $('#dashboard_count_div_tile .stretch-card').draggable();
-    // })
-    // --end-->
-
-    
-    
-    // <---12-8-2021----
-    // $('#mesurement_count_div').hover(
-    //     function(){
-    //         $(this).addClass('col-md-12');
-    //         $(this).css('height','262px');
-    //         $('#mesurement_count_content').addClass('col-md-3');
-    //         $('#mesurement_count_content').removeClass('col-md-12');
-    //         $('#measurement_table_show').show();
-    //     },
-    //     function(){
-    //         $(this).removeClass('col-md-12');
-    //         $(this).css('height','auto')
-    //         $('#mesurement_count_content').addClass('col-md-12');
-    //         $('#mesurement_count_content').removeClass('col-md-3');
-    //         $('#measurement_table_show').hide();
-    //     }
-    // )
-
-    // $('#product_count_div').hover(
-    //     function(){
-    //         $(this).addClass('col-md-12');
-    //         $(this).css('height','262px');
-    //         $('#mesurement_count_div').hide();    
-    //         $('#product_count_content').addClass('col-md-3');
-    //         $('#product_count_content').removeClass('col-md-12');
-    //         $('#product_table_div_show').show();
-
-    //     },
-    //     function(){
-    //         $(this).removeClass('col-md-12');
-    //         $(this).css('height','auto');
-    //         $('#mesurement_count_div').show();    
-    //         $('#product_count_content').addClass('col-md-12');
-    //         $('#product_count_content').removeClass('col-md-3');
-    //         $('#product_table_div_show').hide();
-    //     }
-    // )
-
-
-    
-    // $('#energy_count_div').hover(
-    //     function(){
-    //         $(this).addClass('col-md-12');
-    //         $(this).css('height','262px');
-    //         $('#mesurement_count_div').hide();
-    //         $('#product_count_div').hide();    
-    //         $('#energy_count_content').addClass('col-md-3');
-    //         $('#energy_count_content').removeClass('col-md-12');
-    //         $('#energy_table_show').show();
-            
-
-    //     },
-    //     function(){
-    //         $(this).removeClass('col-md-12');
-    //         $(this).css('height','auto');
-    //         $('#mesurement_count_div').show(); 
-    //         $('#product_count_div').show();   
-    //         $('#energy_count_content').addClass('col-md-12');
-    //         $('#energy_count_content').removeClass('col-md-3');
-    //         $('#energy_table_show').hide();
-    //     }
-    // )
-
-
-    // $('#energy_consumed_div').hover(
-    //     function(){
-    //         $(this).addClass('col-md-12');
-    //         $(this).css('height','262px');
-    //         $('#mesurement_count_div').hide();
-    //         $('#product_count_div').hide(); 
-    //         $('#energy_count_div').hide();   
-    //         $('#energy_consumed_content').addClass('col-md-3');
-    //         $('#energy_consumed_content').removeClass('col-md-12');
-    //         $('#energy_consumed_table_show').show();
-            
-
-    //     },
-    //     function(){
-    //         $(this).removeClass('col-md-12');
-    //         $(this).css('height','auto');
-    //         $('#mesurement_count_div').show(); 
-    //         $('#product_count_div').show(); 
-    //         $('#energy_count_div').show();  
-    //         $('#energy_consumed_content').addClass('col-md-12');
-    //         $('#energy_consumed_content').removeClass('col-md-3');
-    //         $('#energy_consumed_table_show').hide();
-    //     }
-    // )
-
-
-    // $('#five_days_energy_consumed').hover(
-    //     function(){
-    //         $(this).addClass('col-md-12');
-    //         $(this).css('height','262px');
-    //         $('#mesurement_count_div').hide();
-    //         $('#product_count_div').hide(); 
-    //         $('#energy_count_div').hide();  
-    //         $('#energy_consumed_div').hide();
-    //         $('#energy_consumed_five_day_content').addClass('col-md-3');
-    //         $('#energy_consumed_five_day_content').removeClass('col-md-12');
-    //         $('#energy_consumed_five_day_table_show').show();
-            
-
-    //     },
-    //     function(){
-    //         $(this).removeClass('col-md-12');
-    //         $(this).css('height','auto');
-    //         $('#mesurement_count_div').show(); 
-    //         $('#product_count_div').show(); 
-    //         $('#energy_count_div').show();  
-    //         $('#energy_consumed_div').show();
-    //         $('#energy_consumed_five_day_content').addClass('col-md-12');
-    //         $('#energy_consumed_five_day_content').removeClass('col-md-3');
-    //         $('#energy_consumed_five_day_table_show').hide();
-    //     }
-    // )
-
-
-
-
-    // <--Sorting -----
-    // $('#measurement_record_table table .measurement_table_header th').click(function(){
-    //     var table = $(this).parents('table').eq(0)
-    //     var tableHeaderValue = $(this).text();
-    //     if(tableHeaderValue == 'Time Interval' || tableHeaderValue == 'Status'){
-    //         return false;
-    //     }
-    //     var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index(),tableHeaderValue))
-    //     this.asc = !this.asc
-    //     // var asc = this.asc
-    //     // if(asc == true){
-    //     //     $(this).find('i').removeClass('ti-arrow-circle-down');
-    //     //     $(this).find('i').addClass('ti-arrow-circle-up');
-    //     // }
-    //     // else{
-    //     //     $(this).find('i').removeClass('ti-arrow-circle-up');
-    //     //     $(this).find('i').addClass('ti-arrow-circle-down');
-
-    //     // }
-    //     if (!this.asc){rows = rows.reverse()}
-    //     for (var i = 0; i < rows.length; i++){table.append(rows[i])}
-    // });
-    ///--end----->
-   
-
-
-    
-    //Screenshot Code 
-    // $(document).on('click','#screenshot_button', function(){
-    //     var val = alert("Screenshot Captured Successfully");
-    //     screenshot();
-    // });
-    // --end-->
-
-
 })
+/**
+ * Menu click handlers for graph views.
+ */
 $(".messstellen_graph").click(function(){
     sessionStorage.setItem('menuClick','messstellen_graph'); 
 });
@@ -5097,6 +4407,10 @@ $('.tile_name_energy_div #title_modal_tile').on('input', function() {
     $('.modal-body #title_modal_tile').val(value);
 });
 
+/**
+ * Dynamic handlers for auto-refresh interval changes.
+ * Updates the preview tile label with the selected refresh rate.
+ */
 $(document).on('change','#measurement_auto_refresh_hourly',function(){
     var hourValue= $(this).val();
     var textValue= $(this).find(":selected").text().split(' ');
@@ -5104,6 +4418,9 @@ $(document).on('change','#measurement_auto_refresh_hourly',function(){
     $('.gernerated_measurement_modal_tiles .action-modal-button-div').prepend("<div class='measurementautorefresh'>Auto Refresh <span class='measurement-refresh-hours'>"+hourValue+"</span> "+textValue[1]+"</div>");
 });
 
+/**
+ * Updates the energy tile preview with the selected auto-refresh rate.
+ */
 $(document).on('change','#energy_auto_refresh_hourly',function(){
     var hourValue= $(this).val();
     var textValue= $(this).find(":selected").text().split(' ');
@@ -5111,6 +4428,9 @@ $(document).on('change','#energy_auto_refresh_hourly',function(){
     $('.gernerated_energy_modal_tiles .action-modal-button-div').prepend("<div class='energyautorefresh'>Auto Refresh <span class='energy-refresh-hours'>"+hourValue+"</span> "+textValue[1]+"</div>");
 });
 
+/**
+ * Updates the product tile preview with the selected auto-refresh rate.
+ */
 $(document).on('change','#product_auto_refresh_hourly',function(){
     var hourValue= $(this).val();
     var textValue= $(this).find(":selected").text().split(' ');
