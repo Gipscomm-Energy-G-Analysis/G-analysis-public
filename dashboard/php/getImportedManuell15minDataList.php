@@ -1,4 +1,11 @@
 <?php
+/**
+ * Script to retrieve imported 15-minute manual data records.
+ * 
+ * This script identifies the user's ID across different roles (ben, adm, gipsAdm, sAdm)
+ * and fetches corresponding data from the 'data_value_15m' table in the selected database.
+ */
+
 
 error_reporting (-1);
 ini_set ('display_errors', 'On');
@@ -12,8 +19,10 @@ $username = $_POST['username'];
 $tableName='data_value_15m';
 
 $user_id='';
+// Connect to the core 'gipscomm' database to retrieve user identity
 $conn2 = connectToDB("gipscomm");
 if($position=='ben' && !empty($username)){
+
     $getbenUser_IDquery = "SELECT ben_ID FROM benutzer WHERE username='$username'";
     $benuserresult = queryDB($conn2, $getbenUser_IDquery, "read");
     if ($benuserresult && isset($benuserresult[0]['ben_ID'])) {
@@ -42,7 +51,13 @@ if(empty($user_id)){
     echo "<p style='color: red;margin-bottom: 5px;margin-top: 5px;'>Please login your account before uploading the file!</p>";
     return false;
 }
+
+/**
+ * Fetch data from the specifically requested project database.
+ * Joins 'data_value_15m' with 'channel' to provide human-readable names.
+ */
 $checkColumnQuery ="SELECT COUNT(*) AS count FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME ='data_value_15m' AND COLUMN_NAME = 'user_id'";
+
 $columnExist = queryDB($conn, $checkColumnQuery, "read");
 if($columnExist[0]['count']=='1'){
     $query = "SELECT dv.data_value_15m_id, dv.time_server, dv.value, dv.power, ch.name AS channel_name FROM data_value_15m dv INNER JOIN channel ch ON dv.channel_id = ch.channel_id WHERE dv.user_id = '$user_id' ";

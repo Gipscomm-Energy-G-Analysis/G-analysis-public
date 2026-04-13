@@ -6,19 +6,24 @@ ini_set('display_errors', 'On');
 require '..\..\/php/DbOperations.php';
 
 $nameDB = isset($_POST['nameDB']) ? $_POST['nameDB'] : '';
-// $nameDB = 'g000_demo';
-
-// $_SESSION['username'] = 'AWI';
 session_start();
 $conn = connectToDB($nameDB);
 
 class dashboardController
 {
+    /**
+     * dashboardController constructor.
+     * Routes requests to the appropriate method based on the 'action' parameter.
+     */
     public function __construct()
     {
         $action = $_REQUEST['action'];
         echo json_encode($this->$action());
     }
+    /**
+     * Retrieves the list of available databases (mandanten) based on user group permissions.
+     * @return void Outputs JSON encoded database records.
+     */
     public function getDatabaseList()
     {
         try {
@@ -48,6 +53,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+    /**
+     * Retrieves the counts and status summaries for dashboard tiles (Energy, Product, Measurement).
+     * @return void Outputs JSON encoded counts and table HTML.
+     */
     public function getCountDashBoard()
     {
         try {
@@ -62,7 +71,7 @@ class dashboardController
             //Product
             $query1 = "SELECT * FROM produktionsAnlagenHistorie where created_on >=  convert(datetime,'$date_diff',101) AND iBdeType='1' AND archiviert='true'";
             $records['product'] = queryDB($conn, $query1, "read");
-            // echo json_encode($records['product'],JSON_INVALID_UTF8_IGNORE); die;
+
             $records['product'] = count($records['product']);
 
             //Mesurement
@@ -81,21 +90,7 @@ class dashboardController
             $eneryConsumed .= "AND T2.type <= '1' ";
             $eneryConsumed .= "AND T1.deleted <> 'true' ";
             $eneryConsumed .= "AND T1.archiviert ='true' ";
-            // echo  $eneryConsumed; die;
             $records['energy_consumed'] = queryDB($conn, $eneryConsumed, "read");
-            // echo json_encode( $records['energy_consumed']); die;
-
-            //Energy Not Consumed Table
-            //<--Old Code--
-            // $eneryNotConsumed = "SELECT * FROM interneBetriebsdatenHistorie As T1 ";
-            // $eneryNotConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
-            // $eneryNotConsumed .= "ON T1.mstID = T2.mst_ID ";
-            // // $eneryNotConsumed .= "WHERE T1.created_on >= convert(datetime,'$date_diff',101) ";
-            // $eneryNotConsumed .= "WHERE T1.deleted <> 'true' ";
-            // $eneryNotConsumed.= "AND T1.archiviert ='true' ";
-            // $eneryNotConsumed.= "AND T2.mst_ID IS Null ";
-            // $dataEnergy = queryDB($conn, $eneryNotConsumed, "read");
-            // --end-->
 
             $eneryNotConsumed = "SELECT * FROM interneMesswerteConfig As T1 ";
             $eneryNotConsumed .= "LEFT JOIN ";
@@ -111,7 +106,6 @@ class dashboardController
             $eneryNotConsumed .= "ON T1.mst_ID = T3.table_3_mst_id ";
             $eneryNotConsumed .= "ORDER BY T1.mst_ID Desc ";
             $dataEnergy = queryDB($conn, $eneryNotConsumed, "read");
-            // echo json_encode($dataEnergy); die;
             $tr = '';
             if ($dataEnergy != '' && count($dataEnergy) > 0) {
                 foreach ($dataEnergy as $key => $value) {
@@ -128,13 +122,11 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
                         $tr .= "<td>" . $value['startDate'] . "</td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['val'] == null) {
                         $tr .= "<td><label class='badge badge-danger'>Pending </label></td>";
                     } else {
@@ -157,6 +149,10 @@ class dashboardController
     }
 
     //Get Records Measurement
+    /**
+     * Retrieves a paginated list of measurement records based on type and timeframe.
+     * @return void Outputs JSON encoded measurement data and pagination HTML.
+     */
     public function getNumberRecordsMesurement()
     {
         try {
@@ -171,7 +167,6 @@ class dashboardController
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
-            // <----14-9-2021---
             if ($measurement_type == "calculated") {
                 $this->getAutomaticTableMeasurementData1();
                 die;
@@ -180,7 +175,6 @@ class dashboardController
                 $this->getAutomaticTableMeasurementData($measurement_type);
                 die;
             }
-            // --end-->
 
             if ($order_by_val == 'order_by_desc') {
                 $order_by_val = "Order by cast(T2.val as int) desc ";
@@ -215,11 +209,6 @@ class dashboardController
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             }
-
-
-            // $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
-            // echo json_encode($totalRecordsValue); die;s
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -245,7 +234,6 @@ class dashboardController
                             $number_records = $total_number_records - $offSetVal;
                         }
                     }
-                    //    echo $number_records;s
                 }
             }
 
@@ -262,7 +250,6 @@ class dashboardController
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo json_encode($query1); die;
 
             $resultQuery = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
@@ -273,22 +260,16 @@ class dashboardController
             }
             $records['table_found'] = $tableFound;
 
-            // $dataMesaurement = queryDB($conn, $query1, "read");
-
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement);
             $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
 
             $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val, $pagesCount, $dataMesaurement);
 
-            // echo $pagination_html['paginationHTMl']; die;
-            //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $table_filter = $time_interval . ',' . $_POST['measurement_order_by_val'] . ',' . $_POST['total_number_records'];
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Measurement', 'table_type' => $measurement_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
-            // --end-->
-
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
@@ -296,7 +277,11 @@ class dashboardController
         }
     }
 
-    // <----01-03-2022--
+    /**
+     * Generates the table header HTML for measurement data tables.
+     * @param string $measurement_type The type of measurement (automatic or manual).
+     * @return string The HTML for the table header rows.
+     */
     public function getNumberRecordsMesurementHeader($measurement_type)
     {
         try {
@@ -322,9 +307,10 @@ class dashboardController
         }
     }
 
-    // --end->
-
-    // <--3-8-2021
+    /**
+     * Handles row click events to drill down into specific measurement points.
+     * @return void Outputs JSON encoded drill-down data.
+     */
     public function rowClickMeasurementTableData()
     {
         try {
@@ -337,12 +323,10 @@ class dashboardController
             $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
             $order_by_val = $_POST['measurement_order_by_val'];
             $measurement_type = $_POST['measurement_type'];
-            // <---15-9-2021----
             if ($measurement_type == "automatic") {
                 $this->rowClickAutomaticMeasurementTableData();
                 die;
             }
-            // --end--->
 
             $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
@@ -360,8 +344,6 @@ class dashboardController
             $queryTotalPagination .= "masseneingabeSucheIMw as T2 ";
             $queryTotalPagination .= "ON T1.mst_ID = T2.mst_Id ";
             $queryTotalPagination  .= "where T1.iBdeType='2' ";
-            // $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
-            // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
             $queryTotalPagination .= "AND T2.type = '$type' ";
             $queryTotalPagination .= "AND T2.mst_ID = '$mst_id' ";
             $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
@@ -392,22 +374,15 @@ class dashboardController
                 }
             }
 
-            //--end-->
-
             $queryMaxValue = "SELECT TOP($total_number_records) max(cast(T2.val as int)) as val ";
             $queryMaxValue .= "FROM produktionsAnlagenConfig as T1 ";
             $queryMaxValue .= "INNER JOIN ";
             $queryMaxValue .= "masseneingabeSucheIMw as T2 ";
             $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
             $queryMaxValue  .= "where T1.iBdeType='2' ";
-            // $queryMaxValue  .= "AND T2.on_date >='$date_differnce_five_days' ";
-            // $queryMaxValue  .= "AND T2.on_date <='$current_date' ";
             $queryMaxValue .= "AND T2.type = '$type' ";
             $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
-            // echo json_encode($queryMaxValue); die;
-            //<---15-8-2021
             $queryMaximum = $queryMaxValue;
-            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
 
@@ -417,36 +392,27 @@ class dashboardController
             $query1 .= "masseneingabeSucheIMw as T2 ";
             $query1 .= "ON T1.mst_ID = T2.mst_ID ";
             $query1  .= "where T1.iBdeType='2' ";
-            // $query1  .= "AND T2.on_date >='$date_differnce_five_days' ";
-            // $query1  .= "AND T2.on_date <='$current_date' ";
             $query1 .= "AND T2.type = '$type' ";
             $query1 .= "AND T2.mst_ID = '$mst_id' ";
-            //$query1 .= "order by T2.val desc ";
             $query1 .= "$order_by_val ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($date_differnce_five_days); die;
-
-            // <---10-11-2021----
             $queryLastDate = "SELECT TOP(1) * From masseneingabeSucheIMw as T1 ";
             $queryLastDate .= "WHERE T1.mst_ID = '$mst_id' ";
             $queryLastDate .= "AND T1.type = '$type' ";
             $queryLastDate .= "ORDER BY T1.id desc ";
             $queryLastDateData = queryDB($conn, $queryLastDate, "read");
-            //--end-->
 
             $records['measurement_html'] = $this->generateHtmlTableMeasurementData($dataMesaurement, $queryMaxVal);
             $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
             $records['pagination_html'] =  $this->generatePaginationHtmlMeasurementData($page_val, $pagesCount, $dataMesaurement, $type, $mst_id);
 
-            // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => $queryMaximum, 'row_click' => 'true', 'type' => 'Measurement');
             $records['query_data'] = $ar;
 
             $records['queryLastDate'] = $queryLastDateData;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
@@ -456,9 +422,12 @@ class dashboardController
         }
     }
 
-    // --end-->
-
-    // <---2-8-2021--
+    /**
+     * Generates HTML table rows for measurement data display.
+     * @param array $dataMesaurement The measurement records.
+     * @param mixed $queryMaxVal Optional maximum value for highlighting.
+     * @return string The generated HTML table rows.
+     */
     public function generateHtmlTableMeasurementData($dataMesaurement, $queryMaxVal = false)
     {
         $tr = '';
@@ -506,7 +475,6 @@ class dashboardController
                     $unit = "kg";
                 }
 
-                // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                 if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                     if ($queryMaxVal != '') {
                         $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -537,20 +505,25 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
+    /**
+     * Generates the pagination controls HTML for measurement tables.
+     * @param int $page_val Current page number.
+     * @param int $pagesCount Total number of pages.
+     * @param array $dataMesaurement Current page data.
+     * @param mixed $data_type Optional data type identifier.
+     * @param mixed $mst_id Optional messstelle identifier.
+     * @return string The generated pagination HTML.
+     */
     public function generatePaginationHtmlMeasurementData($page_val, $pagesCount, $dataMesaurement, $data_type = false, $mst_id = false)
     {
         try {
             //Pagination Code HTML
-            // echo $pagesCount; die;
             if ($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -617,15 +590,16 @@ class dashboardController
                                     <input type='button' id='modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
 
-    // <---16-8-2021--
+    /**
+     * Retrieves the saved table configurations (priority, visibility) for the user's dashboard.
+     * @return void Outputs JSON encoded table format data.
+     */
     function getTableFormatDashboard()
     {
 
@@ -634,55 +608,10 @@ class dashboardController
             $username = $_SESSION['username'];
             $formattype = isset($_POST['type']) ? $_POST['type']: 'graph';
             $_SESSION['nameDB'] = isset($_POST['nameDB']) ? $_POST['nameDB'] : null;
-            //$selectQuery = "SELECT * from tableFormat where username = '$username' order by priority asc ";
             $selectQuery = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.username = '$username' AND tile_data_type = '".$formattype."' AND (tableFormat.deleted <> 1 OR tableFormat.deleted IS NULL) order by tableFormat.priority asc ";
             $dataResult = queryDB($conn, $selectQuery, "read");
             $records['data'] = $dataResult;
             echo json_encode($records, JSON_INVALID_UTF8_SUBSTITUTE);
-            die;
-
-            // <---Old Code With Gipscomm--7-1-2022-
-            // // <---27-12-2021-- Get Tiles Gipscommm
-            // // $conn = connectToDB('gipscomm');
-            // $selectGipscommTile  = "SELECT * from tableFormat where username = '$username' order by priority asc ";
-            // $dataResultGipscomm = queryDB($conn, $selectGipscommTile, "read");
-            // $records['data'] = $dataResultGipscomm;
-            // // echo json_encode($records['data']); die;
-            // // --end-->
-
-            // // <---4-1-2022--
-            // $nameDB = $_POST['nameDB'];
-            // $conn = connectToDB($nameDB);
-            // // echo $conn; die;
-            // $getResult = "SELECT * from tableFormat WHERE username = '$username' order by priority asc";
-            // $result = queryDB($conn,$getResult);
-            // // echo json_encode(gettype($result)); die;
-            // $dataResult = [];
-            // if($result != false)
-            // {
-            //     while( $row = sqlsrv_fetch_array( $result, SQLSRV_FETCH_ASSOC ) ) {
-            //         $dataResult[] = $row ;
-            //     };
-            //     // echo json_encode(count($dataResult)); die;
-            //     if(count($dataResult) > 0)
-            //     {
-            //         $arMerge = array_merge($dataResultGipscomm,$dataResult);
-            //         // echo json_encode($arMerge); die;
-            //         $records['data'] = $arMerge;
-            //         $records['total_record'] = count($dataResult);
-            //         $dataMeasurement = '';
-
-            //         // <---5-1-2022-
-            //         //$priority = array_column($arMerge,'priority');
-            //         // array_multisort(array_column($arMerge,'priority'), SORT_ASC, $arMerge,SORT_NUMERIC);
-            //         // echo json_encode($arMerge); 
-            //         $records['data'] = $arMerge;
-            //         // --end--->
-            //     }
-            //     // echo json_encode($row); die;
-            // }
-            // echo json_encode($records, JSON_INVALID_UTF8_IGNORE);  die;
-            // ---end--->
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -753,7 +682,6 @@ class dashboardController
                         $unit = "kg";
                     }
 
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         if ($queryMaxVal != '') {
                             $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -789,8 +717,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
+    /**
+     * Generates HTML content for the dashboard energy section
+     * @param array $dataMeasurement  Contains measurement data used to build the dashboard view
+     * @param bool  $queryMaxVal Optional flag to determine if maximum values should be queried/processed
+     * @return string Returns the generated HTML for the energy dashboard
+     */
     public function dashboardEnergyHtml($dataMeasurement, $queryMaxVal = false)
     {
         try {
@@ -855,7 +787,6 @@ class dashboardController
                         $unit = "kg";
                     }
 
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         if ($queryMaxVal != '') {
                             $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -891,7 +822,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML content for the dashboard product section
+     * @param array $dataProduct   Contains product data used to build the dashboard view
+     * @param bool  $queryMaxVal   Optional flag to determine if maximum values should be queried/processed
+     * @return string Returns the generated HTML for the product dashboard
+     */
     public function dashboardProductHtml($dataProduct, $queryMaxVal = false)
     {
         try {
@@ -935,7 +871,6 @@ class dashboardController
                     }
 
                     $tr .= "<tr $style prd_id='$val_prd_ID' analgen_config_id=" . $value['iBdePrdktConf_ID'] . " data-table-other='false' prd_name='$prd_name'>";
-                    // $tr.= "<td>".$value['namePrd']."</td>";
                     $tr .= "<td>" . $value['bezeichnungAnl'] . "</td>";
                     if ($value['intTp_ID'] == "1") {
                         $tr .= "<td>Days</td>";
@@ -962,7 +897,6 @@ class dashboardController
                     } else if ($value['unt_ID'] == "5") {
                         $unit = "kg";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         if ($queryMaxVal != '') {
                             $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -998,7 +932,10 @@ class dashboardController
         }
     }
 
-    // <---23-4-2021--
+    /**
+     * Generates the HTML structure for measurement tiles displayed on the dashboard.
+     * @return void Outputs JSON encoded tile HTML.
+     */
     public function generateHtmlMeasurementTiles()
     {
         try {
@@ -1014,21 +951,12 @@ class dashboardController
             $last_id_query = "SELECT max(id) as max_id from tableFormat ";
             $last_id = queryDB($conn, $last_id_query, "read");
             $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id'] + 1 : 0;
-
-            // $last_id = 0;
-            // if($total_result>0){
-            //     $last_id=$dataResult[$total_result-1]['id']+1;
-
-            // }
-
-            // print_r($last_id);die;
             $url  = isset($_SERVER['HTTPS']) ? 'https://' : 'http://';
             $url .= $_SERVER['SERVER_NAME'];
             $url .= $_SERVER['REQUEST_URI'];
             $url_path =  dirname(dirname($url));
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1098,12 +1026,7 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>";        
-                    }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
+                    } 
                 }
             } else {
                 $tileHtml .= "<div class='measurement_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Measurement'>
@@ -1182,8 +1105,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---2-12-2021---
+    /**
+     * Generates HTML for product tiles on the dashboard
+     * @return string  Returns the generated HTML for product tiles
+     */
     public function generateHtmlProductTiles()
     {
         try {
@@ -1202,7 +1127,6 @@ class dashboardController
 
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1277,12 +1201,7 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>";        
-                    }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
+                    } 
                 }
             } else {
                 $tileHtml .= "<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
@@ -1366,17 +1285,16 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <--24-12-2021---
+    /**
+     * Generates HTML for automatic product tiles on the dashboard
+     * @return string  Returns the generated HTML for automatic product tiles
+     */
     public function generateHtmlProductTilesAutomatic()
     {
         try {
-            // global $conn;
             $conn = connectToDB("gipscomm");
             $username = $_SESSION['username'];
             $product_title =  $_POST['product_title'];
-            // $type =  $_POST['type'];
             $getResult =  "SELECT * from tableFormat Where username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
@@ -1388,7 +1306,6 @@ class dashboardController
 
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1427,12 +1344,7 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>";
-                    }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
+                    } 
                 }
             } else {
                 $tileHtml .= "<div class='product_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Product'>
@@ -1480,9 +1392,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end-->
-
-    // <---22-11-2021---
+    /**
+     * Generates HTML for energy tiles on the dashboard
+     * @return string  Returns the generated HTML for energy tiles
+     */
     public function generateHtmlEnergyTiles()
     {
         try {
@@ -1505,7 +1418,6 @@ class dashboardController
             $url_path =  dirname(dirname($url));
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1579,42 +1491,7 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>"; 
-                        //         $tileHtml.="<div class='dashboard_table_outer_tile_html_$last_id outer_table_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
-                        //     <div class='card card-border tile_border'>
-                        //         <div class='card-body overflow-hide display-flex pr-0'>
-                        //             <div id='' class=''>
-                        //                 <div class='action-modal-button-div'>
-                        //                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='energy' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
-                        //                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='energy' style='height: 17px; width: 17px;'>
-                        //                 </div>
-                        //                 <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$energy_title</p>
-                        //                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
-                        //                 <img src='images/chartlogo.jpg' class='tile-image-icon tile-image-icon-table'>
-                        //                 </div>  
-                        //                 <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small></small></span></p>
-
-                        //             </div>
-
-                        //             <div class='overflow-hide ml-3 chart-width'>
-                        //                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                        //                     <p class='text-muted'>Datentabelle</p>
-                        //                 </div>
-                        //                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
-                        //                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
-                        //                     </table>
-                        //                 </div> 
-                        //                 <div class='save_table_div_show_table'> 
-                        //                 </div>
-                        //             </div>
-                        //         </div>
-                        //     </div>
-                        // </div></div>";
-                    }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
+                    } 
                 }
             } else {
                 $tileHtml .= "<div class='energy_html_modal_$last_id'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_$last_id' data-i='$last_id' data-type-tile='Energy'>
@@ -1686,36 +1563,6 @@ class dashboardController
                                         </div>
                                     </div>
                                 </div></div>"; 
-                //     $tileHtml.="<div class='dashboard_table_outer_tile_html_$last_id outer_table_tile_structure'><div style='height: 145px; width: 290px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_outer_tile_modal_table_$last_id' data-i='$last_id' data-type-tile='energy'>
-                //     <div class='card card-border tile_border'>
-                //         <div class='card-body overflow-hide display-flex pr-0'>
-                //             <div id='' class=''>
-                //                 <div class='action-modal-button-div'>
-                //                     <img src='images/edit.png' class='edit_val edit_btn_tile_chart' data-type-tile='energy' data-i-value ='$last_id' style='height: 17px; width: 17px; margin-right: 5px;'>
-                //                     <img src='images/delete.png' class='id_val delete_btn_tile' data-type-tile='energy' style='height: 17px; width: 17px;'>
-                //                 </div>
-                //                 <p class='card-title text-md-center text-xl-left' id='energy_tile_heading_modal'>$energy_title</p>
-                //                 <div class='d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div'>
-                //                 <img src='images/table_logo.png' class='tile-image-icon tile-image-icon-table'>
-                //                 </div>  
-                //                 <p class='mb-0 mt-2 text-success count_result_tile chart_text_$last_id'>(Chart)<span class='text-black ml-1'><small> </small></span></p>
-
-                //             </div>
-
-                //             <div class='overflow-hide ml-3 chart-width'>
-                //                 <div id='chart_outer_tile_text_heading' style='text-align: center'>
-                //                     <p class='text-muted'>Datentabelle</p>
-                //                 </div>
-                //                 <div class='col-md-6 p-0 small-table small-table_$last_id'>
-                //                     <table class='wish-table table-striped table-bordered m-0' style='display:table'><thead><tr><th>Date</th><th>Consumption</th></tr></thead><tbody><tr><td id='td_outer_tile_text_$last_id'></td><td id='td_outer_tile_two_text_$last_id'></td></tr></tbody>
-                //                     </table>
-                //                 </div> 
-                //                 <div class='save_table_div_show_table'> 
-                //                 </div>
-                //             </div>
-                //         </div>
-                //     </div>
-                // </div></div>";
             }
             $records['tile_html'] = $tileHtml;
             $records['data'] = $dataResult;
@@ -1727,16 +1574,17 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end--->
     
+    /**
+     * Retrieves graph and chart data for the dashboard modal view.
+     * @return void Outputs JSON encoded chart HTML.
+     */
    public function getGraphChartDataDashboard()
     {
         try {
             global $conn;
             $username = $_SESSION['username'];
             $measurement_title  = $_POST['measurement_title'];
-            // $measurement_title  = "Test Chart";
-
             $getResult =  "SELECT * from tableFormat where tile_data_type ='Graph' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
@@ -1744,12 +1592,6 @@ class dashboardController
             $last_id_query = "SELECT max(id) as max_id from tableFormat ";
             $last_id = queryDB($conn, $last_id_query, "read");
             $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id'] + 1 : 0;
-            // if($total_result>0){
-            //     $last_id=$dataResult[$total_result-1]['id']+1;
-
-            // }
-
-            // <---24-11-2021---
             $record_type_of_tile  = $_POST['record_type_of_tile'];
             if ($record_type_of_tile == 'energy') {
                 $this->getChartDataDashboardEnergy();
@@ -1758,11 +1600,8 @@ class dashboardController
                 $this->getChartDataDashboardProduct();
                 die;
             }
-            // --end--->
-
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1803,15 +1642,17 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves chart data for the dashboard
+     * Fetches and prepares overall dashboard chart data for visualization
+     * @return array  Returns dashboard chart data
+     */
     public function getChartDataDashboard()
     {
         try {
             global $conn;
             $username = $_SESSION['username'];
             $measurement_title  = $_POST['measurement_title'];
-            // $measurement_title  = "Test Chart";
-
             $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
@@ -1819,12 +1660,6 @@ class dashboardController
             $last_id_query = "SELECT max(id) as max_id from tableFormat ";
             $last_id = queryDB($conn, $last_id_query, "read");
             $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id'] + 1 : 0;
-            // if($total_result>0){
-            //     $last_id=$dataResult[$total_result-1]['id']+1;
-
-            // }
-
-            // <---24-11-2021---
             $record_type_of_tile  = $_POST['record_type_of_tile'];
             if ($record_type_of_tile == 'energy') {
                 $this->getChartDataDashboardEnergy();
@@ -1833,11 +1668,9 @@ class dashboardController
                 $this->getChartDataDashboardProduct();
                 die;
             }
-            // --end--->
 
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //                    $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -1905,12 +1738,7 @@ class dashboardController
                                 </div>
                             </div>
                         </div></div>";
-                    }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
+                    } 
                 }
             } else {
                 $tileHtml .= "<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Measurement'>
@@ -1987,17 +1815,17 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
-    // <---24-11-2021---
+    /**
+     * Retrieves chart data for the energy dashboard
+     * Fetches and prepares energy-related data to be displayed in dashboard charts
+     * @return array  Returns structured data for rendering energy charts
+     */
     public function getChartDataDashboardEnergy()
     {
         try {
             global $conn;
             $username = $_SESSION['username'];
             $measurement_title  = $_POST['measurement_title'];
-            // $measurement_title  = "Test Chart";
-
             $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
@@ -2005,14 +1833,9 @@ class dashboardController
             $last_id_query = "SELECT max(id) as max_id from tableFormat ";
             $last_id = queryDB($conn, $last_id_query, "read");
             $last_id = $last_id[0]['max_id'] != null ? $last_id[0]['max_id'] + 1 : 0;
-            // if($total_result>0){
-            //     $last_id=$dataResult[$total_result-1]['id']+1;
-
-            // }
 
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i <= $total_result; $i++) {
-                    //  $measurement_title = $total_result[$i]['tile_title'];
                     $style = '';
                     if ($i == $total_result) {
 
@@ -2081,11 +1904,6 @@ class dashboardController
                             </div>
                         </div></div>";
                     }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
                 }
             } else {
                 $tileHtml .= "<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Energy'>
@@ -2162,16 +1980,17 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end-->
-
-    // <--7-12-2021---
+    /**
+     * Retrieves chart data for the product dashboard
+     * Fetches and prepares product-related data to be displayed in dashboard charts
+     * @return array  Returns structured data for rendering product charts
+     */    
     public function getChartDataDashboardProduct()
     {
         try {
             global $conn;
             $username = $_SESSION['username'];
             $measurement_title  = $_POST['measurement_title'];
-            // $measurement_title  = "Test Chart";
             $getResult =  "SELECT * from tableFormat where tile_data_type ='chart' AND username = '$username' ";
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
@@ -2249,11 +2068,6 @@ class dashboardController
                             </div>
                         </div></div>";
                     }
-
-                    // if($i < $total_result){
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //    $tileHtml.= $dataResult[$i]['tile_html'];
-                    // } 
                 }
             } else {
                 $tileHtml .= "<div class='dashboard_chart_tile_html_$last_id'><div style='height: 290px; width: 570px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_chart_$last_id' data-i='$last_id' data-type-tile='Product'>
@@ -2330,11 +2144,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end-->
-
-
-
-    // /<---Edit tile Functionality--
+    /**
+     * Retrieves data for editing dashboard tiles
+     * Fetches existing tile configuration/details to populate the edit interface
+     * @return array  Returns tile data for editing
+     */
     public function getEditTiles()
     {
         try {
@@ -2351,9 +2165,7 @@ class dashboardController
             if ($dataResult != null && count($dataResult)) {
                 for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $dataResult[$i]['id']) {
-                        // $total_record_id = $id-1;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
                         $tileHtml .= "<div class='measurement_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='measurement_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Measurement'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
@@ -2421,8 +2233,6 @@ class dashboardController
 
                         $records['data'] = $dataResult[$i];
                     } else {
-                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -2434,10 +2244,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --endd->
-
-    // <--24-11-2021---
-    // /<---Edit tile Functionality--
+    /**
+     * Retrieves data for editing energy dashboard tiles
+     * Fetches existing energy tile configuration/details to populate the edit interface
+     * @return array  Returns energy tile data for editing
+     */
     public function getEditTilesEnergy()
     {
         try {
@@ -2454,9 +2265,7 @@ class dashboardController
             if ($dataResult != null && count($dataResult)) {
                 for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $dataResult[$i]['id']) {
-                        // $total_record_id = $id-1;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
                         $tileHtml .= "<div class='energy_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='energy_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Energy'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
@@ -2525,8 +2334,7 @@ class dashboardController
 
                         $records['data'] = $dataResult[$i];
                     } else {
-                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
+
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -2538,10 +2346,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <----06-12-2021--
-    // /<---Edit tile Functionality--
+    /**
+     * Retrieves data for editing Product dashboard tiles
+     * Fetches existing Product tile configuration/details to populate the edit interface
+     * @return array  Returns Product tile data for editing
+     */
     public function getEditTilesProduct()
     {
         try {
@@ -2558,9 +2367,7 @@ class dashboardController
             if ($dataResult != null && count($dataResult)) {
                 for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $dataResult[$i]['id']) {
-                        // $total_record_id = $id-1;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
                         $tileHtml .= "<div class='product_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card ' id='product_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Product'>
                                     <div class='card card-border'>
                                         <div class='card-body overflow-hide display-flex'>
@@ -2628,8 +2435,7 @@ class dashboardController
 
                         $records['data'] = $dataResult[$i];
                     } else {
-                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
+                    
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -2641,14 +2447,14 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // -end--->
-
-
-    //<---3-1-2022---
+    /**
+     * Retrieves data for editing automatic product dashboard tiles
+     * Fetches existing automatic product tile configuration/details to populate the edit interface
+     * @return array  Returns automatic product tile data for editing
+     */ 
     public function getEditTilesProductAutomatic()
     {
         try {
-            // global $conn;
             $conn = connectToDB('gipscomm');
             $username = $_SESSION['username'];
             $id = $_REQUEST['id'];
@@ -2662,9 +2468,7 @@ class dashboardController
             if ($dataResult != null && count($dataResult)) {
                 for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $dataResult[$i]['id']) {
-                        // $total_record_id = $id-1;
                         $tileHtml .= "<input type='hidden' id='total_records' value='$i_value'>";
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
                         $tileHtml .= "<div class='product_html_modal_$i_value'><div style='height: 145px; width: 285px' class='grid-margin actual_tile_height actual_tile_width stretch-card product_automatic_tile ' id='product_count_tile_modal_$i_value' data-i='$i_value' data-type-tile='Product'>
                                     <div class='card card-border product_automatic_tile_card'>
                                         <div class='card-body overflow-hide display-flex'>
@@ -2701,8 +2505,7 @@ class dashboardController
 
                         $records['data'] = $dataResult[$i];
                     } else {
-                        //     // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        //     // $tileHtml.= $dataResult[$i]['tile_html'];
+                        
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -2714,9 +2517,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end--->
-
-    // <---7-10-2021---
+    /**
+     * Retrieves chart data for editing the dashboard
+     * Fetches existing chart configuration and data to populate the edit interface
+     * @return array  Returns chart data for dashboard editing
+     */
     public function getEditChartDataDashboard()
     {
         try {
@@ -2822,9 +2627,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // -endd--->
-
-    // <--25-11-2021--
+    /**
+     * Retrieves chart data for editing the energy dashboard
+     * Fetches existing energy chart configuration and data to populate the edit interface
+     * @return array  Returns chart data for energy dashboard editing
+     */    
     public function getEditChartDataDashboardEnergy()
     {
         try {
@@ -2913,10 +2720,7 @@ class dashboardController
                                                 </div>
                                             </div></div>";
                     }
-                    // else{
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //     $tileHtml.= $dataResult[$i]['tile_html'];
-                    // }
+                
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -2931,9 +2735,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <---23-2-2022--
+    /**
+     * Retrieves chart data for editing the energy layer dashboard
+     * Fetches existing energy layer chart configuration and data to populate the edit interface
+     * @return array  Returns chart data for energy layer dashboard editing
+     */
     public function getEditChartDataDashboardEnergyLayer()
     {
         try {
@@ -3023,10 +2829,7 @@ class dashboardController
                                                 </div>
                                             </div></div>";
                     }
-                    // else{
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //     $tileHtml.= $dataResult[$i]['tile_html'];
-                    // }
+                    
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -3042,10 +2845,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-
-    // <---08-03-2022--
+    /**
+     * Retrieves chart data for editing the automatic energy dashboard
+     * Fetches existing automatic energy chart configuration and data to populate the edit interface
+     * @return array  Returns chart data for automatic energy dashboard editing
+     */
     public function getEditChartDataDashboardEnergyAutomatic()
     {
         try {
@@ -3133,8 +2937,7 @@ class dashboardController
                                                 </div>
                                             </div></div>";
                     } else {
-                        // $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                        // $tileHtml.= $dataResult[$i]['tile_html'];
+                        
                     }
                 }
                 $records['tile_html'] = $tileHtml;
@@ -3153,9 +2956,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end--->
-
-    // <----09-12-2021--
+    /**
+     * Retrieves chart data for editing the product dashboard
+     * Fetches existing product chart configuration and data to populate the edit interface
+     * @return array  Returns chart data for product dashboard editing
+     */    
     public function getEditChartDataDashboardProduct()
     {
         try {
@@ -3175,7 +2980,6 @@ class dashboardController
             $queryProduct = "SELECT prd_id from tableFormat INNER JOIN produktionsAnlagenConfig as T2 ON tableFormat.prd_anlagen_config_id = T2.iBdePrdktConf_ID where tile_data_type ='chart' AND id = '$id' AND username = '$username'  ";
             $dataResultProduct = queryDB($conn, $queryProduct, "read");
             $prd_id = $dataResultProduct != null ? $dataResultProduct[0]['prd_id'] : '';
-            // echo json_encode($dataResultProduct); die;
             if ($dataResult != null && count($dataResult) > 0) {
                 for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $dataResult[$i]['id']) {
@@ -3248,10 +3052,6 @@ class dashboardController
                                                 </div>
                                             </div></div>";
                     }
-                    // else{
-                    //     $dataResult[$i]['tile_html']=str_replace('stretch-card','stretch-card hide_table_preview',$dataResult[$i]['tile_html']);
-                    //     $tileHtml.= $dataResult[$i]['tile_html'];
-                    // }
                 }
                 $records['tile_html'] = $tileHtml;
                 $records['total_record'] = count($dataResult);
@@ -3267,8 +3067,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-    // <----2024--
+    /**
+     * Retrieves graph chart data for editing the dashboard
+     * Fetches existing graph/chart configuration and data to populate the edit interface
+     * @return array  Returns graph chart data for dashboard editing
+     */
     public function getEditGraphChartDashboard()
     {
         try {
@@ -3281,11 +3084,9 @@ class dashboardController
             $dataResult = queryDB($conn, $getResult, "read");
             $tileHtml = '';
             $total_result = count($dataResult);
-            //$queryGraph = "SELECT * from tableFormat where tile_data_type ='Graph' AND id = '$id' AND username = '$username'  ";
             $queryGraph = "SELECT * from tableFormat LEFT JOIN gespeicherteGraphDiagramme ON tableFormat.saved_graph_id = gespeicherteGraphDiagramme.gDia_ID where tableFormat.tile_data_type ='Graph' AND tableFormat.id = '$id' AND tableFormat.username = '$username' ";
             $resultGraph = queryDB($conn, $queryGraph, "read");
             if ($resultGraph != null && count($resultGraph) > 0) {
-                //for ($i = 0; $i < $total_result; $i++) {
                     if ($id == $resultGraph[0]['id']) {
                         $records['data'] = $resultGraph[0];
                         $tileHtml .= "<input type='hidden' id='total_records_chart' value='$id'>";
@@ -3365,11 +3166,14 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // <----01-9-2021---
+    /**
+     * Retrieves dashboard data for editing
+     * Fetches existing dashboard configuration and data to populate the edit interface
+     * @return array  Returns dashboard data for editing
+     */   
     public function getEditDataDashboard()
     {
         try {
-            // global $conn;
             $product_automatic_tile = $_POST['product_automatic_tile'];
             $res =  $product_automatic_tile;
             $conn = '';
@@ -3382,8 +3186,6 @@ class dashboardController
             $id = $_REQUEST['id'];
             $selectQuery = "SELECT * from tableFormat where id ='$id' AND username = '$username' ";
             $resultQuery = queryDB($conn, $selectQuery, "read");
-            // var_dump($resultQuery);
-            // echo json_encode($resultQuery);die;
             $records['data'] = $resultQuery;
 
             $allColumns = $product_automatic_tile == 'true' ? unserialize($resultQuery[0]['prd_all_columns_automatic']) : '';
@@ -3394,9 +3196,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <---03-9-2021---
+    /**
+     * Retrieves chart data based on selected time interval
+     * Fetches and processes records according to the specified time interval for chart display
+     * @return array  Returns chart data filtered by time interval
+     */
     public function getChartTimeIntervalRecord()
     {
         try {
@@ -3425,7 +3229,6 @@ class dashboardController
                 $records['table_found'] = $tableFound;
                 $records['data']  = $data;
 
-                //$data = queryDB($conn, $query1, "read");
             } else if ($record_type_of_tile == 'energy') {
                 $query1 = "SELECT T3.nameMST ,T1.mst_ID,T2.val ";
                 $query1 .= "FROM interneMesswerteConfig as T1 ";
@@ -3448,8 +3251,6 @@ class dashboardController
                 }
                 $records['table_found'] = $tableFound;
                 $records['data']  = $data;
-
-                // $data = queryDB($conn, $query1, "read");
             }
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
@@ -3457,10 +3258,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // ---end--->
-
-    // <----7-12-2021---
+    /**
+     * Retrieves product chart data based on selected time interval
+     * Fetches and processes product records according to the specified time interval for chart display
+     * @return array  Returns product chart data filtered by time interval
+     */
     public function getChartTimeIntervalRecordProduct()
     {
         try {
@@ -3486,16 +3288,17 @@ class dashboardController
             }
             $records['table_found'] = $tableFound;
             $records['data']  = $data;
-
-            // $data = queryDB($conn, $query1, "read");
-            // echo $query1; die;
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves chart data for selected product item(s)
+     * Fetches and prepares data based on selected product item(s) for chart display
+     * @return array  Returns chart data for selected product item(s)
+     */
     public function getChartSelectProductItem()
     {
         try {
@@ -3522,16 +3325,17 @@ class dashboardController
             $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
             $query1 .= "order by t3.val desc ";
             $data = queryDB($conn, $query1, "read");
-            // echo $query1; die;
             echo json_encode($data, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    //Get Records Energy
+    /**
+     * Retrieves the total number of energy records
+     * Fetches and returns the count of energy records based on current filters or conditions
+     * @return int  Returns the total number of energy records
+     */
     public function getNumberRecordsEnergy()
     {
         try {
@@ -3546,9 +3350,6 @@ class dashboardController
             $dataMesaurement = '';
             $queryMaxVal = '';
             $pagesCount = '';
-
-
-            // <----14-9-2021---
             if ($energy_type == "layer_modal") {
                 $this->getLayerTableEnergyData();
                 die;
@@ -3557,8 +3358,6 @@ class dashboardController
                 $this->getAutomaticTableEnergyData();
                 die;
             }
-            // --end-->
-
             if ($order_by_val == 'order_by_desc') {
                 $order_by_val = "Order by cast(T2.val as int) desc ";
             } else if ($order_by_val == 'order_by_asc') {
@@ -3593,8 +3392,6 @@ class dashboardController
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             }
-            // echo json_encode($totalRecordsValue); die;
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -3620,7 +3417,6 @@ class dashboardController
                             $number_records = $total_number_records - $offSetVal;
                         }
                     }
-                    //    echo $number_records;s
                 }
             }
 
@@ -3657,43 +3453,23 @@ class dashboardController
 
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlEnergyData($page_val, $pagesCount, $dataMesaurement);
 
-            // echo $pagination_html['paginationHTMl']; die;
-            //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $table_filter = $_POST['time_interval'] . ',' . $_POST['energy_order_by_val'] . ',' . $_POST['total_number_records'] . ',' . $_POST['search_record'];
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Energy', 'table_type' => 'manually', 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-            // <--old code--
-            // $number_records = $_POST['number_records'];
-            // $query1 = "SELECT Top($number_records) * ";
-            // $query1 .= "FROM interneMesswerteConfig as T1 ";
-            // $query1 .= "LEFT JOIN ";
-            // $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, max(cast(val as int)) as val from ";
-            // $query1 .= "masseneingabeSucheIMw as T2 ";
-            // $query1 .= "GROUP By T2.mst_id) ";
-            // $query1 .= "T2 ";
-            // $query1 .= "ON T1.mst_ID = T2.table_2_mst_id ";
-            // $query1 .=  "LEFT JOIN ";
-            // $query1 .= "MessstellenAnlagen on ";
-            // $query1 .= "T1.mst_ID = MessstellenAnlagen.mst_ID ";
-            // $query1 .= "order by T1.mst_ID desc ";
-            // $dataEnergy = queryDB($conn, $query1, "read");
-            // $tr = '';
-            // --end--->
-
-
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <--18-11-2021--
-    // <--3-8-2021
+    /**
+     * Retrieves energy table data based on row click
+     * Fetches and processes detailed energy data for the selected row
+     * @return array  Returns energy table data for the selected row
+     */
     public function rowClickEnergyTableData()
     {
         try {
@@ -3706,13 +3482,10 @@ class dashboardController
             $selected_number_record_measurement = isset($_POST['selected_number_record_measurement']) ? $_POST['selected_number_record_measurement'] : 'false';
             $order_by_val = $_POST['energy_order_by_val'];
             $energy_type = $_POST['energy_type'];
-            // <---15-9-2021----
             if ($energy_type == "automatic") {
                 $this->rowClickAutomaticEnergyTableData();
                 die;
             }
-            // --end--->
-
             $date_differnce_five_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
 
@@ -3734,9 +3507,6 @@ class dashboardController
             $queryTotalPagination .= "where T2.type = '$type' ";
             $queryTotalPagination .= "AND T2.mst_ID = '$mst_id' ";
             $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
-
-            // echo json_encode($queryTotalPagination); die;
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -3762,9 +3532,6 @@ class dashboardController
                     }
                 }
             }
-
-            //--end-->
-
             $queryMaxValue = "SELECT TOP($total_number_records) max(cast(T2.val as int)) as val ";
             $queryMaxValue .= "FROM interneMesswerteConfig as T1 ";
             $queryMaxValue .= "INNER JOIN ";
@@ -3775,13 +3542,9 @@ class dashboardController
             $queryMaxValue .= "ON T1.mst_ID = T3.mst_ID ";
             $queryMaxValue .= "where T2.type = '$type' ";
             $queryMaxValue .= "AND T2.mst_ID = '$mst_id' ";
-            // echo json_encode($queryMaxValue); die;
-            //<---15-8-2021
             $queryMaximum = $queryMaxValue;
-            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-            // echo json_encode($queryMaxVal); die;
 
             $query1 = "SELECT * ";
             $query1 .= "FROM interneMesswerteConfig as T1 ";
@@ -3796,27 +3559,22 @@ class dashboardController
             $query1 .= "$order_by_val ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($date_differnce_five_days); die;
 
-            // <---10-11-2021----
             $queryLastDate = "SELECT TOP(1) * From masseneingabeSucheIMw as T1 ";
             $queryLastDate .= "WHERE T1.mst_ID = '$mst_id' ";
             $queryLastDate .= "AND T1.type = '$type' ";
             $queryLastDate .= "ORDER BY T1.id desc ";
             $queryLastDateData = queryDB($conn, $queryLastDate, "read");
-            //--end-->
 
             $records['energy_html'] = $this->generateHtmlTableEnergyData($dataMesaurement, $queryMaxVal);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlEnergyData($page_val, $pagesCount, $dataMesaurement, $type, $mst_id);
 
-            // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => $queryMaximum, 'row_click' => 'true', 'type' => 'Energy');
             $records['query_data'] = $ar;
 
             $records['queryLastDate'] = $queryLastDateData;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
@@ -3825,9 +3583,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <---17-12-2021---
+    /**
+     * Retrieves energy layer table data based on row click
+     * Fetches and processes detailed energy layer data for the selected row
+     * @return array  Returns energy layer table data for the selected row
+     */
     public function rowClickEnergyTableDataLayer()
     {
         try {
@@ -3852,47 +3612,34 @@ class dashboardController
                 $query1 .= "Order by mst_ID ";
                 $query1 .= "offset $offsetValue rows FETCH NEXT 100 ROWS ONLY ";
             }
-            //Query Check
-            // echo $query1; die;
             $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataMesaurement = [];
-            // echo json_encode($resultQuery); die;
             if ($resultQuery != false) {
                 $dataMesaurement = queryDB($conn, $query1, "read");
                 $tableFound = 'true';
             }
             $records['table_found'] = $tableFound;
-
             //Array Check
             $sum_value = '';
             if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $array_col = array_column($dataMesaurement, 'Value');
                 $sum_value = array_sum($array_col);
-                // echo json_encode($val); die;
             }
-            // echo $sum_value; die;
             $rowClickTable = 'true';
             $records['sum_value'] = $sum_value;
             $records['energy_header'] = $this->generateHtmlLayerTableEnergyDataHeader($rowClickTable);
             $records['energy_html'] = $this->generateRowClickHtmlLayerTableEnergyData($sum_value, $click_row_array);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlRowClickLayerEnergyData($sum_value);
 
-            // <----21-01-2022--
             $arTable = json_decode($click_row_array);
             $queryName = "Select * from SchichtModelleAll where modellBez = '$arTable[0]' ";
-            // --end--->
 
-            // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $pagesCount = isset($_POST['pagesCount']) ? $_POST['pagesCount'] : 1;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $queryName, 'queryMaxValue' => $query1, 'row_click' => 'true', 'type' => 'Energy');
             $records['query_data'] = $ar;
-
-            // $records['queryLastDate'] = $queryLastDateData;
-            // --end-->
-
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
             die;
@@ -3900,7 +3647,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for energy layer table data on row click
+     * Builds and returns HTML content for displaying detailed energy layer data
+     * when a table row is selected
+     * @return string  Returns generated HTML for energy layer table data
+     */
     public function generateRowClickHtmlLayerTableEnergyData($sum_value, $click_row_array)
     {
         global $conn;
@@ -3909,7 +3661,6 @@ class dashboardController
         $data_table_other = "data-table-other='SchichtModelleAll'";
         if ($sum_value != '') {
             $click_row_array_decode = json_decode($click_row_array);
-            // echo $click_row_array_decode[0]; die;
             $tr .= "<tr sum_value=" . $sum_value . " data-type='1' $data_table_other>";
             for ($i = 0; $i <= count($click_row_array_decode); $i++) {
                 if ($i == count($click_row_array_decode)) {
@@ -3923,31 +3674,32 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-    // --end--->
+    /**
+     * Generates pagination HTML for energy layer row click data
+     * Builds and returns pagination controls for navigating through
+     * energy layer data displayed after a row click
+     * @return string  Returns generated pagination HTML
+     */
     public function generatePaginationHtmlRowClickLayerEnergyData($sum_value)
     {
         try {
-            //Pagination Code HTML
-            // echo $pagesCount; die;
             $paginationHTMl = '';
             if ($sum_value != '') {
                 $paginationHTMl = "<div id='save_table_format' class='text-center'>
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
-
-                // $records['pagination_html'] = $paginationHTMl;
             }
             return $paginationHTMl;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--
-
-
+    /**
+     * Retrieves table header configuration for energy records
+     * Fetches and prepares column headers for displaying energy data in table format
+     * @return array  Returns energy records table header data
+     */
     public function getEnergyRecordsTableHeader()
     {
         try {
@@ -3991,14 +3743,18 @@ class dashboardController
                 $records['table_header'] = $tr;
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                 die;
-                // return $tr;
             }
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves table header configuration for energy records on row click
+     * Fetches and prepares column headers for displaying detailed energy data
+     * when a specific row is selected
+     * @return array  Returns energy records table header data for row click
+     */
     public function rowClickEnergyRecordsTableHeader()
     {
         try {
@@ -4012,7 +3768,6 @@ class dashboardController
                 $records['table_header'] = $tr;
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                 die;
-                // return $tr;
             } else if ($energy_type == "manually") {
                 $tr = '<tr>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Name</th>';
@@ -4023,8 +3778,6 @@ class dashboardController
                 $records['table_header'] = $tr;
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                 die;
-                // return $tr;
-
             } else if ($energy_type == "layer_modal") {
                 $tr = '<tr>';
                 $tr .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Modal Name</th>';
@@ -4037,7 +3790,6 @@ class dashboardController
                 $records['table_header'] = $tr;
                 echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                 die;
-                // return $tr;
             }
 
             die;
@@ -4045,9 +3797,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
-    // <----18-11-2021----
+    /**
+     * Generates HTML for energy table data
+     * Builds and returns HTML content for displaying energy data in table format
+     * @return string  Returns generated HTML for energy table data
+     */
     public function generateHtmlTableEnergyData($dataMesaurement, $queryMaxVal = false)
     {
         $tr = '';
@@ -4095,7 +3849,6 @@ class dashboardController
                     $unit = "kg";
                 }
 
-                // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                 if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                     if ($queryMaxVal != '') {
                         $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -4126,20 +3879,20 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
+    /**
+     * Generates pagination HTML for energy data
+     * Builds and returns pagination controls for navigating through energy records
+     * @return string  Returns generated pagination HTML
+     */
     public function generatePaginationHtmlEnergyData($page_val, $pagesCount, $dataMesaurement, $data_type = false, $mst_id = false)
     {
         try {
-            //Pagination Code HTML
-            // echo $pagesCount; die;
             if ($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $style_background = '';
                 $class_page_count_val = 'page_count_val_energy';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val_energy';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -4206,14 +3959,17 @@ class dashboardController
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
+    /**
+     * Retrieves the total number of automatic energy records
+     * Fetches and returns the count of energy records for automatic data
+     * based on current filters or conditions
+     * @return int  Returns the total number of automatic energy records
+     */
     public function getNumberRecordsEnergyAutomatic()
     {
         try {
@@ -4221,7 +3977,6 @@ class dashboardController
             $table_type = $_POST['table_type'];
             $mst_id = $_POST['mst_id'];
             $input_val_week_day = $_POST['input_val_week_day'] /*+ 60*/;
-            // echo $input_val_week_day;
             $valMaxDate = $input_val_week_day - $_POST['input_val_week_day'];
             $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'desc';
             $energy_measurement_text = $_POST['energy_measurement_text'];
@@ -4248,36 +4003,18 @@ class dashboardController
             $maxDateCheck = date('Y-m-d', strtotime("-$valMaxDate days"));
             $queryEnergy = '';
             if ($table_found == 'true') {
-                /*$queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
-                $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
-                $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,time) <= '$maxDateCheck' group by convert(date,Time) order by date $order_by ";*/
                 $topRecords= $_POST['input_val_week_day'];
                 $queryEnergy = "Select TOP ($topRecords) convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' ";
                 $queryEnergy .= " group by convert(date,Time) order by date $order_by ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-                // echo $queryEnergy; die;
-                // echo json_encode($queryEnergyRecords); die;
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !isset($queryEnergyRecords['error'])) {
                     for ($i = 0; $i < $_POST['input_val_week_day']; $i++) {
                         $dateDynamicIndex = $valMaxDate + $i;
                         $dateDynamicVal =  date('Y-m-d', strtotime("-$dateDynamicIndex days"));
-                        // echo $dateDynamicVal; die;
                         $result = $this->generateEnergyAutomaticTableHTML($queryEnergyRecords, $dateDynamicVal, $energy_measurement_text);
                         $tbody .= $result;
                     }
-
-                    // die;
-                    // foreach($queryEnergyRecords as $key => $val){
-                    //     $tbody .= '<tr class="row_click_energy" data-table-other="true">';
-                    //     // $tbody .= '<td>'.$dayVal.'</td>';
-                    //     $tbody.= "<td>".$energy_measurement_text."</td>";
-                    //     $tbody.= "<td>".$val['date']->format('Y-m-d')."</td>";
-                    //     $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                    //     $totalValue = $this->convertValueCommaSeperated($totalValue);
-                    //     $tbody.= "<td>".$totalValue."</td>";
-                    //     $tbody .= '</tr>';
-                    // }
                     $paginationHTMl = "<div id='save_table_format' class='text-center'>
                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                     </div>";
@@ -4285,14 +4022,12 @@ class dashboardController
                 }
             }
 
-            // <---07-2-2022--
             if ($tbody == '') {
                 $tbody .= '<tr>';
                 $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
                 $tbody .= '</tr>';
                 $records['pagination_html_energy'] =  '';
             }
-            // --end-->
 
             $records['energy_header'] = $thead;
             $records['energy_html'] = $tbody;
@@ -4306,13 +4041,16 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for automatic energy table data
+     * Builds and returns HTML content for displaying automatic energy data in table format
+     * @return string  Returns generated HTML for automatic energy table
+     */
     public function generateEnergyAutomaticTableHTML($data, $dateVal, $energy_measurement_text)
     {
         try {
             $flag = 0;
             for ($i = 0; $i < count($data); $i++) {
-                //if ($data[$i]['date']->format('Y-m-d') == $dateVal) {
                 if (date("Y-m-d",strtotime($data[$i]['date'])) == $dateVal) {
                     $flag = 1;
                     break;
@@ -4321,7 +4059,6 @@ class dashboardController
             if ($flag == 1) {
                 $tbody = '<tr class="row_click_energy" data-table-other="true">';
                 $tbody .= "<td>" . $energy_measurement_text . "</td>";
-                //$tbody .= "<td>" . $data[$i]['date']->format('Y-m-d') . "</td>";
                 $tbody .= "<td>" . date("Y-m-d",strtotime($data[$i]['date'])) . "</td>";
                 $totalValue = $data[$i]['value'] > 0 ? $data[$i]['value'] / 4 : 0;
                 $totalValue = $this->convertValueCommaSeperated($totalValue);
@@ -4340,88 +4077,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // public function getNumberRecordsEnergyAutomatic(){
-    //     try{
-    //         global $conn;
-    //         $mst_id = $_POST['mst_id'];
-    //         $input_val_week_day = isset($_POST['input_val_week_day']) ? $_POST['input_val_week_day'] : 100 ;
-    //         $order_by = isset($_POST['order_by']) ?  $_POST['order_by'] : 'asc';
-    //         $energy_measurement_text = $_POST['energy_measurement_text'];
-    //         $energy_type = $_POST['energy_type']
-    //         $thead = "<tr>";
-    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Messstelle</th>";
-    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Datum</th>";
-    //         $thead .= "<th style='padding:  10px 6px 10px 6px !important;font-size: small !important;'>Wert</th>";
-    //         $thead .= "</tr>";
-
-    //         $tbody = '';
-    //         $checkQuery = '';
-
-    //         $todayDate = date('Y-m-d');
-
-    //         //SchichtModelleAll Table Check
-    //         $tableCheckQuery = "select * from MessstellenEnergiedaten where mst_id = '$mst_id' ";
-    //         $resultTableExistCheck = queryDB($conn,$tableCheckQuery);
-    //         $table_found = 'false';
-    //         if($resultTableExistCheck != false)
-    //         {
-    //             $table_found = 'true';
-    //         }
-
-
-    //         $dateCheck = date('Y-m-d', strtotime("-$input_val_week_day days "));
-    //         // $dateCheck = date('Y-m-d');
-    //         if($table_found == 'true'){
-    //             $queryEnergy = "Select convert(date,Time) as date ,sum(Value*ConvFactor) as value ";
-    //             $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
-    //             $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date $order_by ";
-    //             $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-    //             // echo $queryEnergy; die;
-    //             // echo json_encode($queryEnergyRecords); 
-    //             // die;
-    //             if($queryEnergyRecords != '' && count($queryEnergyRecords))
-    //             {
-    //                 foreach($queryEnergyRecords as $key => $val){
-    //                     $tbody .= '<tr class="row_click_energy" data-table-other="true">';
-    //                     // $tbody .= '<td>'.$dayVal.'</td>';
-    //                     $tbody.= "<td>".$energy_measurement_text."</td>";
-    //                     $tbody.= "<td>".$val['date']->format('Y-m-d')."</td>";
-    //                     $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-    //                     $totalValue = $this->convertValueCommaSeperated($totalValue);
-    //                     $tbody.= "<td>".$totalValue."</td>";
-    //                     $tbody .= '</tr>';
-    //                 }
-    //                 $paginationHTMl="<div id='save_table_format' class='text-center'>
-    //                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
-    //                 </div>";
-    //                 $records['pagination_html_energy'] =  $paginationHTMl;
-    //             }
-    //         }
-
-    //         // <---07-2-2022--
-    //         if($tbody == '')
-    //         {
-    //             $tbody .= '<tr>';
-    //             $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
-    //             $tbody .= '</tr>';
-    //             $records['pagination_html_energy'] =  '';
-    //         }
-    //         // --end-->
-
-    //         $records['energy_header'] = $thead;
-    //         $records['energy_html'] = $tbody;
-    //         $records['table_found'] = $table_found;
-    //         $ar = array('pages_count' => '0','page_val' => '0','number_records' => '0' ,'query1' => $queryEnergy ,'queryMaxValue' => '','row_click' => 'false' , 'type' => 'Energy','mst_id' => $mst_id , 'input_val_week_day' => $input_val_week_day , 'name_val' => $energy_measurement_text);
-    //         $records['query_data'] = $ar;
-    //         echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
-    //         die;
-    //     }
-    //     catch(Exception $e) {
-    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
-    //     }
-    // }
-
+    /**
+     * Retrieves previous set of automatic energy table data
+     * Fetches and returns the previous page or batch of automatic energy records
+     * for pagination/navigation purposes
+     * @return array  Returns previous automatic energy table data
+     */
     public function getAutomaticTableEnergyDataPrevious()
     {
         try {
@@ -4454,27 +4115,18 @@ class dashboardController
             $queryTotalRecords = "SELECT TOP($total_number_records) * ";
             $queryTotalRecords .= "FROM messstellen as T1 ";
             $queryTotalRecords .= "INNER JOIN ";
-            //$queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
-            // <---28-02-2022--
             $queryTotalRecords .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
-            // -end--->
             $queryTotalRecords .= "berechneteEnergiedaten as T2 ";
             $queryTotalRecords .= "GROUP By T2.mst_id) ";
             $queryTotalRecords .= "T2 ";
             $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            // echo $queryTotalRecords; die;
             $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
             }
-
-
-            // $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
-            // echo json_encode($totalRecordsValue); die;s
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -4500,16 +4152,12 @@ class dashboardController
                             $number_records = $total_number_records - $offSetVal;
                         }
                     }
-                    //    echo $number_records;s
                 }
             }
             $query1 = "SELECT * ";
             $query1 .= "FROM messstellen as T1 ";
             $query1 .= "INNER JOIN ";
-            //$query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value) * convert(decimal(10,5), ConvFactor)) as val from ";
-            // <---28-02-2022--
             $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
-            // -end--->
             $query1 .= "berechneteEnergiedaten as T2 ";
             $query1 .= "GROUP By T2.mst_id) ";
             $query1 .= "T2 ";
@@ -4525,29 +4173,24 @@ class dashboardController
                 $tableFound = 'true';
             }
             $records['table_found'] = $tableFound;
-
-            // $dataMesaurement = queryDB($conn, $query1, "read");
-
             $records['energy_html'] = $this->generateHtmlAutomaticTableEnergyData($dataMesaurement);
 
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlAutomaticEnergyData($page_val, $pagesCount, $dataMesaurement);
-
-            // echo $pagination_html['paginationHTMl']; die;
-            //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Energy');
             $records['query_data'] = $ar;
-            // --end-->
-
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <--15-9-2021
+    /**
+     * Retrieves automatic energy table data based on row click
+     * Fetches and processes detailed automatic energy data for the selected row
+     * @return array  Returns automatic energy table data for the selected row
+     */
     public function rowClickAutomaticEnergyTableData()
     {
         try {
@@ -4605,19 +4248,13 @@ class dashboardController
                     }
                 }
             }
-
-            //--end-->
-
             $queryMaxValue = "SELECT TOP($total_number_records) max(convert(decimal(38,5), Value)) as val ";
             $queryMaxValue .= "FROM berechneteEnergiedaten as T1 ";
             $queryMaxValue .= "INNER JOIN ";
             $queryMaxValue .= "messstellen as T2 ";
             $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
             $queryMaxValue .= "WHERE T1.mst_ID = '$mst_id' ";
-            // echo json_encode($queryMaxValue); die;
-            //<---15-8-2021
             $queryMaximum = $queryMaxValue;
-            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
 
@@ -4631,29 +4268,21 @@ class dashboardController
             $query1 .= "$order_by_val ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($dataMesaurement); die;
-
 
             $records['energy_html'] = $this->generateHtmlAutomaticTableEnergyData($dataMesaurement, $queryMaxVal);
             $records['pagination_html_energy'] =  $this->generatePaginationHtmlAutomaticEnergyData($page_val, $pagesCount, $dataMesaurement, $type, $mst_id);
 
-
-            // <---10-11-2021----
             $queryLastDate = "SELECT TOP(1) * From berechneteEnergiedaten as T1 ";
             $queryLastDate .= "WHERE T1.mst_ID = '$mst_id' ";
             $queryLastDate .= "ORDER BY T1.berNrg_ID desc ";
             $queryLastDateData = queryDB($conn, $queryLastDate, "read");
-            //--end-->
 
-
-            // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => $queryMaximum, 'row_click' => 'true', 'type' => 'Energy');
             $records['query_data'] = $ar;
 
             $records['queryLastDate'] = $queryLastDateData;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
@@ -4662,7 +4291,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for automatic energy table data
+     * Builds and returns HTML content for displaying automatic energy data in table format
+     * @return string  Returns generated HTML for automatic energy table data
+     */
     public function generateHtmlAutomaticTableEnergyData($dataMesaurement, $queryMaxVal = false)
     {
         global $conn;
@@ -4673,7 +4306,6 @@ class dashboardController
         } else if ($queryMaxVal != '') {
             $col_span = "colspan='4'";
         }
-        // echo json_encode($dataMesaurement); die;
         if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
             foreach ($dataMesaurement as $key => $value) {
                 $style = '';
@@ -4709,7 +4341,6 @@ class dashboardController
                     $tr .= "<td>" . $valEnergy . "</td>";
                 } else {
                     $tr .= "<td>" . $value['Time'] . "</td>";
-                    // $tr.= "<td>".$value['ConvFactor']."</td>";
                     $valEnergy = 0;
                     if ($value['Value'] > 0) {
                         $valEnergy = ($value['Value'] * $value['ConvFactor'])  / 4;
@@ -4723,21 +4354,21 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-
+    /**
+     * Generates pagination HTML for automatic energy data
+     * Builds and returns pagination controls for navigating through automatic energy records
+     * @return string  Returns generated pagination HTML
+     */
     public function generatePaginationHtmlAutomaticEnergyData($page_val, $pagesCount, $dataMesaurement, $data_type = false, $mst_id = false)
     {
         try {
             //Pagination Code HTML
-            // echo $pagesCount; die;
             if ($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $style_background = '';
                 $class_page_count_val = 'page_count_val_energy';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val_energy';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -4804,16 +4435,16 @@ class dashboardController
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-
-    // <----25-1-2022---
+    /**
+     * Retrieves all energy measurement data
+     * Fetches and returns all available energy measurement records
+     * @return array  Returns energy measurement data
+     */
     public function getAllMeasurementEnergy()
     {
         try {
@@ -4833,7 +4464,6 @@ class dashboardController
                 $str_mst_id = implode(',', $ar_mst_id);
                 $nameQuery = "Select mst_id,nameMSt from messstellen where  mst_id in ($str_mst_id) ";
                 $nameQueryResult = queryDB($conn, $nameQuery, "read");
-                // echo json_encode($ar_mst_id); die;
                 $select = "<option value=''>Please Select Measurement</option>";
                 foreach ($nameQueryResult as $key => $val) {
                     $select .= "<option value=" . $val["mst_id"] . ">" . $val['nameMSt'] . "</option>";
@@ -4850,11 +4480,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // --end---->
-
-
-    // <----03-02-2022---
+    /**
+     * Retrieves all automatic energy measurement data
+     * Fetches and returns all available automatic energy measurement records
+     * @return array  Returns automatic energy measurement data
+     */
     public function getAllMeasurementEnergyAutomatic()
     {
         try {
@@ -4887,10 +4517,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-
-    // <---18-02-2022---
+    /**
+     * Retrieves energy measurement chart data
+     * Fetches and prepares energy measurement data for chart visualization
+     * @return array  Returns energy measurement chart data
+     */
     public function getEnergyMeasurementChart()
     {
         try {
@@ -4910,7 +4541,6 @@ class dashboardController
                 $str_mst_id = implode(',', $ar_mst_id);
                 $nameQuery = "Select mst_id,nameMSt from messstellen where  mst_id in ($str_mst_id) ";
                 $nameQueryResult = queryDB($conn, $nameQuery, "read");
-                // echo json_encode($ar_mst_id); die;
                 $select = "<option value=''>Please Select Measurement</option>";
                 foreach ($nameQueryResult as $key => $val) {
                     $select .= "<option value=" . $val["mst_id"] . ">" . $val['nameMSt'] . "</option>";
@@ -4927,10 +4557,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-
-    // <-----07-3-2022---
+    /**
+     * Retrieves automatic energy measurement chart data
+     * Fetches and prepares automatic energy measurement data for chart visualization
+     * @return array  Returns automatic energy measurement chart data
+     */
     public function getEnergyMeasurementChartAutomatic()
     {
         try {
@@ -4964,22 +4595,21 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    //<---16-12-2021---
+    /**
+     * Retrieves energy layer table data
+     * Fetches and returns energy data structured for layer-based table display
+     * @return array  Returns energy layer table data
+     */
     public function getLayerTableEnergyData()
     {
         try {
             global $conn;
-            // <----27-1-2021---e
             $table_type = $_POST['table_type'];
             $mst_id = $_POST['mst_id'];
             $select_day_week = $_POST['select_day_week'];
             $input_val_week_day = $_POST['input_val_week_day'];
-            // $date = '2022-02-01';
             if ($select_day_week == 'day') {
                 $thead = '<tr>';
-                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Schichtname</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig ab</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig bis</th>';
@@ -4987,7 +4617,6 @@ class dashboardController
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit von</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit zum</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energieverbrauch</th>';
-                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                 $thead .= '</tr>';
                 $tbody = '';
                 $checkQuery = '';
@@ -5003,7 +4632,6 @@ class dashboardController
                 }
 
                 if ($table_found == 'true') {
-                    // <---07-02-2022---
                     //*** Check No Shift Name Found Database */
                     $checkQuery .= "Select * from SchichtModelleAll ";
                     for ($c = 0; $c < $input_val_week_day; $c++) {
@@ -5015,38 +4643,29 @@ class dashboardController
                         }
                     }
                     $resultShiftName = queryDB($conn, $checkQuery, "read");
-                    // echo $checkQuery; die;
-                    // echo json_encode($resultShiftName);
 
-                    // <----09-02-2022----
                     if ($resultShiftName != '' && count($resultShiftName) > 0  && !$resultShiftName['error']) {
                         $ind = $input_val_week_day - 1;
                         $dateValCheck = date('Y-m-d', strtotime("-$ind days"));
                         $fromDateCheck = '';
                         foreach ($resultShiftName as $key => $val) {
                             $fromDate = $val['gueltigVon']->format('Y-m-d');
-                            // <----21-2-2022---
                             if ($dateValCheck <= $val['gueltigVon']->format('Y-m-d')) {
                                 $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
                             } else {
                                 $fromDateCheck = $dateValCheck;
                             }
 
-                            // --end-->
                             $toDate = $val['gueltigBis']->format('Y-m-d');
                             $fromTime = $val['uhrzeitVon']->format('H:i:s');
                             $toTime = $val['uhrzeitBis']->format('H:i:s');
                             $to = $toDate . 'T' . $toTime;
                             $from = $fromDate . 'T' . $fromTime;
-                            //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                             $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
-                            //echo $query1; die;
                             $resultEnergy = queryDB($conn, $query1, "read");
-                            // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                             $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
-                            // $tbody .= '<td>'.$dayVal.'</td>';
                             $tbody .= "<td>" . $val['modellBez'] . "</td>";
                             $tbody .= "<td>" . $val['gueltigVon']->format('Y-m-d') . "</td>";
                             $tbody .= "<td>" . $val['gueltigBis']->format('Y-m-d') . "</td>";
@@ -5054,7 +4673,6 @@ class dashboardController
                             $tbody .= "<td>" . $val['uhrzeitVon']->format('H:i:s') . "</td>";
                             $tbody .= "<td>" . $val['uhrzeitBis']->format('H:i:s') . "</td>";
                             $tbody .= "<td>" . $totalEnergy . "</td>";
-                            // $tbody .= '<td>'.$dateVal.'</td>';
                             $tbody .= '</tr>';
                         }
                         $paginationHTMl = "<div id='save_table_format' class='text-center'>
@@ -5062,70 +4680,13 @@ class dashboardController
                         </div>";
                         $records['pagination_html_energy'] =  $paginationHTMl;
                     }
-                    // ---end--->
-
-                    // if($resultShiftName != '' && count($resultShiftName) > 0){
-                    //     for($i = 0; $i < $input_val_week_day; $i++)
-                    //     {
-                    //         $dateVal = date('Y-m-d', strtotime("-$i days"));
-                    //         $dayVal = date('l', strtotime("-$i days"));
-
-                    //         // <---07-02-2022--
-                    //         //Shift Name Get if result found then do energy calulcation
-                    //         $shiftNameQueryDay = "Select * from SchichtModelleAll Where '$dateVal' between gueltigVon AND gueltigBis ";
-                    //         $shfitNameResultDay = queryDB($conn, $shiftNameQueryDay, "read");
-
-                    //         if($shfitNameResultDay != '' && count($shfitNameResultDay) > 0){
-                    //             //Energy Consumed Check
-                    //             $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
-                    //             // echo $query1; die;
-                    //             $resultQuery = queryDB($conn, $query1, "read");
-                    //             // echo json_encode($resultQuery); die;
-                    //             if($resultQuery != '' && count($resultQuery) > 0)
-                    //             {
-                    //                 $energyConsumedValue = $this->calculateLayerEnergyConsumed($resultQuery,$dayVal,$dateVal);
-                    //                 // $energyConsumedValue['tbody'] = str_replace($energyConsumedValue['inArrayTotalValue'],$energyConsumedValue['total_energy'],$energyConsumedValue['tbody']); 
-                    //                 $tbody .= $energyConsumedValue['tbody'];
-                    //                 $records['total_energy'] = $energyConsumedValue['total_energy'];
-                    //                 $records['ar_value'] =  $energyConsumedValue['ar_value'];
-                    //                 // $tbody .= $energyConsumedValue;
-                    //                 //Save Button
-                    //                 $paginationHTMl="<div id='save_table_format' class='text-center'>
-                    //                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
-                    //                 </div>";
-                    //                 $records['pagination_html_energy'] =  $paginationHTMl;
-
-                    //             }
-
-                    //             // else{
-                    //             //     $tbody .= '<tr>';
-                    //             //     $tbody .= '<td>'.$dayVal.'</td>';
-                    //             //     $tbody .= '<td></td>';     //Model Name
-                    //             //     $tbody .= '<td></td>';     //Vaild From
-                    //             //     $tbody .= '<td></td>';     //Valid To
-                    //             //     $tbody .= '<td></td>';    //Designation
-                    //             //     $tbody .= '<td></td>';    //Time From 
-                    //             //     $tbody .= '<td></td>';    //Time To
-                    //             //     $tbody .= '<td></td>';    //Energy Consumed
-                    //             //     $tbody .= '<td>'.$dateVal.'</td>';
-                    //             //     $tbody .= '</tr>';
-                    //             // }
-                    //         }
-                    //         // --end-->
-
-                    //     }
-                    // }
                 }
 
-
-                // <---07-2-2022--
                 if ($tbody == '') {
                     $tbody .= '<tr>';
                     $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
                     $tbody .= '</tr>';
-                    //$records['pagination_html_energy'] =  $paginationHTMl;
                 }
-                // --end-->
 
                 $records['energy_header'] = $thead;
                 $records['energy_html'] = $tbody;
@@ -5139,7 +4700,6 @@ class dashboardController
             } else if ($select_day_week == 'week') {
 
                 $thead = '<tr>';
-                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid From</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Valid To</th>';
@@ -5147,7 +4707,6 @@ class dashboardController
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
                 $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
-                // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                 $thead .= '</tr>';
                 $tbody = '';
                 $checkShiftNameQuery = '';
@@ -5166,7 +4725,6 @@ class dashboardController
                     $todayDate = date('Y-m-d');
                     $dateVal =  date('Y-m-d', strtotime("-$input_val_week_day week"));
 
-                    // <----07-02-2022--
                     // ****Check Shift Name Exist 
                     $intervalDays = $input_val_week_day * 7; //Week;
                     $checkShiftNameQuery .= "Select * from SchichtModelleAll ";
@@ -5179,12 +4737,9 @@ class dashboardController
                         }
                     }
                     $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
-                    // echo json_encode($resultShiftName); die;
-                    // --end--->
                     if ($resultShiftName != '' && count($resultShiftName) > 0 && !$resultShiftName['error']) {
                         $weekInd = $input_val_week_day * 7; //Week;
                         $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
-                        // echo $fromDateCheck; die;
                         $fromDateCheck = '';
                         foreach ($resultShiftName as $key => $val) {
 
@@ -5200,11 +4755,9 @@ class dashboardController
                             $toTime = $val['uhrzeitBis']->format('H:i:s');
                             $to = $toDate . 'T' . $toTime;
                             $from = $fromDate . 'T' . $fromTime;
-                            // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                             $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
 
                             $resultEnergy = queryDB($conn, $query1, "read");
-                            // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                             $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
                             $tbody .= '<tr class="row_click_energy" data-table-other="SchichtModelleAll">';
@@ -5216,7 +4769,6 @@ class dashboardController
                             $tbody .= "<td>" . $val['uhrzeitBis']->format('H:i:s') . "</td>";
                             $tbody .= "<td>" . $totalEnergy . "</td>";
                             $tbody .= '</tr>';
-                            // array_push($arr,($resultEnergy[0]['sum'])/4);
                         }
                         $paginationHTMl = "<div id='save_table_format' class='text-center'>
                         <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
@@ -5238,46 +4790,18 @@ class dashboardController
 
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                     die;
-
-                    // <---Code Commet 8-2-2022---
-                    // if($resultShiftName != '' && count($resultShiftName) > 0)
-                    // {
-                    //     //All Energy Consumed Acc. Week
-                    //     $query1 = "Select * from MessstellenEnergiedaten where convert(date,time) >= '$dateVal' AND mst_ID = '$mst_id' Order by time desc ";
-                    //     $resultEnergy = queryDB($conn, $query1, "read");
-                    //     echo json_encode($resultEnergy); die;
-
-                    //     $shiftNameQuery = "Select * from SchichtModelleAll ";
-                    //     $resultShiftName = queryDB($conn, $shiftNameQuery, "read");
-                    //     // echo json_encode($resultShiftName); die;
-                    //     //Get Week Data
-                    //     $testTotalenergy = 0;
-                    //     for($i = 1; $i <= $input_val_week_day; $i++)
-                    //     {
-                    //         if($resultEnergy != '' && count($resultEnergy) > 0){
-                    //             //getEvery Week Day
-                    //             $startWeekDate = date('Y-m-d', strtotime("-$i week"));
-                    //             $endVal = $i - 1;
-                    //             $endWeekDate = date('Y-m-d', strtotime("-$endVal week")); 
-                    //             $testResult = $this->calculateLayerEnergyConsumedWeek($startWeekDate,$endWeekDate,$i,$resultEnergy,$resultShiftName);
-                    //             $testTotalenergy += $testResult;
-                    //         }
-                    //     }
-                    //     echo json_encode($testTotalenergy); 
-                    // }
-                    // die;
-                    // ---end-->
                 }
             }
-
-            // ---end--->
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---04-03-2022---
+    /**
+     * Handles row click action for automatic energy data
+     * Fetches and processes detailed automatic energy data based on the selected row
+     * @return array  Returns automatic energy data for the selected row
+     */
     public function rowClickEnergyAutomatic()
     {
         try {
@@ -5294,11 +4818,8 @@ class dashboardController
 
 
             $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where convert(date,time) = '$dateValue' AND mst_id = '$mst_id' ";
-            // $resultQuery = queryDB($conn, $queryMaxValue, "read");
             $query1 =  "Select * from MessstellenEnergiedaten where convert(date,time) = '$dateValue' AND mst_ID = '$mst_id'  order by Time desc ";
             $resultQuery = queryDB($conn, $query1, "read");
-            // echo $query1; die;
-            // echo json_encode($resultQuery); die;
             $tbody = '';
             if ($resultQuery != '' && count($resultQuery) > 0) {
                 $sum = 0;
@@ -5315,11 +4836,6 @@ class dashboardController
                 }
                 $sum = $this->convertValueCommaSeperated($sum);
                 $tbody .= "<tr class='font-weight-bold'><td colspan='2'>Grand Total: </td><td>$sum</td></tr>";
-                // print_r($sum);die;
-                // $paginationHTMl="<div id='save_table_format' class='text-center'>
-                // <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
-                // </div>";
-                // $records['pagination_html_energy'] =  $paginationHTMl;
             } else {
                 $tbody .= '<tr>';
                 $tbody .= '<td colspan="50" class="text-center">No Data Found</td>';
@@ -5337,9 +4853,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <---15-2-2022--
+    /**
+     * Handles row click action for energy layer data
+     * Fetches and processes detailed energy layer data based on the selected row
+     * @return array  Returns energy layer data for the selected row
+     */
     public function rowClickEnergyLayer()
     {
         try {
@@ -5377,16 +4895,13 @@ class dashboardController
 
 
             $queryMaxValue = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where convert(date,time) between '$fromDateCheck' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id' ";
-            // $resultQuery = queryDB($conn, $queryMaxValue, "read");
             $query1 =  "Select * from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$valid_to' AND convert(time,time) between '$time_from' AND '$time_to' AND mst_ID = '$mst_id'  order by Time desc ";
             $resultQuery = queryDB($conn, $query1, "read");
-            // echo json_encode($resultQuery); die;
             $tbody = '';
             if ($resultQuery != '' && count($resultQuery) > 0) {
                 $sum = 0;
                 $resultQuery = $this->getDateWiseScore($resultQuery);
                 $currentDate = date('Y-m-d');
-                // <---3-3-2021-- Check Shift Expire 
                 if ($valid_to < $currentDate) {
                     for ($i = 0; $i < $input_val_week_day; $i++) {
                         $dateShiftEnd = date('Y-m-d', strtotime("-$i days"));
@@ -5401,7 +4916,6 @@ class dashboardController
                         }
                     }
                 }
-                // --end-->
                 else if (!array_key_exists($currentDate, $resultQuery)) {
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';
                     $tbody .= "<td>" . $name_val . "</td>";
@@ -5411,7 +4925,6 @@ class dashboardController
                     $tbody .= "<td>In Progress</td>";
                     $tbody .= '</tr>';
                 }
-                // echo json_encode ($resultQuery); die;
                 foreach ($resultQuery as $key => $val) {
                     $tbody .= '<tr data-table-other="SchichtModelleAll">';
                     $tbody .= "<td>" . $name_val . "</td>";
@@ -5425,7 +4938,6 @@ class dashboardController
                 }
                 $sum = $this->convertValueCommaSeperated($sum);
                 $tbody .= "<tr class='font-weight-bold'><td colspan='4'>Grand Total: </td><td>$sum</td></tr>";
-                // print_r($sum);die;
                 $paginationHTMl = "<div id='save_table_format' class='text-center'>
                 <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                 </div>";
@@ -5447,6 +4959,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+    /**
+     * Retrieves date-wise score data
+     * Fetches and returns score values grouped or filtered by date
+     * @return array  Returns date-wise score data
+     */
     public function getDateWiseScore($data)
     {
         $groups = array();
@@ -5463,13 +4980,14 @@ class dashboardController
         }
         return $groups;
     }
-    // --end--->
-
-    // <-----01-2-2022---
+    /**
+     * Calculates energy consumed for a specific layer
+     * Processes and computes the total energy consumption based on layer data
+     * @return float|int  Returns calculated energy consumption value
+     */
     public function calculateLayerEnergyConsumed($resultQuery, $dayVal, $dateVal)
     {
         try {
-            // echo json_encode($resultQuery); die;
             global $conn;
             $energyConsumed = '';
             if ($resultQuery != '' && count($resultQuery) > 0) {
@@ -5484,11 +5002,7 @@ class dashboardController
                     $timeEnergy = $resultQuery[$i]['Time']->format('H:i:s');
                     $dateEnergy = $resultQuery[$i]['Time']->format('Y-m-d');
                     $modelNameQuery = "Select * from SchichtModelleAll where '$dateEnergy' between gueltigVon AND gueltigBis  AND '$timeEnergy' between uhrzeitVon AND uhrzeitBis ";
-                    // $modelNameQuery = "Select * from SchichtModelleAll where  '2021-06-01' between gueltigVon AND gueltigBis AND '10:54:00' between uhrzeitVon ANd uhrzeitBis ";
-                    // echo $modelNameQuery;
                     $modelNameResult = queryDB($conn, $modelNameQuery, "read");
-                    // echo json_encode($modelNameResult[0]['uhrzeitVon']->format('h:i:s')); die;
-
                     $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;
                     $totalEnergy += $energyConsumed;
 
@@ -5501,7 +5015,6 @@ class dashboardController
 
                                 array_push($arValue, $modelNameResult[$j]);
                                 $indArValue = count($arValue) - 1;
-                                // array_push($arValue[$indArValue]['value'], $energyConsumed);
                                 $arValue[$indArValue]['value'] = $energyConsumed;
                             } else {
                                 if ($arValue != '' && count($arValue) > 0) {
@@ -5509,7 +5022,6 @@ class dashboardController
                                         if ($arValue[$k]['modellBez'] == $modelNameResult[$j]['modellBez'] && $arValue[$k]['bezeichnung'] == $modelNameResult[$j]['bezeichnung']) {
                                             $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4;
                                             $particularEnergyConsumed = $energyConsumed + $arValue[$k]['value'];
-                                            // $tbody = str_replace($arValue[$k]['value'],$particularEnergyConsumed,$tbody);
                                             $arValue[$k]['value'] = $particularEnergyConsumed;
                                         }
                                     }
@@ -5517,26 +5029,7 @@ class dashboardController
                             }
                         }
                     }
-                    // else{
-                    //     $tbody .= '<tr>';
-                    //     $tbody .= '<td>'.$dayVal.'</td>';
-                    //     $tbody .= '<td></td>';     //Model Name
-                    //     $tbody .= '<td></td>';     //Vaild From
-                    //     $tbody .= '<td></td>';     //Valid To
-                    //     $tbody .= '<td></td>';    //Designation
-                    //     $tbody .= '<td></td>';    //Time From 
-                    //     $tbody .= '<td></td>';    //Time To 
-
-                    //     $energyConsumed = ($resultQuery[$i]['Value'] * $resultQuery[$i]['ConvFactor']) / 4; 
-                    //     // $totalEnergy += $energyConsumed;
-                    //     $tbody.= "<td>".$energyConsumed."</td>";
-
-                    //     $tbody .= '<td>'.$dateVal.'</td>';
-                    //     $tbody .= '</tr>';
-                    // }
-
                 }
-                // echo json_encode($arValue); die;
                 if ($i == count($resultQuery)) {
                     if ($arValue != '' && count($arValue) > 0) {
                         for ($j = 0; $j < count($arValue); $j++) {
@@ -5555,19 +5048,19 @@ class dashboardController
                     }
                 }
                 return array('tbody' => $tbody, 'total_energy' => $totalEnergy, 'inArrayTotalValue' => $inArrayTotalValue, 'ar_value' => $arValue);
-                // return $arCheckExistName;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <-----31-01-2022---
+    /**
+     * Calculates weekly energy consumption for a specific layer
+     * Processes and computes total energy consumed over a week based on layer data
+     * @return float|int  Returns calculated weekly energy consumption value
+     */
     public function calculateLayerEnergyConsumedWeek($startWeekDate, $endWeekDate, $indMainLoop, $resultEnergy, $resultShiftName)
     {
         try {
-            // echo json_encode($resultShiftName); die;
             if ($resultEnergy != '' && count($resultEnergy) > 0) {
                 $totalEnergy = 0;
                 for ($i = 0; $i < count($resultEnergy); $i++) {
@@ -5585,28 +5078,19 @@ class dashboardController
                             $energyConsumed = ($resultEnergy[$i]['Value'] * $resultEnergy[$i]['ConvFactor']) / 4;
                             $totalEnergy += $energyConsumed;
                         }
-                    }
-
-
-
-                    //Get Shift Name
-                    // for($j = 0; $j < count($resultShiftName); $j++)
-                    // {
-                    //     if()
-                    // }                       
-                    //$energyConsumed = ($resultEnergy[$i]['Value'] * $resultEnergy[$i]['ConvFactor']) / 4; 
-                    //$totalEnergy += $energyConsumed; 
+                    } 
                 }
-                // echo $totalEnergy; die;
                 return $totalEnergy;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <---13-1-2022--
+    /**
+     * Generates HTML for energy layer table header
+     * Builds and returns HTML content for displaying the header of the energy layer table
+     * @return string  Returns generated HTML for energy layer table header
+     */    
     public function generateHtmlLayerTableEnergyDataHeader($rowclickTable = false)
     {
         try {
@@ -5628,8 +5112,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end->
-
+    /**
+     * Generates HTML for energy layer table data
+     * Builds and returns HTML content for displaying energy layer data in table format
+     * @return string  Returns generated HTML for energy layer table data
+     */
     public function generateHtmlLayerTableEnergyData($dataMesaurement, $rowclickTable = false)
     {
         global $conn;
@@ -5645,10 +5132,6 @@ class dashboardController
                 if ($rowclickTable == "") {
                     $class_val = 'class="row_click_energy"';
                 }
-                // else if($queryMaxVal != '' && $queryMaxVal == $value['Value']){
-                //     $style="style='background-color: #f77171'";
-                // }
-                // echo $value['uhrzeitBis']->format('H:i'); die;
                 $valid_to = '';
                 if ($value['gueltigBis'] != null) {
                     $valid_to = $value['gueltigBis']->format('Y-m-d');
@@ -5668,22 +5151,21 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-
+    /**
+     * Generates pagination HTML for energy layer data
+     * Builds and returns pagination controls for navigating through energy layer records
+     * @return string  Returns generated pagination HTML
+     */
     public function generatePaginationHtmlLayerEnergyData($dataMesaurement, $page_val, $pagesCount)
     {
         try {
             //Pagination Code HTML
-            // echo $page_val; die;
-            // <---17-01-2022--
             if ($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $style_background = '';
                 $class_page_count_val = 'page_count_val_energy_layer';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val_energy_layer';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -5749,59 +5231,32 @@ class dashboardController
                                     <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
-            // ----end--->
-
-
-            // $paginationHTMl = '';
-            // if($dataMesaurement != '' && count($dataMesaurement) > 0){
-            //     $paginationHTMl="<div id='save_table_format' class='text-center'>
-            //                         <input type='button' id='energy_modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
-            //                     </div>";            
-
-            //     // $records['pagination_html'] = $paginationHTMl;
-            // }
-            // return $paginationHTMl;
-
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    //Get Records Product
+    /**
+     * Retrieves the total number of product records
+     * Fetches and returns the count of product records based on current filters or conditions
+     * @return int  Returns the total number of product records
+     */
     public function getNumberRecordsProduct()
     {
         try {
             global $conn;
-            // $number_records = $_POST['number_records'];
-            // <--26-11-2021--
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
-            // $product_type = $_POST['product_type'];
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
-            // if($product_type == 'automatic')
-            // {
-            //     $this->getNumberRecordsProductAutomatic();
-            // }
-
-
-            // <----29-11-2021--
             $queryTotalRecord  = "SELECT t1.prd_id from produktionsAnlagenConfig as t1 ";
             $queryTotalRecord .= "where t1.iBdeType = 1 AND t1.prd_id != '0' ";
             $queryTotalRecord .= "GROUP BY t1.prd_id ";
-            // --end-->
             $resultQuery = queryDB($conn, $queryTotalRecord, "read");
             $totalRecordsValue = [];
             if ($resultQuery != false) {
                 $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
             }
-            // $records['table_found'] = $tableFound;
-
-            // $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
-
             $total_number_records = count($totalRecordsValue);
 
             if (count($totalRecordsValue) > 0) {
@@ -5820,16 +5275,6 @@ class dashboardController
                     }
                 }
             }
-            // --end-->
-
-            // <---old code
-            // $query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig as t1
-            // left join produkte as t2 on t1.prd_ID = t2.prd_ID
-            // left join anlagen as t3 on t1.anl_id = t3.anl_ID
-            // where t1.iBdeType='1' order by t1.iBdePrdktConf_ID desc";
-            //--end-->
-
-            // <---29-11-2021---
             $query1 = "SELECT * from produktionsAnlagenConfig as Mt ";
             $query1 .= "LEFT JOIN produkte as t2 ";
             $query1 .= "ON Mt.prd_iD = t2.prd_ID ";
@@ -5841,7 +5286,6 @@ class dashboardController
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $query1 .= ") ";
             $query1 .= "order by Mt.iBdePrdktConf_ID desc ";
-            // --end--
             $resultQuery = queryDB($conn, $query1, "read");
             $tableFound = 'false';
             $dataProduct = [];
@@ -5850,10 +5294,6 @@ class dashboardController
                 $tableFound = 'true';
             }
             $records['table_found'] = $tableFound;
-
-            // $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
-            // $dataProduct = '';
             $tr = $this->generateAllProductTableHTML($dataProduct);
             $pagination_html = $this->generateAllProductPaginationHTML($page_val, $pagesCount, $dataProduct);
             $records['product_html'] = $tr;
@@ -5866,34 +5306,16 @@ class dashboardController
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
-            // <--OLd Code---
-            // $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
-            // $query1 .="LEFT join "; 
-            // $query1.="( ";
-            // $query1 .="select t2.id as table_2_id , t2.prd_id as table_2_prd_id  , t2.anl_id as table_2_anl_id , t2.anl_col as table_2_anl_col ";
-            // $query1 .="from produktionsAnlagenMoreOpt as t2 ";
-            // $query1.=") ";
-            // $query1 .="t2 ";
-            // $query1 .="on t1.prd_id = t2.table_2_prd_id AND t1.anl_id = t2.table_2_anl_id AND t1.anl_col = t2.table_2_anl_col ";
-            // $query1 .= "left join ";
-            // $query1 .= "( ";
-            // $query1 .= "select t3.prd_anl_ID as table_3_prd_anl_Id , max(cast(t3.val as int)) as val ";
-            // $query1 .= "from masseneingabeSuchePrdIMw  as t3 group by t3.prd_anl_ID ";
-            // $query1 .= ") ";
-            // $query1 .= "t3 ";
-            // $query1 .= "on t2.table_2_id = t3.table_3_prd_anl_Id ";
-            // $query1 .= "left join produkte as t4 on t1.prd_iD = t4.prd_ID ";
-            // $query1 .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
-            // $query1 .= "where t1.iBdeType='1' ";
-            // $query1 .= "order by t1.iBdePrdktConf_ID desc ";
-            // $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // -----end--->
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <----13-12-201---
+    /**
+     * Retrieves the total number of automatic product records
+     * Fetches and returns the count of product records for automatic data
+     * based on current filters or conditions
+     * @return int  Returns the total number of automatic product records
+     */
     public function getNumberRecordsProductAutomatic()
     {
         try {
@@ -5905,8 +5327,6 @@ class dashboardController
             $number_records = 5;
             $pagesCount = '';
             $offSetVal = 0;
-
-            // <----22-12-2021---
             $tableProduct = $_POST['all_tables_product'];
             $columnsValue = $_POST['all_columns_product'];
             $columnsValue = str_replace('[', '', $columnsValue);
@@ -5914,8 +5334,6 @@ class dashboardController
             $columnsValue = str_replace('"', '', $columnsValue);
             $queryTotalRecord  = "SELECT TOP($total_number_records) $columnsValue from $tableProduct as t1 ";
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
-            // echo json_encode($queryTotalRecord); die;
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -5937,11 +5355,9 @@ class dashboardController
 
             $allColumns = json_decode($_POST['all_columns_product']);
             $allColumnDataType = json_decode($_POST['columnDataType']);
-            // echo $allColumnDataType[0]; die;
             $query1 = "SELECT $columnsValue from $tableProduct ";
             $query1 .= "Order by $allColumns[0] desc ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo $query1; die;
             $dataProduct = queryDB($conn, $query1, "read");
             $tr = $this->generateAllItemAutomaticTableHTML($dataProduct, $allColumns, $allColumnDataType);
             $th = $this->generateAllItemAutomaticTableHeaderHTML($dataProduct, $allColumns);
@@ -5955,16 +5371,16 @@ class dashboardController
             $records['query_data'] = $ar;
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-
-            // echo json_encode($columnsValue); die;
-            // ---end---->
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---21-12-2021--
+    /**
+     * Retrieves all product tables
+     * Fetches and returns a list of all available product tables
+     * @return array  Returns product tables data
+     */
     public function getAllProductTables()
     {
         try {
@@ -5979,40 +5395,33 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <----22-12-2021---
+    /**
+     * Retrieves all columns for product tables
+     * Fetches and returns column details for all product tables
+     * @return array  Returns product table column data
+     */
     public function getAllColumnProductTables()
     {
         try {
             global $conn;
-            // $i_val = $_POST['i_val'];
             $table_name = $_POST['table_name'];
             $queryColumnTables  = "Select column_name,data_type from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = '$table_name' ";
             $queryColumnTablesRecord = queryDB($conn, $queryColumnTables, "read");
             $records['all_columns'] = $queryColumnTablesRecord;
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
-
-            // $new_query = "select prd_all_columns_automatic from tableFormat where id = '$i_val'";
-            // echo $new_query;
-            // $query_result = queryDB($conn,  $new_query, "read");
-            // $result =  ($query_result) ? unserialize($query_result[0]['prd_all_columns_automatic']) :'';
-            // var_dump($result); die;
-            // $records['all_columns'] = $result;
-            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-
-    // <---14-12-2021---
+    /**
+     * Generates HTML for all items in the automatic table
+     * Builds and returns HTML content for displaying all items in the automatic table format
+     * @return string  Returns generated HTML for automatic table items
+     */
     public function generateAllItemAutomaticTableHTML($dataProduct, $allColumns, $allColumnDataType)
     {
         try {
-            // echo json_encode($dataProduct); die;
             global $conn;
             $tr = '';
             $col_span = 'colspan="50"';
@@ -6035,13 +5444,16 @@ class dashboardController
             }
 
             return $tr;
-            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for the header of all items in the automatic table
+     * Builds and returns HTML content for displaying column headers of the automatic table
+     * @return string  Returns generated HTML for automatic table header
+     */
     public function generateAllItemAutomaticTableHeaderHTML($dataProduct, $allColumns)
     {
         try {
@@ -6055,7 +5467,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates pagination HTML for all items in the automatic table
+     * Builds and returns pagination controls for navigating through all automatic table items
+     * @return string  Returns generated pagination HTML
+     */
     public function generateAllItemAutomaticPaginationHTML($page_val, $pagesCount, $dataProduct, $prd_id = false, $analgen_config_id = false)
     {
         try {
@@ -6064,7 +5480,6 @@ class dashboardController
                 $class_page_count_val = 'page_count_product_automatic';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_product_automatic';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -6092,20 +5507,11 @@ class dashboardController
 
                 for ($i = 1; $i <= $pagesCount; $i++) {
                     $active = $i == $page_val ? 'active' : '';
-
-                    // if($i == $page_val){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
-                    // }
-
                     if ($i == $page_val || $i == $pagesCount) {
                         $paginationHTMl .= "<li class='page-item  $active '><input type='button' class='pagination_input_val_product_automatic page-link' prd_id='$prd_id' value='$i'></li>";
                     } else {
                         $paginationHTMl .= "<li class='page-item'><input type='button' class='pagination_input_val_product_automatic page-link' prd_id='$prd_id' value='$i'></li>";
                     }
-                    // if($i == $pagesCount){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
-                    // }
                 }
                 $paginationHTMl .= "<li class='page-item $class_page_count_val_end' prd_id='$prd_id' id='next_pagination_product_automatic'>
                                         <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
@@ -6123,20 +5529,19 @@ class dashboardController
                                 </div>";
 
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // --end--->
-
-    // <-----26-11-2021---
+    /**
+     * Generates HTML for all product table data
+     * Builds and returns HTML content for displaying all product records in table format
+     * @return string  Returns generated HTML for product table data
+     */
     public function generateAllProductTableHTML($dataProduct)
     {
         try {
-            // echo json_encode($dataProduct); die;
             $tr = '';
             if ($dataProduct != '' && count($dataProduct) > 0 && !isset($dataProduct['error'])) {
                 foreach ($dataProduct as $key => $value) {
@@ -6145,35 +5550,11 @@ class dashboardController
 
                     $tr .= '<tr class="all_product_table_row_click" prd_id="' . $val_prd_ID . '" prd_name="' . $prd_name . '">';
                     $tr .= "<td>" . $value['namePrd'] . "</td>";
-                    // $tr.= "<td>".$value['bezeichnungAnl']."</td>";
-                    // if($value['intTp_ID'] == "1"){
-                    //     $tr.= "<td>Days</td>";
-                    // }
-                    // else if($value['intTp_ID'] == "2"){
-                    //     $tr.= "<td>Weeks</td>";
-                    // }
-                    // else if($value['intTp_ID'] == "3"){
-                    //     $tr.= "<td>Months</td>";
-                    // }
-                    // else if($value['intTp_ID'] == "4"){
-                    //     $tr.= "<td>Years</td>";
-                    // }
-                    // else{
-                    //     $tr.= "<td></td>";
-                    // }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
                         $tr .= "<td>" . $value['startDate'] . "</td>";
                     }
-                    // if($value['val'] == null){
-                    //     $tr.= "<td><label class='badge badge-danger'>Pending </label></td>";
-                    // }
-                    // else{
-                    //     $tr.= "<td><label class='badge badge-success'>Active </label></td>";
-                    // }
-
                     $tr .= "</tr>";
                 }
             } else {
@@ -6181,13 +5562,16 @@ class dashboardController
             }
 
             return $tr;
-            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates pagination HTML for all product data
+     * Builds and returns pagination controls for navigating through all product records
+     * @return string  Returns generated pagination HTML
+     */
     public function generateAllProductPaginationHTML($page_val, $pagesCount, $dataProduct, $data_type = false, $mst_id = false)
     {
         try {
@@ -6196,7 +5580,6 @@ class dashboardController
                 $class_page_count_val = 'page_count_val_all_product';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val_all_product';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -6223,20 +5606,11 @@ class dashboardController
 
                 for ($i = 1; $i <= $pagesCount; $i++) {
                     $active = $i == $page_val ? 'active' : '';
-
-                    // if($i == $page_val){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
-                    // }
-
                     if ($i == $page_val || $i == $pagesCount) {
                         $paginationHTMl .= "<li class='page-item  $active '><input type='button' class='pagination_input_val_all_product page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
                     } else {
                         $paginationHTMl .= "<li class='page-item'><input type='button' class='pagination_input_val_all_product page-link' data_type='$data_type' data_mst='$mst_id' value='$i'></li>";
                     }
-                    // if($i == $pagesCount){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
-                    // }
                 }
                 $paginationHTMl .= "<li class='page-item $class_page_count_val_end' data_type='$data_type' data_mst='$mst_id' id='next_pagination_val_all_product'>
                                         <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
@@ -6249,21 +5623,21 @@ class dashboardController
                         </nav>";
 
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end--->
-
-    // <---30-11-2021---
+    /**
+     * Retrieves product table data on click
+     * Fetches and returns product data based on table click interaction
+     * @return array  Returns product table data for the selected action
+     */
     public function getAllProductClickTable()
     {
         try {
             global $conn;
             $input_text_field = $_POST['input_text_field'];
-            // echo $input_text_field ; die;
             $prd_id = $_POST['prd_id'];
             $table_type = $_POST['table_type'];
             $page_val = isset($_POST['page_val']) ?  $_POST['page_val'] : 1;
@@ -6271,7 +5645,6 @@ class dashboardController
             $pagesCount = '';
             $offSetVal = 0;
             $order_condition = $_POST['order_by'];
-            // echo  $order_condition ;die ;
             $queryTotalRecord = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
             $queryTotalRecord .= "LEFT join ";
             $queryTotalRecord .= "( ";
@@ -6295,8 +5668,6 @@ class dashboardController
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
 
             $total_number_records = count($totalRecordsValue);
-            // print_r($total_number_records); die;
-
             if (count($totalRecordsValue) > 0) {
                 if ($total_number_records <= $number_records) {
                     $offSetVal = 0;
@@ -6313,8 +5684,6 @@ class dashboardController
                     }
                 }
             }
-            // --end-->
-
             $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
             $query1 .= "LEFT join ";
             $query1 .= "( ";
@@ -6335,9 +5704,7 @@ class dashboardController
             $query1 .= "where t1.iBdeType='1' AND t1.prd_ID = '$prd_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo $query1; die;
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
             $tr = $this->getAllProductClickTableHTML($dataProduct);
             $th = $this->getAllProductClickTableHeaderHTML();
             $pagination_html = $this->getAllProductClickTablePagination($page_val, $pagesCount, $dataProduct, $prd_id);
@@ -6345,18 +5712,19 @@ class dashboardController
             $records['product_table_header'] = $th;
             $records['pagination_html'] = $pagination_html;
             $table_filter = $_POST['prd_id'] . ',' . $_POST['order_by'];
-            // print_r($table_filter); die ;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $page_val, 'number_records' => $number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Product', 'table_type' => $table_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
-            // , 'table_type' => $table_type , 'table_filter', $table_filter
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---1-12-2021---
+    /**
+     * Retrieves data for a particular product entry on row click
+     * Fetches and processes detailed information for the selected product entry
+     * @return array  Returns data for the selected product entry
+     */
     public function rowClickParticularProductEntry()
     {
         try {
@@ -6388,7 +5756,6 @@ class dashboardController
             $queryTotalRecord .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $queryTotalRecord .= "order by t3.val $order_condition ";
             $totalRecordsValue = queryDB($conn, $queryTotalRecord, "read");
-            // echo json_encode($totalRecordsValue);die;
             $total_number_records = count($totalRecordsValue);
 
             if (count($totalRecordsValue) > 0) {
@@ -6407,7 +5774,6 @@ class dashboardController
                     }
                 }
             }
-            // --end-->
 
             $queryMaxValue = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
             $queryMaxValue .= "INNER join ";
@@ -6427,15 +5793,10 @@ class dashboardController
             $queryMaxValue .= "left join anlagen as t5 on t1.anl_id = t5.anl_ID ";
             $queryMaxValue .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $queryMaxValue .= "order by t3.val $order_condition ";
-            // $queryMaxValue .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
 
             $queryMaximum = $queryMaxValue;
-            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
-            // echo json_encode($queryMaxValue); die;
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-
-
 
             $query1 = "SELECT  * FROM produktionsAnlagenConfig as t1 ";
             $query1 .= "INNER join ";
@@ -6456,9 +5817,7 @@ class dashboardController
             $query1 .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $query1 .= "order by t3.val $order_condition ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo $query1; die;
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
             $tr = $this->getAllProductClickTableHTML($dataProduct, $queryMaxVal);
             $th = $this->rowClickParticularProductHeaderHtml();
             $pagination_html = $this->getAllProductClickTablePagination($page_val, $pagesCount, $dataProduct, '', $analgen_config_id);
@@ -6468,7 +5827,6 @@ class dashboardController
 
             $ar = array('pages_count' => $pagesCount, 'page_val' => $page_val, 'number_records' => $number_records, 'query1' => $query1, 'queryMaxValue' => $queryMaximum, 'row_click' => 'true', 'type' => 'Product');
             $records['query_data'] = $ar;
-
 
             $queryLastDate = "SELECT  TOP(1)* FROM produktionsAnlagenConfig as t1 ";
             $queryLastDate .= "INNER join ";
@@ -6488,18 +5846,19 @@ class dashboardController
             $queryLastDate .= "where t1.iBdeType='1' AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
             $queryLastDate .= "order by t3.id  desc ";
             $queryLastDateResult = queryDB($conn, $queryLastDate, "read");
-            // echo json_encode($queryLastDateResult); die;
             $records['queryLastDate'] = $queryLastDateResult;
-            // --end--->
-
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // -end--->
-
+    /**
+     * Generates HTML for product table header on click
+     * Builds and returns HTML content for displaying column headers
+     * when a product table is selected
+     * @return string  Returns generated HTML for product table header
+     */
     public function getAllProductClickTableHeaderHTML()
     {
         try {
@@ -6515,7 +5874,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for header of a particular product entry on row click
+     * Builds and returns HTML content for displaying column headers
+     * for the selected product entry
+     * @return string  Returns generated HTML for product entry header
+     */
     public function rowClickParticularProductHeaderHtml()
     {
         try {
@@ -6530,11 +5894,15 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates HTML for product table data on click
+     * Builds and returns HTML content for displaying product records
+     * when a product table is selected
+     * @return string  Returns generated HTML for product table data
+     */
     public function getAllProductClickTableHTML($dataProduct, $queryMaxVal = false)
     {
         try {
-            // echo json_encode($dataProduct); die;
             $tr = '';
             $col_span = '';
             if ($queryMaxVal == "") {
@@ -6564,7 +5932,6 @@ class dashboardController
                     }
 
                     $tr .= "<tr $style $class_val $attr prd_id='$val_prd_ID' analgen_config_id=" . $value['iBdePrdktConf_ID'] . " data-table-other='false' prd_name='$prd_name'>";
-                    // $tr.= "<td>".$value['namePrd']."</td>";
                     $tr .= "<td>" . $value['bezeichnungAnl'] . "</td>";
                     if ($value['intTp_ID'] == "1") {
                         $tr .= "<td>Days</td>";
@@ -6591,7 +5958,6 @@ class dashboardController
                     } else if ($value['unt_ID'] == "5") {
                         $unit = "kg";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         if ($queryMaxVal != '') {
                             $tr .= "<td>" . $value['on_week'] . '-' . $value['on_date'] . "</td>";
@@ -6621,13 +5987,17 @@ class dashboardController
             }
 
             return $tr;
-            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Generates pagination HTML for product table on click
+     * Builds and returns pagination controls for navigating through
+     * product records when a table is selected
+     * @return string  Returns generated pagination HTML
+     */
     public function getAllProductClickTablePagination($page_val, $pagesCount, $dataProduct, $prd_id = false, $analgen_config_id = false)
     {
         try {
@@ -6636,7 +6006,6 @@ class dashboardController
                 $class_page_count_val = 'page_count_val_particluar_product';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val_particluar_product';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -6665,19 +6034,11 @@ class dashboardController
                 for ($i = 1; $i <= $pagesCount; $i++) {
                     $active = $i == $page_val ? 'active' : '';
 
-                    // if($i == $page_val){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>Page</a></li>";
-                    // }
-
                     if ($i == $page_val || $i == $pagesCount) {
                         $paginationHTMl .= "<li class='page-item  $active '><input type='button' class='pagination_input_val_particular_product page-link' prd_id='$prd_id' value='$i'></li>";
                     } else {
                         $paginationHTMl .= "<li class='page-item'><input type='button' class='pagination_input_val_particular_product page-link' prd_id='$prd_id' value='$i'></li>";
                     }
-                    // if($i == $pagesCount){
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link' href='javascript:void(0);'>of</a></li>";
-                    //     $paginationHTMl.="<li class='page-item'><a class='page-link ' readonly id='last_input_val_all_product' href='javascript:void(0);'>$i</a></li>";
-                    // }
                 }
                 $paginationHTMl .= "<li class='page-item $class_page_count_val_end' prd_id='$prd_id' id='next_pagination_val_particular_product'>
                                         <a class='page-link' $style_background_end href='javascript:void(0);' aria-label='Next'>
@@ -6695,15 +6056,17 @@ class dashboardController
                                 </div>";
 
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-
+    /**
+     * Retrieves the total number of production data records
+     * Fetches and returns the count of production data records
+     * based on current filters or conditions
+     * @return int  Returns the total number of production data records
+     */
     public function getNumberRecordsProductionData()
     {
         try {
@@ -6715,7 +6078,6 @@ class dashboardController
             $query1 .= "left join anlagen as t3 on t1.anl_id = t3.anl_ID ";
             $query1 .= "where t1.iBdeType='1' order by t1.iBdePrdktConf_ID desc";
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
             $tr = '';
             if ($dataProduct != '' && count($dataProduct) > 0) {
                 foreach ($dataProduct as $key => $value) {
@@ -6733,7 +6095,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6752,12 +6113,13 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves alert data
+     */
     public function getAlerts()
     {
         try {
             global $conn;
-            //$query1 = "SELECT Top($number_records) * FROM produktionsAnlagenConfig where iBdeType='2'  order by iBdePrdktConf_ID desc";
             //Measurement Table Entries
             $query1 = "SELECT TOP(40) * ";
             $query1 .= "FROM produktionsAnlagenConfig as T1 ";
@@ -6765,9 +6127,7 @@ class dashboardController
             $query1  .= "AND (min_val IS NULL ";
             $query1  .= "OR  max_val IS NULL) ";
             $query1 .=  "order by T1.iBdePrdktConf_ID desc ";
-            // echo $query1; die;
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($dataMesaurement); die;
             $tr = '';
             if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
                 foreach ($dataMesaurement as $key => $value) {
@@ -6784,7 +6144,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6811,7 +6170,6 @@ class dashboardController
             $query1  .= "where T1.iBdeType='2' ";
             $query1  .= "AND (cast(t1.min_val as int) >= cast(t1.max_val as int)) ";
             $query1 .=  "order by T1.iBdePrdktConf_ID desc ";
-            // echo $query1; die;
             $dataMesaurement = queryDB($conn, $query1, "read");
 
             if ($dataMesaurement != '' && count($dataMesaurement) > 0) {
@@ -6829,7 +6187,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6845,8 +6202,6 @@ class dashboardController
             }
 
             $records['alerts_min_max_null_mesurement_tables'] = $tr;
-
-
             //Product Tale Entries
             $query1 = "SELECT TOP(40) * FROM produktionsAnlagenConfig as t1 ";
             $query1 .= "left join produkte as t2 on t1.prd_ID = t2.prd_ID ";
@@ -6855,7 +6210,6 @@ class dashboardController
             $query1 .= "AND (t1.min_val is null or t1.max_val is null) ";
             $query1  .= "order by t1.iBdePrdktConf_ID desc ";
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
             $tr = '';
             if ($dataProduct != '' && count($dataProduct) > 0) {
                 foreach ($dataProduct as $key => $value) {
@@ -6873,7 +6227,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6894,9 +6247,6 @@ class dashboardController
             } else {
                 $tr = "<tr><td colspan='5' class='text-center'>No Data</td></tr>";
             }
-
-
-
             //2nd Case Product Min Value Greater
             $query1 = "SELECT TOP(20) * FROM produktionsAnlagenConfig as t1 ";
             $query1 .= "left join produkte as t2 on t1.prd_ID = t2.prd_ID ";
@@ -6905,7 +6255,6 @@ class dashboardController
             $query1 .= "AND (cast(t1.min_val as int ) >= cast(t1.max_val as int)) ";
             $query1  .= "order by t1.iBdePrdktConf_ID desc ";
             $dataProduct = queryDB($conn, $query1, "read");
-            // echo json_encode($dataProduct); die;
             if ($dataProduct != '' && count($dataProduct) > 0) {
                 foreach ($dataProduct as $key => $value) {
                     $tr .= '<tr>';
@@ -6922,7 +6271,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['intTp_ID'] == "2" && $value['startWeek'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6939,9 +6287,6 @@ class dashboardController
             }
 
             $records['alerts_min_max_null_product_tables'] = $tr;
-
-
-
             //<--Energy Table
             $energyData = "SELECT TOP(40) * FROM interneBetriebsdatenHistorie As T1 ";
             $energyData .= "WHERE (t1.invest_min is null or t1.invest_max is null) ";
@@ -6949,7 +6294,6 @@ class dashboardController
             $energyData .= "AND T1.archiviert ='true' ";
             $energyData  .= "order by t1.histID desc ";
             $dataEnergy = queryDB($conn, $energyData, "read");
-            // echo json_encode($dataEnergy); die;
             $tr = '';
             if ($dataEnergy != '' && count($dataEnergy) > 0) {
                 foreach ($dataEnergy as $key => $value) {
@@ -6966,7 +6310,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['zeitintervallAnl'] == "2" && $value['zeitintervallAnl'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -6997,7 +6340,6 @@ class dashboardController
             $energyData .= "AND T1.archiviert ='true' ";
             $energyData  .= "order by t1.histID desc ";
             $dataEnergy = queryDB($conn, $energyData, "read");
-            // echo json_encode($dataEnergy); die;
             if ($dataEnergy != '' && count($dataEnergy) > 0) {
                 foreach ($dataEnergy as $key => $value) {
                     $tr .= '<tr>';
@@ -7013,7 +6355,6 @@ class dashboardController
                     } else {
                         $tr .= "<td></td>";
                     }
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($value['zeitintervallAnl'] == "2" && $value['zeitintervallAnl'] != '') {
                         $tr .= "<td>" . $value['startWeek'] . '-' . $value['startDate'] . "</td>";
                     } else {
@@ -7038,40 +6379,24 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves dashboard chart data
+     * Fetches and prepares data for rendering charts on the dashboard
+     * @return array  Returns dashboard chart data
+     */
     public function getDashBoardChart()
     {
         try {
             global $conn;
-            //<---Chart Data ---
-            // $currentDayVal = date('d');
-            // $previousDayVal = date('d-m-y',strtotime("+1 month"));
-
             $ar = [];
             $current_date = date('Y-m-d');
             for ($i = 1; $i <= 6; $i++) {
                 $days_val = 5 * $i;
                 $date_differnce = date('Y-m-d', strtotime("-$days_val days"));
-                //    <---old Code---
-                //    $energyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
-                //    $energyConsumed .= "LEFT JOIN masseneingabeSucheIMw as T2 ";
-                //    $energyConsumed .= "ON T1.mstID = T2.mst_ID ";
-                //    $energyConsumed .= "WHERE T2.on_date >= '$date_differnce' ";
-                //    $energyConsumed .= "AND T2.on_date <= '$current_date' ";
-                //    $energyConsumed .= "AND T2.type = '1' ";
-                //    $energyConsumed .= "AND T1.deleted <> 'true' ";
-                //    $energyConsumed.= "AND T1.archiviert ='true' ";
-
-                //    $dataEnergy = queryDB($conn, $energyConsumed, "read");
-                //    array_push($ar,$dataEnergy);
-                // ---end-->
-
-                // <---02-9-2021--
                 $queryTotalRecords = "SELECT SUM(cast(T2.val as int)) as val ";
                 $queryTotalRecords .= "FROM produktionsAnlagenConfig as T1 ";
                 $queryTotalRecords .= "INNER JOIN masseneingabeSucheIMw as T2 ";
                 $queryTotalRecords .= "ON T1.mst_ID = T2.mst_ID ";
-                // $queryTotalRecords  .= "where T1.iBdeType='2' ";
                 $queryTotalRecords .= "WHERE T2.on_date >= '$date_differnce' ";
                 $queryTotalRecords .= "AND T2.on_date <= '$current_date' ";
                 $queryTotalRecords .= "AND T2.type = '1' ";
@@ -7083,10 +6408,6 @@ class dashboardController
             }
 
             $energy_chart['energy_chart_ar'] = $ar;
-
-
-
-
 
             //Reports Details Charts
             $date_differnce_days = date('Y-m-d H:i:s', strtotime('-30 days'));
@@ -7123,7 +6444,6 @@ class dashboardController
             $weekEnergyConsumed .= "AND T1.archiviert ='true' ";
             $dataEnergy = queryDB($conn, $weekEnergyConsumed, "read");
             $energy_chart['weekEnergyConsumed'] = $dataEnergy;
-            // echo $weekEnergyConsumed; die;
 
             //Month Energy
             $monthEnergyConsumed = "SELECT SUM(cast(T2.val as int)) as val FROM interneBetriebsdatenHistorie As T1 ";
@@ -7148,24 +6468,22 @@ class dashboardController
             $dataEnergy = queryDB($conn, $yearEnergyConsumed, "read");
             $energy_chart['yearEnergyConsumed'] = $dataEnergy;
 
-
-            // echo json_encode($energy_chart['monthEnergyConsumed']); die;
-
-
-
             echo json_encode($energy_chart, JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves energy consumption data for the last five days
+     * Fetches and processes energy consumption records for the past five days
+     * for analysis or chart visualization
+     * @return array  Returns five-day energy consumption data
+     */
     public function getDataFiveDaysEnergyConsumeed()
     {
         try {
             global $conn;
-
-            // $date_differnce_days = date('Y-m-d H:i:s', strtotime('-5 days'));
             $date_differnce_days = date('Y-m-d', strtotime('-5 days'));
             $current_date = date('Y-m-d');
 
@@ -7191,8 +6509,6 @@ class dashboardController
             $totalSumFiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
             $totalSumFiveDayEnergyConsumed .= "AND T1.archiviert ='true' ";
             $totalSumDataEnergyConsumed = queryDB($conn, $totalSumFiveDayEnergyConsumed, "read");
-            // echo json_encode($totalSumDataEnergyConsumed); die;
-            // $energyData['totalSumDataEnergyConsumed'] = count($totalSumDataEnergyConsumed) > 0 && $totalSumDataEnergyConsumed[0]['val'] != null ? $totalSumDataEnergyConsumed[0]['val'] : 0;
             $energyData['totalSumDataEnergyConsumed'] = $totalSumDataEnergyConsumed;
 
             //Data Five Days
@@ -7205,7 +6521,6 @@ class dashboardController
             $fiveDayEnergyConsumed .= "AND T1.deleted <> 'true' ";
             $fiveDayEnergyConsumed .= "AND T1.archiviert ='true' ";
             $fiveDayEnergyConsumed .= "order by T2.on_date desc ";
-            // echo $fiveDayEnergyConsumed; die;
             $dataEnergy = queryDB($conn, $fiveDayEnergyConsumed, "read");
             $tr = '';
 
@@ -7233,7 +6548,6 @@ class dashboardController
                         $tr .= "<td></td>";
                     }
                     $tr .= "<td>" . $day . "</td>";
-                    // tr+= "<td class='text-danger'>"+28.76+ "<i class='ti-arrow-down'></i></td>";
                     if ($dataEnergy[$i]['zeitintervallAnl'] == "2" && $dataEnergy[$i]['zeitintervallAnl'] != '') {
                         $tr .= "<td>" . $dataEnergy[$i]['startWeek'] . '-' . $dataEnergy[$i]['startDate'] . "</td>";
                     } else {
@@ -7255,34 +6569,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    //<---Screen Code 
-    // public function moveMeasurementTableScreenShot(){
-    //     try{
-    //         $image = $_POST['image'];
-
-    //         $id =    $_POST['id'];
-
-    //         $location = "..\upload/";
-
-    //         $image_parts = explode(";base64,", $image);
-
-    //         $image_base64 = base64_decode($image_parts[1]);
-
-    //         $filename = "screenshot_".$id.'.png';
-    //         // unlink($filename);
-    //         $file = $location . $filename;
-    //         file_put_contents($file, $image_base64);
-
-    //         $ar = array('staus'=>'200', 'message'=> 'SuccessFully Uploaded');
-    //         echo json_encode($ar,JSON_INVALID_UTF8_IGNORE);
-    //         die;
-    //     }
-    //     catch (Exception $e) {
-    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
-    //     } 
-    // }
-    // --end-->
+    /**
+     * Retrieves dimension data
+     * Fetches and returns dimension-related configuration or values
+     * used across the application
+     * @return array  Returns dimension data
+     */
     public function getDimentions()
     {
 
@@ -7298,13 +6590,14 @@ class dashboardController
         $username = $_SESSION['username'];
         $id = $_POST['id'];
         $getResult =  "SELECT * from tableFormat where id='$id' AND username = '$username' ";
-        //        print_r($getResult);die;
         $dataResult = queryDB($conn, $getResult, "read");
         return array('data' => $dataResult[0]);
     }
-
-
-    // <---09-8-2021---
+    /**
+     * Retrieves overall count data for tile click
+     * Fetches and returns aggregated count values displayed on dashboard tiles
+     * @return array  Returns overall tile count data
+     */
     public function getTileClickOverAllCount()
     {
         try {
@@ -7332,7 +6625,6 @@ class dashboardController
                 $queryUnit = "SELECT unt_ID,mstIMw FROM produktionsAnlagenConfig where mst_ID = $mst_id ";
                 $resultUnit = queryDB($conn, $queryUnit, "read");
                 $record['name_value'] = $resultUnit[0]['mstIMw'];
-                // echo json_encode($resultUnit); die;
             } else if ($getResult[0]['type'] == 'Energy') {
                 $queryTotalSum = "SELECT sum(cast(t2.val as int)) as total_value from interneMesswerteConfig  as t1 ";
                 $queryTotalSum .= "INNER JOIN masseneingabeSucheIMw as t2 ";
@@ -7416,8 +6708,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
+    /**
+     * Retrieves dashboard table data
+     * Fetches and returns data to populate tables displayed on the dashboard
+     * @return array  Returns dashboard table data
+     */
     public function getTableDashboardData()
     {
         try {
@@ -7432,31 +6727,23 @@ class dashboardController
                 if ($dataResult[0]['row_click'] == 'false' && $dataResult[0]['query_max_val'] == '') {
                     
                     //Seacrh Record 
-                    // echo json_encode($dataResult[0]['query_data_records']); die;
                     $firstPostion =  strpos($dataResult[0]['query_data_records'], '%');
                     $lastPostion = strripos($dataResult[0]['query_data_records'], '%');
                     $subStr = "%";
                     $attachment = "$";
                     if ($firstPostion != '' && $lastPostion != '') {
-                        // $firstPostionQuery = str_replace($subStr, $attachment.$subStr, $dataResult[0]['query_data_records']);
-                        //$firstPostionQuery = str_replace($dataResult[0]['query_data_records'],$attachment, $firstPostion,0);
-                        // $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'],$attachment, $lastPostion,0);
                         $firstPostionQuery = substr_replace($dataResult[0]['query_data_records'], $attachment, $firstPostion);
-                        // $firstPostionQuery = str_replace($subStr, $attachment, $dataResult[0]['query_data_records'],0);
                         $firstPostionQuery = str_replace('%', "%'", $firstPostionQuery);
                         $firstPostionQuery = str_replace('$', "'%", $firstPostionQuery);
                         $dataMeasurement = queryDB($conn, $firstPostionQuery, "read");
                     } else {
                         $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
                     }
-                    // <----15-9-2021---
                     $dashboardMeasurementHtml = '';
                     
-                    // echo json_encode($dataMeasurement); die;
                     if ($dataResult[0]['table_other'] == 'false') {
                         
                         if ($dataResult[0]['type'] == 'Energy') {
-                            // echo json_encode($dataMeasurement); die;
                             $dashboardMeasurementHtml = $this->dashboardEnergyHtml($dataMeasurement);
                         } else if ($dataResult[0]['type'] == 'Measurement') {
                             $dashboardMeasurementHtml = $this->dashboardMeasurementHtml($dataMeasurement);
@@ -7473,7 +6760,6 @@ class dashboardController
                         
                         $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement);
                     }
-                    // --end-->
                     $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
@@ -7490,7 +6776,6 @@ class dashboardController
                         $dataMeasurement = queryDB($conn, $dataResult[0]['query_data_records'], "read");
                         $queryMaxValue = queryDB($conn, $dataResult[0]['query_max_val'], "read");
                         $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-                        // <---15-9-2021---
                         $dashboardMeasurementHtml = '';
                         if ($dataResult[0]['table_other'] == 'false') {
                             if ($dataResult[0]['type'] == 'Energy') {
@@ -7503,7 +6788,6 @@ class dashboardController
                         } else {
                             $dashboardMeasurementHtml = $this->dashboardMeasurementHtmlAutomatic($dataMeasurement, $queryMaxVal);
                         }
-                        // --end---->
                         $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
                         echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
@@ -7532,9 +6816,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <----20-12-2021--
-
+    /**
+     * Generates HTML for checked energy layer dashboard view
+     * Builds and returns HTML content for displaying selected/checked energy layer data
+     * @return string  Returns generated HTML for checked energy layer dashboard
+     */
     public function dashboardEnergyLayerHtmlChecked($dataMesaurement)
     {
         global $conn;
@@ -7564,11 +6850,12 @@ class dashboardController
             $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-
-
+    /**
+     * Generates HTML for energy layer dashboard view
+     * Builds and returns HTML content for displaying energy layer data on the dashboard
+     * @return string  Returns generated HTML for energy layer dashboard
+     */
     public function dashboardEnergyLayerHtml($dataMesaurement)
     {
         global $conn;
@@ -7600,15 +6887,16 @@ class dashboardController
             $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-
-
+    /**
+     * Generates HTML for energy layer dashboard on row click
+     * Builds and returns HTML content for displaying detailed energy layer data
+     * when a row is selected on the dashboard
+     * @return string  Returns generated HTML for energy layer row click view
+     */
     public function dashboardRowClickEnergyLayerHtml($dataMesaurement)
     {
         global $conn;
-        // echo json_encode($dataMesaurement); die;
         $tr = '<thead>';
         $tr .= '<tr>';
         $tr .= '<th>Modal Name</th>';
@@ -7641,12 +6929,13 @@ class dashboardController
             $tr .= "<tbody><tr><td $col_span class='text-center'>No Data</td></tr></tbody>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-    // --end-->
-
-    // <----16-02-2022--
+    /**
+     * Retrieves dashboard table data for energy layer
+     * Fetches and returns data to populate tables related to energy layer
+     * on the dashboard
+     * @return array  Returns energy layer dashboard table data
+     */
     public function getTableDashboardDataEnergyLayer()
     {
         try {
@@ -7654,13 +6943,11 @@ class dashboardController
             $id = $_POST['id'];
             $selectQuery = "select * from tableFormat where id = '$id' ";
             $result = queryDB($conn, $selectQuery, "read");
-            // echo json_encode($result); die;
             $tbody = '';
             if ($result != '' && count($result) > 0) {
                 if ($result[0]['row_click'] == 'false') {
                     $tbody = '<thead>';
                     $tbody .= '<tr>';
-                    // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Day</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Schichtname</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig ab</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Gültig bis</th>';
@@ -7668,18 +6955,8 @@ class dashboardController
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit von</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Zeit zum</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energieverbrauch</th>';
-                    // $thead .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
                     $tbody .= '</tr>';
                     $tbody .= '</thead>';
-
-                    // $getQuery = $result[0]['query_data_records'];
-                    // $getQuery = str_replace('Where ',"Where '",$getQuery);
-                    // $getQuery = str_replace(" between","' between", $getQuery);
-                    // $getQuery = str_replace("Or ","Or '", $getQuery);
-                    // // echo $getQuery; die;
-                    // // $resultQuery = queryDB($conn, $getQuery, "read");
-                    // echo json_encode($resultQuery); die;
-                    // <---23-02-2022--
                     $input_val_week_day = $result[0]['energy_layer_range'];
                     $checkQuery = '';
                     if ($result[0]['energy_layer_filter'] == 'day') {
@@ -7706,8 +6983,6 @@ class dashboardController
                         $resultShiftName = queryDB($conn, $checkQuery, "read");
                     }
                     $resultQuery = queryDB($conn, $checkQuery, "read");
-                    // echo json_encode($resultQuery); 
-                    // --end-->
                     if ($resultQuery != '' && count($resultQuery) > 0) {
                         $tbody .= "<tbody>";
                         $mst_id = $result[0]['mst_id'];
@@ -7735,11 +7010,9 @@ class dashboardController
                             $toTime = $val['uhrzeitBis']->format('H:i:s');
                             $to = $toDate . 'T' . $toTime;
                             $from = $fromDate . 'T' . $fromTime;
-                            // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                             $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
 
                             $resultEnergy = queryDB($conn, $query1, "read");
-                            // echo json_encode($resultEnergy); die;
                             $totalEnergy = $resultEnergy[0]['sum'] > 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                             $totalEnergy = $this->convertValueCommaSeperated($totalEnergy);
 
@@ -7772,8 +7045,6 @@ class dashboardController
                     $tbody .= '<tr>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Shift Name</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Date</th>';
-                    // $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time From</th>';
-                    // $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Time To</th>';
                     $tbody .= '<th style="padding:  10px 6px 10px 6px !important;font-size: small !important;">Energy Consumed</th>';
                     $tbody .= '</tr>';
                     $tbody .= "</thead>";
@@ -7783,29 +7054,15 @@ class dashboardController
                     $getQuery = str_replace("'convert", "convert", $getQuery);
                     $getQuery = str_replace("'mst_ID", "mst_ID", $getQuery);
                     $resultQuery = queryDB($conn, $getQuery, "read");
-                    // echo json_encode($result);die;
                     $name_val = $result[0]['energy_layer_model_name'];
                     if ($resultQuery != '' && count($resultQuery) > 0) {
                         $tbody .= "<tbody>";
-                        // foreach($resultQuery as $key=>$val)
-                        // {   
-                        //     $tbody .= '<tr>';
-                        //     $tbody.= "<td>".$name_val."</td>";
-                        //     $tbody.= "<td>".$val['Time']->format('Y-m-d')."</td>";
-                        //     $tbody.= "<td>".$val['Time']->format('H:i:s')."</td>";
-                        //     $addVal = $val['Value'] * $val['ConvFactor'];
-                        //     $totalEnergy = $addVal / 4;
-                        //     $tbody.= "<td>".$totalEnergy."</td>"; 
-                        //     $tbody .= '</tr>';
-                        // }
                         $sum = 0;
                         $resultQuery = $this->getDateWiseScore($resultQuery);
                         foreach ($resultQuery as $key => $val) {
                             $tbody .= '<tr data-table-other="SchichtModelleAll">';
                             $tbody .= "<td>" . $name_val . "</td>";
                             $tbody .= "<td>" . $val['date'] . "</td>";
-                            // $tbody.= "<td>".$time_from."</td>";
-                            // $tbody.= "<td>".$time_to."</td>";
                             $tbody .= "<td>" . $val['Value'] . "</td>";
                             $tbody .= '</tr>';
                             $sum += $val['Value'];
@@ -7826,7 +7083,6 @@ class dashboardController
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                     die;
                     die;
-                    // if($resu)
                 }
             }
             die;
@@ -7834,19 +7090,18 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-
-    // <----04-3-2022---
+    /**
+     * Retrieves dashboard table data for automatic energy
+     * Fetches and returns data to populate tables related to automatic energy
+     * @return array  Returns automatic energy dashboard table data
+     */
     public function getTableDashboardDataEnergyAutomatic()
     {
         try {
             global $conn;
             $id = $_POST['id'];
-            // $expand_view = $_POST['expand_view'];
             $selectQuery = "select * from tableFormat where id = '$id' ";
             $result = queryDB($conn, $selectQuery, "read");
-            // echo json_encode($result); die;
             if ($result[0]['row_click'] == 'false') {
                 $mst_id = $result[0]['mst_id'];
                 $input_val_week_day = $result[0]['energy_layer_range'] + 60;
@@ -7867,9 +7122,6 @@ class dashboardController
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' AND convert(date,Time) <= '$maxDateCheck' group by convert(date,Time) order by date desc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-                // echo json_encode($queryEnergyRecords); 
-                // echo $queryEnergy; die;
-                // die;
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
                     $tbody .= "<tbody>";
                     foreach ($queryEnergyRecords as  $val1) {
@@ -7897,57 +7149,42 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <---15-12-2021
+    /**
+     * Retrieves dashboard table data for automatic product
+     * Fetches and returns data to populate tables related to automatic product
+     * on the dashboard
+     * @return array  Returns automatic product dashboard table data
+     */
     public function getTableDashboardDataProductAutomatic()
     {
         try {
-            // $conn = connectToDB('gipscomm');
             global $conn;
             $id = $_REQUEST['id'];
             $username = $_SESSION['username'];
             $selectQuery = "SELECT * from tableFormat where username = '$username' AND id = $id ";
             $result = queryDB($conn, $selectQuery, "read");
-            // echo json_encode($result[0]['database_name']); die;
-
             $conn = connectToDB($result[0]['database_name']);
             $dataProduct = queryDB($conn, $result[0]['query_data_records'], "read");
             $columnHeader = unserialize($result[0]['prd_all_columns_automatic']);
             $columnType = unserialize($result[0]['prd_all_columns_type_automatic']);
-            // echo json_encode($dataProduct); die;
-            // echo  $result[0]['query_data_records']; die;
-
-
-            // $queryDataRecords = $_POST['queryDataRecords'];
-            // $firstPosition =  strpos($queryDataRecords,'=');
-            // $firstPosition = $firstPosition + 1;
-            // $firstPositionQuery= substr_replace($queryDataRecords,"'",$firstPosition );
-
-            // $lastPosition = strpos($firstPositionQuery,'order BY t1.anl_Id desc');
-            // $lastPosition = $lastPosition - 1;
-            // $lastPositionQuery= substr_replace($firstPositionQuery,"'",$lastPosition );
-            // // echo $lastPositionQuery; die;
-            // $dataProduct = queryDB($conn, $lastPositionQuery, "read");
-            // // echo json_encode($dataProduct); die;
-
             $dashboardMeasurementHtml = $this->generateDashboardAllItemAutomaticTableHTML($dataProduct, $columnHeader, $columnType);
             $records['dashboardMeasurementHtml'] = $dashboardMeasurementHtml;
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
-
-            // echo $lastPositionQuery; die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---14-12-2021---
+    /**
+     * Generates HTML for dashboard automatic items table
+     * Builds and returns HTML content for displaying all automatic items
+     * in a table format on the dashboard
+     * @return string  Returns generated HTML for dashboard automatic items table
+     */
     public function generateDashboardAllItemAutomaticTableHTML($dataProduct, $columnHeader, $columnDataTypeAr)
     {
         try {
-            // echo json_encode($dataProduct); die;
             $tr = '';
             if ($columnHeader  != '' && count($columnHeader) > 0) {
                 $tr = "<thead>";
@@ -7966,11 +7203,9 @@ class dashboardController
                     for ($j = 0; $j < count($columnHeader); $j++) {
                         $columnName = $columnHeader[$j];
                         $columnDataType = $columnDataTypeAr[$j];
-                        // echo $columnName; die;
                         if ($columnDataType == 'date' || $columnDataType == 'datetime') {
                             $tr .= "<td>" . $dataProduct[$i][$columnName]->format('Y-m-d') . "</td>";
                         } else {
-                            // echo $dataProduct[$i][$columnName]; die;
                             $tr .= "<td>" . $dataProduct[$i][$columnName] . "</td>";
                         }
                     }
@@ -7980,17 +7215,17 @@ class dashboardController
             } else {
                 $tr = "<tbody><tr><td $col_span class='text-center'>No Data</td></tbody></tr>";
             }
-            // echo $tr; die;
             return $tr;
-            // echo json_encode($records,JSON_INVALID_UTF8_IGNORE);
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end-->
-
-    // <---24-11-2021---
+    /**
+     * Retrieves filtered chart records for energy data
+     * Fetches and processes energy chart data based on applied filters
+     * @return array  Returns filtered energy chart data
+     */
     public function getChartRecordFilterEnergy()
     {
         try {
@@ -8024,15 +7259,10 @@ class dashboardController
                             if ($i == $overallCount || $i == 10) {
                                 $countSum = $result[0]['val'];
                             }
-                            // <---12-11-2021--
                             $loopCount = $i;
-                            // --end-->
                             array_push($ar_days, $i);
                         }
                     }
-                    // <---12-11-2021--
-                    // $ar_reverse_val = array_reverse($ar_value);
-                    // echo json_encode($ar_reverse_val); die;
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8073,9 +7303,6 @@ class dashboardController
                     }
 
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
-
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //10 RECORD Condition
@@ -8093,10 +7320,7 @@ class dashboardController
                         $queryDateData .= "ORDER by id ASC ";
                         $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
                         $resultDateData = queryDB($conn, $queryDateData, "read");
-                        // echo json_encode($resultDateData); die;
-
                     }
-                    // --end-->
                     $records['countDate'] = $resultDateData;
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8125,15 +7349,10 @@ class dashboardController
                             }
                             $loopCount = $i;
                             $day_20 =  $i;
-                            // $r+2;
                             array_push($ar_days, $day_20);
-
-                            // }
                         }
                     }
-                    // print_r($ar_value);die;
 
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8173,9 +7392,7 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //20 RECORD Condition
@@ -8195,8 +7412,6 @@ class dashboardController
                         $resultDateData = queryDB($conn, $queryDateData, "read");
                     }
                     $records['countDate'] = $resultDateData;
-                    // --end-->
-
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
                     $records['count_sum'] = $countSum;
@@ -8227,8 +7442,6 @@ class dashboardController
                             array_push($ar_days, $day_30);
                         }
                     }
-
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8268,9 +7481,7 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //30 RECORD Condition
@@ -8290,7 +7501,6 @@ class dashboardController
                         $resultDateData = queryDB($conn, $queryDateData, "read");
                     }
                     $records['countDate'] = $resultDateData;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8323,7 +7533,6 @@ class dashboardController
                         }
                     }
 
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8363,9 +7572,7 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= 50) { //50 RECORD Condition
@@ -8385,7 +7592,6 @@ class dashboardController
                         $resultDateData = queryDB($conn, $queryDateData, "read");
                     }
                     $records['countDate'] = $resultDateData;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8403,9 +7609,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <--07-12-2021--
+    /**
+     * Retrieves filtered chart records for product data
+     * Fetches and processes product chart data based on applied filters
+     * @return array  Returns filtered product chart data
+     */
     public function getChartRecordFilterProduct()
     {
         try {
@@ -8435,7 +7643,6 @@ class dashboardController
                 $queryOverAllCount .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
                 $queryOverAllCount .= "order by t3.t3_id asc ";
                 $resultOverallCount = queryDB($conn, $queryOverAllCount, "read");
-                // echo json_encode($resultOverallCount); die;
                 $overallCount = count($resultOverallCount);
 
                 if ($filter_val == 10) {
@@ -8455,16 +7662,10 @@ class dashboardController
                             if ($i == $overallCount || $i == 10) {
                                 $countSum = $result[0]['val'];
                             }
-                            // <---12-11-2021--
                             $loopCount = $i;
-                            // --end-->
                             array_push($ar_days, $i);
                         }
                     }
-                    // echo json_encode($ar_value); die;
-                    // <---12-11-2021--
-                    // $ar_reverse_val = array_reverse($ar_value);
-                    // echo json_encode($ar_reverse_val); die;
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8505,7 +7706,6 @@ class dashboardController
                         $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
                         $queryOutsideTable .= "order by t3.t3_id DESC ";
                         $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
-                        // echo $queryOutsideTable; die;
                         $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
 
                         $tableOutsideHTML = '';
@@ -8522,7 +7722,6 @@ class dashboardController
                     }
 
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8548,15 +7747,10 @@ class dashboardController
                             }
                             $loopCount = $i;
                             $day_20 =  $i;
-                            // $r+2;
                             array_push($ar_days, $day_20);
-
-                            // }
                         }
                     }
-                    // print_r($ar_value);die;
 
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8597,7 +7791,6 @@ class dashboardController
                         $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
                         $queryOutsideTable .= "order by t3.t3_id DESC ";
                         $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
-                        // echo $queryOutsideTable; die;
                         $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
 
                         $tableOutsideHTML = '';
@@ -8613,7 +7806,6 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8643,7 +7835,6 @@ class dashboardController
                         }
                     }
 
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8684,7 +7875,6 @@ class dashboardController
                         $queryOutsideTable .= "AND t1.iBdePrdktConf_ID = '$analgen_config_id' ";
                         $queryOutsideTable .= "order by t3.t3_id DESC ";
                         $queryOutsideTable .= "offset $offsetLoopVal rows FETCH NEXT $chart_outer_table_limit_column ROWS ONLY ";
-                        // echo $queryOutsideTable; die;
                         $resultOutsideTable = queryDB($conn, $queryOutsideTable, "read");
 
                         $tableOutsideHTML = '';
@@ -8700,7 +7890,6 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -8730,8 +7919,6 @@ class dashboardController
                             array_push($ar_days, $day_50);
                         }
                     }
-
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -8804,10 +7991,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // ---end-->
-
-
-    // <---21-2-2022--
+    /**
+     * Retrieves filtered chart records for energy layer data
+     * Fetches and processes energy layer chart data based on applied filters
+     * @return array  Returns filtered energy layer chart data
+     */
     public function getChartRecordFilterEnergyLayer()
     {
         try {
@@ -8831,7 +8019,6 @@ class dashboardController
                     }
                     $tableOutsideHTML = '';
                     if ($table_found == 'true') {
-                        // <---07-02-2022---
                         //*** Check No Shift Name Found Database */
                         $checkQuery .= "Select * from SchichtModelleAll ";
                         for ($c = 0; $c < $input_val_week_day; $c++) {
@@ -8856,24 +8043,18 @@ class dashboardController
                             $i = 0;
                             foreach ($resultShiftName as $key => $val) {
                                 $fromDate = $val['gueltigVon']->format('Y-m-d');
-                                // <----21-2-2022---
                                 if ($dateValCheck <= $val['gueltigVon']->format('Y-m-d')) {
                                     $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
                                 } else {
                                     $fromDateCheck = $dateValCheck;
                                 }
-                                // echo $fromDateCheck; die;
-                                // --end-->
                                 $toDate = $val['gueltigBis']->format('Y-m-d');
                                 $fromTime = $val['uhrzeitVon']->format('H:i:s');
                                 $toTime = $val['uhrzeitBis']->format('H:i:s');
                                 $to = $toDate . 'T' . $toTime;
                                 $from = $fromDate . 'T' . $fromTime;
-                                //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                                 $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
-                                //echo $query1; die;
                                 $resultEnergy = queryDB($conn, $query1, "read");
-                                // echo json_encode($resultEnergy); die;
                                 $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value, $totalEnergy);
                                 $model_name_layer_name = $val['modellBez'] . '(' . $val['bezeichnung'] . ')';
@@ -8899,14 +8080,12 @@ class dashboardController
                                 }
                                 $i++;
                             }
-                            // echo $i; die;
                             $records['count_val'] = $ar_value;
                             $records['count_days'] = $ar_names;
                             $records['count_sum'] = '';
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
                     $records['table_found'] = $table_found;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                     die;
@@ -8924,8 +8103,6 @@ class dashboardController
                     if ($table_found == 'true') {
                         $todayDate = date('Y-m-d');
                         $dateVal =  date('Y-m-d', strtotime("-$input_val_week_day week"));
-
-                        // <----07-02-2022--
                         // ****Check Shift Name Exist
                         $intervalDays = $input_val_week_day * 7; //Week;
                         $checkShiftNameQuery = "Select * from SchichtModelleAll ";
@@ -8938,12 +8115,9 @@ class dashboardController
                             }
                         }
                         $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
-                        // echo json_encode($resultShiftName); die;
-                        // --end--->
                         if ($resultShiftName != '' && count($resultShiftName) > 0) {
                             $weekInd = $input_val_week_day * 7; //Week;
                             $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
-                            // echo $fromDateCheck; die;
                             $fromDateCheck = '';
                             $ar_value = [];
                             $ar_names = [];
@@ -8965,14 +8139,9 @@ class dashboardController
                                 $toTime = $val['uhrzeitBis']->format('H:i:s');
                                 $to = $toDate . 'T' . $toTime;
                                 $from = $fromDate . 'T' . $fromTime;
-                                // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                                 $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
 
                                 $resultEnergy = queryDB($conn, $query1, "read");
-                                // echo json_encode($resultEnergy); die;
-                                // $totalEnergy = $resultEnergy[0]['sum'] / 4;
-
-                                // echo json_encode($resultEnergy); die;
                                 $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value, $totalEnergy);
                                 $model_name_layer_name = $val['modellBez'] . '(' . $val['bezeichnung'] . ')';
@@ -9010,24 +8179,21 @@ class dashboardController
                     die;
                 }
             }
-            // ---end--->
             die;
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-
+    /**
+     * Retrieves filtered chart records for automatic energy data
+     * Fetches and processes automatic energy chart data based on applied filters
+     * @return array  Returns filtered automatic energy chart data
+     */
     public function getChartRecordFilterEnergyAutomatic()
     {
         try {
             global $conn;
-            // print_r($_POST['mst_id']);
-            // die;
             $mst_id = $_POST['mst_id'];
-            // print_r($_POST['mst_id']);
-            // die;
             $input_val_week_day = $_POST['energy_chart_layer_range'];
             $chart_outer_table_limit_column  = $_POST['chart_outer_table_limit_column'];
             $checkQuery = '';
@@ -9075,18 +8241,13 @@ class dashboardController
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id[0]' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-                // echo $queryEnergy; die;
-                // echo json_encode($queryEnergyRecords); 
-                // die;
                 $ar_value = [];
                 $ar_names = [];
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !$queryEnergyRecords['error']) {
                     $i = 0;
                     $modelNameQueryCount = count($queryEnergyRecords);
-                    // echo json_encode($queryEnergyRecords); die;
                     foreach ($queryEnergyRecords as $key => $val) {
                         $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
                         array_push($ar_value, $totalValue);
                         array_push($ar_names, $val['date']->format('Y-m-d'));
                         if ($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount) {
@@ -9121,7 +8282,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves filtered chart records for automatic energy data by MST ID
+     * Fetches and processes automatic energy chart data based on applied filters
+     * and a specific MST ID
+     * @return array  Returns filtered automatic energy chart data for the given MST ID
+     */
     public function getChartRecordFilterEnergyAutomaticMstId($dateCheck, $mst_id)
     {
         try {
@@ -9132,27 +8298,24 @@ class dashboardController
             $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
             $ar_value = [];
             $ar_names = [];
-            // echo $queryEnergy; die;
-            // echo json_encode($queryEnergyRecords); die;
             if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
 
                 foreach ($queryEnergyRecords as $key => $val) {
                     $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                    // $totalValue = $this->convertValueCommaSeperated($totalValue);
                     array_push($ar_value, $totalValue);
                     array_push($ar_names, $val['date']->format('Y-m-d'));
                 }
                 return $ar_value;
-                // return array($ar_value, $as_names);
             }
-            // die;
-            // echo ($totalValue);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
+    /**
+     * Retrieves filtered chart records
+     * Fetches and processes chart data based on applied filters
+     * @return array  Returns filtered chart data
+     */
     public function getChartRecordFilter()
     {
         try {
@@ -9189,15 +8352,10 @@ class dashboardController
                             if ($i == $overallCount || $i == 10) {
                                 $countSum = $result[0]['val'];
                             }
-                            // <---12-11-2021--
                             $loopCount = $i;
-                            // --end-->
                             array_push($ar_days, $i);
                         }
                     }
-                    // <---12-11-2021--
-                    // $ar_reverse_val = array_reverse($ar_value);
-                    // echo json_encode($ar_reverse_val); die;
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -9238,9 +8396,6 @@ class dashboardController
                     }
 
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
-
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //10 RECORD Condition
@@ -9258,10 +8413,7 @@ class dashboardController
                         $queryDateData .= "ORDER by id ASC ";
                         $queryDateData .= "offset $offsetDate rows FETCH NEXT $overallCount ROWS ONLY ";
                         $resultDateData = queryDB($conn, $queryDateData, "read");
-                        // echo json_encode($resultDateData); die;
-
                     }
-                    // --end-->
                     $records['countDate'] = $resultDateData;
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -9290,15 +8442,9 @@ class dashboardController
                             }
                             $loopCount = $i;
                             $day_20 =  $i;
-                            // $r+2;
                             array_push($ar_days, $day_20);
-
-                            // }
                         }
                     }
-                    // print_r($ar_value);die;
-
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -9338,9 +8484,6 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
-
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //20 RECORD Condition
@@ -9360,7 +8503,6 @@ class dashboardController
                         $resultDateData = queryDB($conn, $queryDateData, "read");
                     }
                     $records['countDate'] = $resultDateData;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -9393,7 +8535,6 @@ class dashboardController
                         }
                     }
 
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -9433,9 +8574,6 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
-
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= $filter_val) { //30 RECORD Condition
@@ -9487,8 +8625,6 @@ class dashboardController
                             array_push($ar_days, $day_50);
                         }
                     }
-
-                    // <---12-11-2021--
                     $offsetLoopVal = '';
                     $tableOutsideHTML = '';
                     $offsetLoopVal = '';
@@ -9528,9 +8664,7 @@ class dashboardController
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
 
-                    // <--11-11-2021--
                     $offsetDate = '';
                     $resultDateData = '';
                     if ($overallCount > 0 && $overallCount <= 50) { //50 RECORD Condition
@@ -9550,7 +8684,6 @@ class dashboardController
                         $resultDateData = queryDB($conn, $queryDateData, "read");
                     }
                     $records['countDate'] = $resultDateData;
-                    // --end-->
 
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
@@ -9568,8 +8701,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <----14-9-2021---
+    /**
+     * Retrieves automatic measurement table data
+     * Fetches and returns measurement records for automatic table display
+     * @return array  Returns automatic measurement table data
+     */
     public function getAutomaticTableMeasurementData($measurement_type)
     {
         try {
@@ -9611,7 +8747,6 @@ class dashboardController
             $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            // echo $queryTotalRecords; die;
 
             $resultQuery = queryDB($conn, $queryTotalRecords, "read");
             $totalRecordsValue = [];
@@ -9621,7 +8756,6 @@ class dashboardController
 
 
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
-            // echo json_encode($totalRecordsValue); die;s
 
             $pagesCount = '';
             $offSetVal = 0;
@@ -9648,13 +8782,11 @@ class dashboardController
                             $number_records = $total_number_records - $offSetVal;
                         }
                     }
-                    //    echo $number_records;s
                 }
             }
             $query1 = "SELECT * ";
             $query1 .= "FROM messstellen as T1 ";
             $query1 .= "INNER JOIN ";
-            //$query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(convert(decimal(38,5), Value)) as val from ";
             $query1 .= "(SELECT T2.mst_ID as table_2_mst_id, sum(Value * ConvFactor) as val from ";
             $query1 .= "berechneteEnergiedaten as T2 ";
             $query1 .= "GROUP By T2.mst_id) ";
@@ -9663,7 +8795,6 @@ class dashboardController
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo $query1; die; 
 
             $resultQuery = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
@@ -9674,21 +8805,16 @@ class dashboardController
             }
             $records['table_found'] = $tableFound;
 
-            // $dataMesaurement = queryDB($conn, $query1, "read");
-
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement);
             $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
 
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val, $pagesCount, $dataMesaurement);
 
-            // echo $pagination_html['paginationHTMl']; die;
-            //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $table_filter = $time_interval . ',' . $_POST['measurement_order_by_val'] . ',' . $_POST['total_number_records'];
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Measurement', 'table_type' => $measurement_type, 'table_filter' => $table_filter);
             $records['query_data'] = $ar;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
@@ -9696,6 +8822,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
+    /**
+     * Retrieves automatic measurement table data
+     * Fetches and returns measurement records for automatic table display,
+     * possibly with alternate filters or logic
+     * @return array  Returns automatic measurement table data
+     */
     public function getAutomaticTableMeasurementData1()
     {
         try {
@@ -9736,12 +8868,7 @@ class dashboardController
             $queryTotalRecords .= "ON T1.mst_ID = T2.table_2_mst_id ";
             $queryTotalRecords .= $queryTotalRecordCondition;
             $queryTotalRecords .= $order_by_val;
-            // echo $queryTotalRecords; die;
-
-
             $totalRecordsValue = queryDB($conn, $queryTotalRecords, "read");
-            // echo json_encode($totalRecordsValue); die;s
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -9767,7 +8894,6 @@ class dashboardController
                             $number_records = $total_number_records - $offSetVal;
                         }
                     }
-                    //    echo $number_records;s
                 }
             }
             $query1 = "SELECT * ";
@@ -9781,7 +8907,6 @@ class dashboardController
             $query1 .= $queryMainCondition;
             $query1 .= $order_by_val;
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
-            // echo $query1; die;
 
             $dataMesaurement = queryDB($conn, $query1, "read");
             $dataMesaurement = [];
@@ -9789,13 +8914,10 @@ class dashboardController
 
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val, $pagesCount, $dataMesaurement);
 
-            // echo $pagination_html['paginationHTMl']; die;
-            //<---13-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => '', 'row_click' => 'false', 'type' => 'Measurement');
             $records['query_data'] = $ar;
-            // --end-->
 
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
             die;
@@ -9803,7 +8925,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // <--15-9-2021
+    /**
+     * Retrieves automatic measurement table data based on row click
+     * Fetches and processes detailed automatic measurement data for the selected row
+     * @return array  Returns automatic measurement data for the selected row
+     */
     public function rowClickAutomaticMeasurementTableData()
     {
         try {
@@ -9834,8 +8960,6 @@ class dashboardController
             $queryTotalPagination .= "ON T1.mst_ID = T2.mst_Id ";
             $queryTotalPagination .= "WHERE T1.mst_ID = '$mst_id' ";
             $totalRecordsValue = queryDB($conn, $queryTotalPagination, "read");
-
-
             $pagesCount = '';
             $offSetVal = 0;
             if (count($totalRecordsValue) > 0) {
@@ -9862,21 +8986,15 @@ class dashboardController
                 }
             }
 
-            //--end-->
-
             $queryMaxValue = "SELECT TOP($total_number_records) max(convert(decimal(38,5), Value)) as val ";
             $queryMaxValue .= "FROM berechneteEnergiedaten as T1 ";
             $queryMaxValue .= "INNER JOIN ";
             $queryMaxValue .= "messstellen as T2 ";
             $queryMaxValue .= "ON T1.mst_ID = T2.mst_Id ";
             $queryMaxValue .= "WHERE T1.mst_ID = '$mst_id' ";
-            // echo json_encode($queryMaxValue); die;
-            //<---15-8-2021
             $queryMaximum = $queryMaxValue;
-            // --end-->
             $queryMaxValue = queryDB($conn, $queryMaxValue, "read");
             $queryMaxVal = count($queryMaxValue) > 0 ? $queryMaxValue[0]['val'] : '';
-
 
             $query1 = "SELECT * ";
             $query1 .= "FROM berechneteEnergiedaten as T1 ";
@@ -9887,31 +9005,22 @@ class dashboardController
             $query1 .= "$order_by_val ";
             $query1 .= "offset $offSetVal rows FETCH NEXT $number_records ROWS ONLY ";
             $dataMesaurement = queryDB($conn, $query1, "read");
-            // echo json_encode($dataMesaurement); die;
-
 
             $records['measurement_html'] = $this->generateHtmlAutomaticTableMeasurementData($dataMesaurement, $queryMaxVal);
             $records['table_header'] = $this->getNumberRecordsMesurementHeader($measurement_type);
             $records['pagination_html'] =  $this->generatePaginationHtmlAutomaticMeasurementData($page_val, $pagesCount, $dataMesaurement, $type, $mst_id);
 
-
-            // <---10-11-2021----
             $queryLastDate = "SELECT TOP(1) * From berechneteEnergiedaten as T1 ";
             $queryLastDate .= "WHERE T1.mst_ID = '$mst_id' ";
             $queryLastDate .= "ORDER BY T1.berNrg_ID desc ";
             $queryLastDateData = queryDB($conn, $queryLastDate, "read");
-            //--end-->
 
-
-            // <--15-8-2021--
             $ar_page_val = isset($_POST['page_val']) ? $_POST['page_val'] : 1;
             $ar_number_records = isset($_POST['number_records']) ? $_POST['number_records'] : 5;
             $ar = array('pages_count' => $pagesCount, 'page_val' => $ar_page_val, 'number_records' => $ar_number_records, 'query1' => $query1, 'queryMaxValue' => $queryMaximum, 'row_click' => 'true', 'type' => 'Measurement');
             $records['query_data'] = $ar;
 
             $records['queryLastDate'] = $queryLastDateData;
-            // --end-->
-
             echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
 
             die;
@@ -9919,9 +9028,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
-    // <---2-8-2021--
+    /**
+     * Generates HTML for automatic measurement table data
+     * @param array $dataMesaurement  Contains measurement data used to build the table
+     * @param bool  $queryMaxVal      Optional flag to determine if maximum values should be processed
+     * @return string  Returns generated HTML for automatic measurement table data
+     */
     public function generateHtmlAutomaticTableMeasurementData($dataMesaurement, $queryMaxVal = false)
     {
         global $conn;
@@ -9958,7 +9070,6 @@ class dashboardController
 
                 if ($queryMaxVal == '') {
                     $tr .= "<td>" . $queryResult[0]['Time'] . "</td>";
-                    // $tr.= "<td>".$queryResult[0]['ConvFactor']."</td>";
                     $calulateVal = 0;
                     if ($value['val'] > 0) {
                         $calulateVal = $value['val'] / 4;
@@ -9967,7 +9078,6 @@ class dashboardController
                     $tr .= "<td>" . $calulateVal . "</td>";
                 } else {
                     $tr .= "<td>" . $value['Time'] . "</td>";
-                    // $tr.= "<td>".$value['ConvFactor']."</td>";
                     $calulateVal = 0;
                     if ($value['Value'] > 0) {
                         $calulateVal = ($value['Value'] * $value['ConvFactor']) / 4;
@@ -9981,21 +9091,21 @@ class dashboardController
             $tr = "<tr><td $col_span class='text-center'>No Data</td></tr>";
         }
         return $tr;
-        // $records['measurement_html'] = $tr;
-
     }
-
+    /**
+     * Generates pagination HTML for automatic measurement data
+     * Builds and returns pagination controls for navigating through automatic measurement records
+     * @return string  Returns generated pagination HTML
+     */
     public function generatePaginationHtmlAutomaticMeasurementData($page_val, $pagesCount, $dataMesaurement, $data_type = false, $mst_id = false)
     {
         try {
             //Pagination Code HTML
-            // echo $pagesCount; die;
             if ($page_val > 0 && $pagesCount > 0 && $dataMesaurement != '' && count($dataMesaurement) > 0) {
                 $style_background = '';
                 $class_page_count_val = 'page_count_val';
                 $style_background_end = '';
                 $class_page_count_val_end = 'page_count_val';
-                // echo $page_val ; die;
                 if ($page_val == "1") {
                     $style_background = "style='background: #d6d6d6; color: black'";
                     $class_page_count_val = '';
@@ -10062,15 +9172,17 @@ class dashboardController
                                     <input type='button' id='modal_open_button' tile-edit='false' class='btn btn-sm btn-success' value='Save & Preview'>
                                 </div>";
                 return $paginationHTMl;
-                // $records['pagination_html'] = $paginationHTMl;
             }
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <---15-9-2021---
+    /**
+     * Generates HTML for automatic measurement dashboard
+     * @param array $dataMeasurement  Contains measurement data used to build the dashboard view
+     * @param bool  $queryMaxVal      Optional flag to determine if maximum values should be processed
+     * @return string  Returns generated HTML for automatic measurement dashboard
+     */
     public function dashboardMeasurementHtmlAutomatic($dataMeasurement, $queryMaxVal = false)
     {
         try {
@@ -10144,8 +9256,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <---09-8-2021---
+    /**
+     * Retrieves the overall cumulative count for automatic measurement points.
+     * @return void Outputs JSON encoded count and name.
+     */
     public function getTileClickOverAllCountAutomatic()
     {
         try {
@@ -10172,9 +9286,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <--6-10-2021---
+    /**
+     * Handles data retrieval for dashboard chart interactions based on filters (10, 20, 30 days, all).
+     * @return void Outputs JSON encoded chart data series.
+     */
     public function getClickDashboardChart()
     {
         try {
@@ -10226,11 +9341,9 @@ class dashboardController
                             }
 
                             $day_20 =  $i;
-                            // $r+2;
                             array_push($ar_days, $day_20);
                         }
                     }
-                    // print_r($ar_value);die;
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
@@ -10291,8 +9404,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // <----8-12-2021---
+    /**
+     * Retrieves dashboard chart data on product click
+     * Fetches and prepares chart data when a product-related dashboard element is clicked
+     * @return array  Returns product-specific dashboard chart data
+     */
     public function getClickDashboardChartProduct()
     {
         try {
@@ -10356,11 +9472,9 @@ class dashboardController
                             }
 
                             $day_20 =  $i;
-                            // $r+2;
                             array_push($ar_days, $day_20);
                         }
                     }
-                    // print_r($ar_value);die;
                     $records['count_val'] = $ar_value;
                     $records['count_days'] = $ar_days;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
@@ -10415,9 +9529,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
-    // <---23-2-2022----
+    /**
+     * Retrieves dashboard chart data on energy layer click
+     * Fetches and prepares chart data when an energy layer dashboard element is clicked
+     * @return array  Returns energy layer-specific dashboard chart data
+     */
     public function getClickDashboardChartEnergyLayer()
     {
         try {
@@ -10441,7 +9557,6 @@ class dashboardController
                     }
                     $tableOutsideHTML = '';
                     if ($table_found == 'true') {
-                        // <---07-02-2022---
                         //*** Check No Shift Name Found Database */
                         $checkQuery .= "Select * from SchichtModelleAll ";
                         for ($c = 0; $c < $input_val_week_day; $c++) {
@@ -10466,24 +9581,18 @@ class dashboardController
                             $i = 0;
                             foreach ($resultShiftName as $key => $val) {
                                 $fromDate = $val['gueltigVon']->format('Y-m-d');
-                                // <----21-2-2022---
                                 if ($dateValCheck <= $val['gueltigVon']->format('Y-m-d')) {
                                     $fromDateCheck = $val['gueltigVon']->format('Y-m-d');
                                 } else {
                                     $fromDateCheck = $dateValCheck;
                                 }
-                                // echo $fromDateCheck; die;
-                                // --end-->
                                 $toDate = $val['gueltigBis']->format('Y-m-d');
                                 $fromTime = $val['uhrzeitVon']->format('H:i:s');
                                 $toTime = $val['uhrzeitBis']->format('H:i:s');
                                 $to = $toDate . 'T' . $toTime;
                                 $from = $fromDate . 'T' . $fromTime;
-                                //  $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                                 $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
-                                //echo $query1; die;
                                 $resultEnergy = queryDB($conn, $query1, "read");
-                                // echo json_encode($resultEnergy); die;
                                 $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value, $totalEnergy);
                                 $model_name_layer_name = $val['modellBez'] . '(' . $val['bezeichnung'] . ')';
@@ -10509,14 +9618,12 @@ class dashboardController
                                 }
                                 $i++;
                             }
-                            // echo $i; die;
                             $records['count_val'] = $ar_value;
                             $records['count_days'] = $ar_names;
                             $records['count_sum'] = '';
                         }
                     }
                     $records['outer_table_html'] = $tableOutsideHTML;
-                    // --end-->
                     $records['table_found'] = $table_found;
                     echo json_encode($records, JSON_INVALID_UTF8_IGNORE);
                     die;
@@ -10535,7 +9642,6 @@ class dashboardController
                         $todayDate = date('Y-m-d');
                         $dateVal =  date('Y-m-d', strtotime("-$input_val_week_day week"));
 
-                        // <----07-02-2022--
                         // ****Check Shift Name Exist
                         $intervalDays = $input_val_week_day * 7; //Week;
                         $checkShiftNameQuery = "Select * from SchichtModelleAll ";
@@ -10548,12 +9654,9 @@ class dashboardController
                             }
                         }
                         $resultShiftName = queryDB($conn, $checkShiftNameQuery, "read");
-                        // echo json_encode($resultShiftName); die;
-                        // --end--->
                         if ($resultShiftName != '' && count($resultShiftName) > 0) {
                             $weekInd = $input_val_week_day * 7; //Week;
                             $dateValCheck = date('Y-m-d', strtotime("-$weekInd Days"));
-                            // echo $fromDateCheck; die;
                             $fromDateCheck = '';
                             $ar_value = [];
                             $ar_names = [];
@@ -10575,11 +9678,9 @@ class dashboardController
                                 $toTime = $val['uhrzeitBis']->format('H:i:s');
                                 $to = $toDate . 'T' . $toTime;
                                 $from = $fromDate . 'T' . $fromTime;
-                                // $query1 = "Select Sum(Value*ConvFactor) as sum from MessstellenEnergiedaten where time between convert(datetime,'".$from."') AND  convert(datetime,'".$to."') AND mst_ID ='".$mst_id."'";
                                 $query1 = "Select Sum(Value*ConvFactor) as sum  from MessstellenEnergiedaten where   convert(date,time) between '$fromDateCheck' AND '$toDate' AND convert(time,time) between '$fromTime' AND '$toTime' AND mst_ID = '$mst_id' ";
 
                                 $resultEnergy = queryDB($conn, $query1, "read");
-                                // echo json_encode($resultEnergy); die;
                                 $totalEnergy = $resultEnergy[0]['sum'] != 0 ? $resultEnergy[0]['sum'] / 4 : 0;
                                 array_push($ar_value, $totalEnergy);
                                 $model_name_layer_name = $val['modellBez'] . '(' . $val['bezeichnung'] . ')';
@@ -10622,9 +9723,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end--->
-
-    // <----08-03-2022--
+    /**
+     * Retrieves dashboard chart data on automatic energy click
+     * Fetches and prepares chart data when an automatic energy dashboard element is clicked
+     * @return array  Returns automatic energy-specific dashboard chart data
+     */
     public function getClickDashboardChartEnergyAutomatic()
     {
         try {
@@ -10685,18 +9788,13 @@ class dashboardController
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-                // echo $queryEnergy; die;
-                // echo json_encode($queryEnergyRecords); 
-                // die;
                 $ar_value = [];
                 $ar_names = [];
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords)) {
                     $i = 0;
                     $modelNameQueryCount = count($queryEnergyRecords);
-                    // echo json_encode($queryEnergyRecords); die;
                     foreach ($queryEnergyRecords as $key => $val) {
                         $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
                         array_push($ar_value, $totalValue);
                         array_push($ar_names, $val['date']->format('Y-m-d'));
                         if ($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount) {
@@ -10733,8 +9831,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-    // --end-->
-
+    /**
+     * Retrieves dashboard chart data on automatic energy click for a single MST
+     * Fetches and prepares chart data when a specific MST in automatic energy
+     * dashboard is selected
+     * @return array  Returns chart data for the selected MST
+     */
     public function getClickDashboardChartEnergyAutomaticSingleMST($mstArray = false)
     {
         try {
@@ -10760,18 +9862,13 @@ class dashboardController
                 $queryEnergy .= "FROM  MessstellenEnergiedaten where mst_id = '$mst_id' AND ";
                 $queryEnergy .= "convert(date,Time) > '$dateCheck' group by convert(date,Time) order by date asc ";
                 $queryEnergyRecords = queryDB($conn, $queryEnergy, "read");
-                // echo $queryEnergy; die;
-                // echo json_encode($queryEnergyRecords); 
-                // die;
                 $ar_value = [];
                 $ar_names = [];
                 if ($queryEnergyRecords != '' && count($queryEnergyRecords) && !$queryEnergyRecords['error']) {
                     $i = 0;
                     $modelNameQueryCount = count($queryEnergyRecords);
-                    // echo json_encode($queryEnergyRecords); die;
                     foreach ($queryEnergyRecords as $key => $val) {
                         $totalValue = $val['value'] > 0 ? $val['value'] / 4 : 0;
-                        // $totalValue = $this->convertValueCommaSeperated($totalValue);
                         array_push($ar_value, $totalValue);
                         array_push($ar_names, $val['date']->format('Y-m-d'));
                         if ($chart_outer_table_limit_column == $modelNameQueryCount || $chart_outer_table_limit_column > $modelNameQueryCount) {
@@ -10809,7 +9906,11 @@ class dashboardController
         }
     }
 
-    // <----02-03-2022--
+    /**
+     * Converts a numeric value to a string with 3 decimal points and comma separator.
+     * @param float $value The numeric value to convert.
+     * @return string The formatted value.
+     */
     public function convertValueCommaSeperated($value)
     {
         try {
@@ -10819,7 +9920,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves dashboard tile count data
+     * Fetches and returns count values displayed on dashboard tiles
+     * @return array  Returns dashboard tile count data
+     */
    public function dashboardTileCount()
     {
         try {
@@ -10840,7 +9945,11 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
+    /**
+     * Retrieves static graph count data
+     * Fetches and returns count values related to static graphs on the dashboard
+     * @return array  Returns static graph count data
+     */
    public function getStaticGraphCount()
     {
         try {
@@ -10860,7 +9969,12 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }    
-
+    /**
+     * Stores database value in session
+     * Saves selected or required database-related values into the session
+     * for later use across requests
+     * @return void
+     */
     public function storeDBValueSession()
     {
         try {
@@ -10871,8 +9985,10 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-
+    /**
+     * Destroys the current user session for logout.
+     * @return array Status of the session destruction.
+     */
     public function logout()
     {
         try {
@@ -10883,33 +9999,5 @@ class dashboardController
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
     }
-
-    // public function getEditTableValueAutoPopluate(){
-    //     try{
-    //         global $conn;
-    //         $username = $_SESSION['username'];
-    //         $id = $_POST['id'];
-    //         $i_value = $_POST['i_value'];
-    //         $getResult =  "SELECT * from tableFormat where tile_data_type ='table' AND username = '$username' ";
-    //             $dataResult = queryDB($conn, $getResult, "read");
-    //             // print_r($dataResult);
-    //             $tileHtml = '';
-    //             $table_type = '';
-    //             $total_result = count($dataResult);
-    //             echo $total_result;
-    //             if($dataResult != null && count($dataResult)>0){
-    //                 for($i= 0; $i < $total_result; $i++){
-
-    //                 }
-    //             }
-    //     }
-    //     catch (Exception $e) {
-    //         echo 'Caught exception: ',  $e->getMessage(), "\n";
-    //     } 
-    // }
-
-
-    // ---end--->
-
 }
 $obj = new dashboardController();

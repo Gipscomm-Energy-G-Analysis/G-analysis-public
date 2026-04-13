@@ -3,12 +3,10 @@
 <link type="text/css" rel="stylesheet" href="https://g-analysis.com/dist/css/buttons.dataTables.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<!-- 2024 start graph popup files -->
 <script type="text/javascript" src="https://g-analysis.com/dist/js/bluebird.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/ej.web.all.min.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/jquery.dataTables.min.js" defer></script>
-<!-- <script type="text/javascript" src="https://g-analysis.com/dist/js/dataTables.buttons.min.js" defer></script> -->
 <script type="text/javascript" src="https://g-analysis.com/src/js/fpCore.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/src/js/fpChart2.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/DataMachine.min.js" defer></script>
@@ -17,9 +15,12 @@
 <script type="text/javascript" src="https://g-analysis.com/src/js/formula.js" defer></script>
 <script type="text/javascript" src="https://g-analysis.com/dist/js/math.min.js" defer></script>
 <script type="text/javascript" src="/dashboard/js/graph-chart-popup.js" defer></script>
-<!-- end graph popup files -->
 <script type="text/javascript">
   // Default Configuration
+  /**
+   * Initializes the global configuration for Toastr notifications.
+   * Sets default options such as positioning, duration, and animation effects.
+   */
     $(document).ready(function() {
       toastr.options = {
         'closeButton': true,
@@ -39,11 +40,19 @@
       }
     });
   // Toast Image and Progress Bar
+  /**
+   * Click handler for displaying a sample Toastr notification with an image.
+   * Triggers an informational toast when the element with ID 'image' is clicked.
+   */
     $('#image').click(function(event) {
       toastr.options.progressBar = true,
       toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
     });
   // Toast Position
+  /**
+   * Click handler for testing Toastr notification positions based on user selection.
+   * Retrieves the selected position value and displays a sample notification at that location.
+   */
     $('#position').click(function(event) {
       var pos = $('input[name=position]:checked', '#positionForm').val();
       toastr.options.positionClass = "toast-" + pos;
@@ -51,26 +60,29 @@
       toastr.info('This sample position', 'Toast Position')
     });
 </script>
-<!-- Added by KP for tabs : 26th June,2024 Starts -->
   <link rel="stylesheet" href= "//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"> 
   <script src="//code.jquery.com/jquery-1.12.4.js"> </script> 
   <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"> </script> 
   <style> 
-    #gfg { 
-    /*      width: 600px; */ 
+    #gfg {  
      text-align: justify; 
     } 
   </style> 
   <script> 
+  /**
+   * Initializes the dashboard navigation tabs using jQuery UI.
+   * Sets up the tab structure for the element with ID 'gfg'.
+   */
     $(document).ready(function () { 
+      /**
+       * Optional handler for when tabs are created.
+       */
       $("#gfg").on('tabscreate', function () { 
-        //alert('Tabs create Event Triggered!'); 
       }); 
   
       $("#gfg").tabs(); 
     }); 
   </script> 
-<!-- Added by KP for tabs : 26th June,2024 End -->
 <!-- partial -->
 <div class="main-panel" id="dashboard_main_div" style="display: none">
         <div class="content-wrapper">
@@ -78,28 +90,15 @@
             <div class="col-md-12 grid-margin">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <!-- <h4 class="font-weight-bold mb-0 text-muted" style="    margin-left: 20px;
-">Armaturenbrett</h4> -->
                 </div>
-                <!-- <div>
-                    <button type="button" class="btn btn-primary btn-icon-text btn-rounded">
-                      <i class="ti-clipboard btn-icon-prepend"></i>Report
-                    </button>
-                </div> -->
               </div>
-                <!-- 27-6-2021-- -->
               <div class="row" style="display: none">  
                 <div class="form-group col-md-6">
                   <label class="text-dark mt-3" for="dashboard_select_tag">Datensätze auswählen</label>
                   <select class="form-control form-control-sm text-muted" multiple name="dashboard_select_tag[]" id="dashboard_select_tag">
-                    <!-- <option value="">Select Records</option> -->
                     <option value="mesurement_count_div" description="Measurement Entries Count">Messstellen</option>
                     <option value="product_count_div" description="Product Entries Count">Produkte</option>
                     <option value="energy_count_div" description="Energy Entries Count">Energiedaten</option>
-                    <!-- <option value="energy_consumed_div" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option> -->
-                    <!-- <option value="five_days_energy_consumed" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
-                    <!-- <option value="40">40</option>
-                    <option value="50">50</option> -->
                   </select>
                 </div>
                
@@ -107,18 +106,8 @@
                   <button id='save_select_changes' class="badge badge-success custom-btn">Änderungen speichern</button>
                 </div>
             </div>
-              <!-- -end -->
             </div>
           </div>
-
-            <!-- 20-8-2021-- -->
-           <!--  <div class="dashboard-btn">
-                <button type="button" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile" data-toggle="modal" data-target="#dashboard_tile_modal" onclick="dashboardTileCount()">Auswertung hinzufügen</button>
-
-                <button type="button" class="btn btn-success btn-sm mb-3" btn_click='dashboard' style="display: none" id="save_position_tile">Struktur speichern</button>
-
-            </div> -->
-
           <div id="gfg" class="dash-tab"> 
             <ul> 
               <li><a id = "gfg1_li" href="#gfg1" data-value="Graph" class="btn btn-success btn-sm mb-3">Diagramm</a></li> 
@@ -330,11 +319,6 @@
 
        
     </div> 
-
-          <!-- 7-9-2021- -->
-          <!-- <input type="button" class="btn btn-success btn-sm mb-3" id="dashboard_drag_btn" value="Drag Tile">
-          <input type="button" class="btn btn-success btn-sm mb-3" id="reset_drag_btn" value="Pre Format"> -->
-          <!-- --end-- -->
           <div class="modal fade" id="dashboard_tile_modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -359,8 +343,6 @@
                           <option value="product" description="Product Entries Count">Alarm-Info Board</option>
                           <option value="measurement" description="Measurement Entries Count">Messtellen-Betrieb</option>
                           <option value="graph" description="Save Graph">Graph</option>
-                          <!-- <option value="energy_consumed_30_days" description="Energy Consumed 30 Days Entries">Energiedaten Consumed 30 Days</option>
-                          <option value="five_days_energy_consumed_tile" description="Energy Consumed 05 Days Entries">Energiedaten Consumed 05 Days</option> -->
                       </select>
                     </div>
 
@@ -384,34 +366,9 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
                 </div>
-
-                <!-- ----27-10-2021--- -->
-                <!-- <div id="dashboard_loader_div" style="display: none">
-                  <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
-                </div> -->
-                <!-- end -->
-
               </div>
             </div>
           </div>
-          <!-- end -->
-          
-          <!-- ----27-10-2021--- -->
-          <!-- <div id="dashboard_loader_div" style="display: none">
-            <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
-          </div> -->
-          <!-- end -->
-
-          <!-- 16-9-2021-- -->
-          <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-            <input type="button" draggable="true" ondragstart="drag(event)" id="drag2" width="88" height="31">
-          </div> -->
-
-          <!-- <div id="div2" class="row dashboard_count_div" style="height: 240px; border: 1px solid black;" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
-          <!-----end-- -->
-
-          <!-- 02-9-2021-- -->
-          <!-- <button type="button" style="display: none" class="btn btn-success btn-sm mb-3" id="dashboard_add_tile_chart" data-toggle="modal" data-target="#dashboard_tile_modal_chart">Add Chart</button> -->
           <div class="modal fade" id="dashboard_tile_modal_chart" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg max-width-modal">
               <div class="modal-content">
@@ -435,8 +392,6 @@
                       <input type="number" class="form-control form-control-sm text-dark" id="measurement-width-chart" placeholder="Reihe">
                       <input type="hidden" id="measurement-width-chart-hidden" value="285">
                     </div>
-
-                    <!-- 18-02-2022 -->
                     <div class="form-group col-md-2" id="energy_type_dashboard_chart_div">
                       <label for="time_interval_chart" class="text-mute">Datentyp</label>
                       <select class="form-control form-control-sm text-dark" id="energy_type_dashboard_chart">
@@ -445,8 +400,6 @@
                         <option value="layer_modal">SchichtModelle</option>
                       </select>
                     </div> 
-
-                    <!-- 7-03-2022 Automatic divs-->
                     <div class="form-group col-md-2 energy_automatic_div" id="energy_chart_measurement_div_automatic">
                       <label for="energy_chart_measurement_automatic" class="text-mute">Messstelle auswählen</label>
                       <span class='mandatory_sign'>*</span>
@@ -461,8 +414,6 @@
                       <input type="number" class="form-control form-control-sm text-dark" id="energy_chart_layer_range_automatic" placeholder="Enter Value">
                       <span class="energy_chart_layer_automatic_range_error text-danger"></span>
                     </div>
-
-                    <!-- end-- -->
 
                     <!-- *Energy Layer Modal Div -->
                     <div class="form-group col-md-2 energy_chart_layer_div" id="energy_chart_measurement_div">
@@ -491,7 +442,6 @@
                       <span class="energy_chart_layer_range_error text-danger"></span>
                     </div>
 
-                    <!-- --end-- -->
                     <div class="form-group col-md-2" id="save_graph_div" style="display:none;">
                       <label for="save_graph_chart" class="text-mute">Saved Graph</label>
                       <span class="mandatory_sign">*</span>
@@ -610,7 +560,6 @@
                       </select>
                     </div>
 
-                    <!--20-10-2021-- -->
                     <diV class="form-group col-md-2 expandViewChart">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
@@ -619,9 +568,7 @@
                         </label>
                       </div>
                     </div>
-                    <!-- end -->
-
-                    <!-- <--28-10-2021 -->
+                    
                     <diV class="form-group col-md-2 outsideView">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
@@ -630,9 +577,7 @@
                         </label>
                       </div>
                     </div>
-                    <!-- -end -->
-
-                    <!-- 29-10-2021 -->
+                    
                     <div class="form-group col-md-2 chart_outisde_tile_controls" style="display: none">
                       <label for="chart_height_outer_structure" class="text-mute">Äußere Kachelspalte</label>
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_height_outer_structure" placeholder="Outer Column">
@@ -648,9 +593,6 @@
                       <input type="number" class="form-control form-control-sm text-dark" id="chart_outer_table_limit_column" placeholder="Limit Column" value='1'>
                     </div>
                     
-                    <!-- -end- -->
-
-                     <!-- <--28-10-2021 -->
                     <diV class="form-group col-md-2" style="display: none">
                       <div class="form-check form-check-primary">
                         <label class="form-check-label">
@@ -675,39 +617,25 @@
                     <img src="images/loader_dashboard.gif" id="measurement_modal_loader_image_chart">
                   </div>
 
-                   <!-- 27-10-2021-- -->
                   <div id="dashboard_loader_div" style="display: none">
                     <img src="images/loader_dashboard.gif" id="dashboard_loader_image">
                   </div>
-                  <!-- end-- -->
                 </div>
 
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Schließen</button>
-                  <!-- <div id="save_btn_tile_div"> -->
                     <input type="button" id="save_and_proceed_btn_dashboard_chart" data-edit="false" data-edit-chart='false' class="btn btn-sm btn-success save_and_proceed_btn_dashboard_chart" value="Speichern & fortfahren">
 
                     <input type="button" id="update_and_proceed_btn_dashboard_chart"  class="btn btn-sm btn-success update_and_proceed_btn_dashboard_chart" value="Update & Proceed">
-                    <!-- </div> -->
                 </div>
               </div>
             </div>
           </div>
-          <!-- --end- -->
-
-          <!-- <div draggable="true" class="box">A</div>
-              <div draggable="true" class="box">B</div>
-              <div draggable="true" class="box">C</div> -->
-
-            <!-- 21-9-2021--- -->
             <input type="hidden" id="start_tile_data">
             <input type="hidden" id="drop_tile_data">
 
-            <!-- --end -->
-
           <input type="hidden" id='save_tile_id'>
           <input type="hidden" id='save_tile_id_automatic'>
-          <!-- <div id='outside_tile_chart_display_html'></div> -->
           <div class="row dashboard_count_div"  id="dashboard_count_div_tile">
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width tiles-click" id="mesurement_count_div" style="display: none">
               <div class="card card-border">
@@ -761,9 +689,6 @@
                         </ul>
                     </div>
                   </div>
-                  <!-- <div class="col-md-9 image_div_show overflow-hide" style="display: none">
-                     <img src="upload/screenshot_table_body.png" id="screenshot_image" alt="Image Not Available" height="167px" width="593px">
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -824,7 +749,6 @@
                 </div>
               </div>
             </div>
-            <!-- 27-7-2021 -->
             <div class="col-md-3 grid-margin stretch-card dashboard_tile_height dashboard_tile_width  tiles-click" id="five_days_energy_consumed" style="display: none">
               <div class="card card-border">
                 <div class="row card-body">
@@ -843,7 +767,6 @@
                 </div>
               </div>
             </div>
-            <!-- --end-- -->
           </div>
           
           <div class="row dashboard_count_div_chart">
@@ -853,7 +776,6 @@
                   <p class="card-title">Energiedaten ein Monat</p>
                   <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
                   <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                  <!-- <canvas id="sales-chart"></canvas> -->
                 </div>
              
               </div>
@@ -865,7 +787,6 @@
                   <p class="text-muted font-weight-light">The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review</p>
               
                 </div>
-                <!-- <canvas id="order-chart" class="w-100"></canvas> -->
                   <canvas id="north-america-chart"></canvas>
                   <div id="north-america-legend"></div>
               </div>
@@ -894,7 +815,6 @@
               </div>
             </div>
           </div>
-          <!-- 28-7-2021 -->
           <div class="row dashboard_count_div">
             <div class="col-md-12 grid-margin stretch-card" id="five_days_energy_consumed_table_div" style="display: none">
               <div class="card card-border">
@@ -919,45 +839,9 @@
               </div>
             </div>
           </div>
-          <!-- --end-- -->
         </div>
-        <!-- <canvas id="areaChart"></canvas> -->
-        <!-- 30-9-2021- -->
-        <!-- <div id="chartContainer" style="height: 370px; width: 100%;"></div>  -->
-        <!-- <div style="height: 500px; width: 570px;" class="3 grid-margin actual_tile_height stretch-card tiles-click" id="measurement_count_tile_modal_3" data-i="3" data-type-tile="Measurement">
-                                    <div class="card card-border">
-                                        <div class="card-body">
-                                            <div id="" class="">
-                                                <p class="card-title text-md-center text-xl-left" id="measurement_tile_heading_modal">Tile Table</p>
-                                                <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center logo-image-main-div">
-                                               
-                                                <img src="images/table_logo.png" class="tile-image-icon tile-image-icon-table">
-                                                </div>  
-                                                <p class="mb-0 mt-2 text-success count_result_tile">5 Records</p>
-                                                <div class="action-modal-button-div">
-                                                    <img src="images/edit.png" class="3 edit_val edit_btn_tile" data-type-tile="Measurement" data-i-value="3" style="height: 17px; width: 17px; margin-right: 5px;">
-                                                    <img src="images/delete.png" class="3 id_val delete_btn_tile" data-type-tile="Measurement" style="height: 17px; width: 17px;">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="overflow-hide ml-3">
-                                                <div class="save_table_div_show_table"> 
-                                                  <canvas id="areaChart"></canvas>
-                                                  <div id="chartContainer" style="height: 145px; width: 570px;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-        <!-- end -->
-        <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
         <input type="hidden" id="username" value="">
         <footer class="footer">
-          <!-- <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap dashboard templates</a> from Bootstrapdash.com</span>
-          </div> -->
         </footer>
         <!-- partial -->
       </div>
